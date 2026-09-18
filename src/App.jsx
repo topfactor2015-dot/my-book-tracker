@@ -1808,3 +1808,27 @@ export default function App() {
                 id="custom-modal-input"
               />
             )}
+
+            <div className="flex gap-2.5 justify-end">
+              <button onClick={() => setCustomModal(null)} className="px-4 py-2 rounded-xl font-bold text-xs text-[#74675B] hover:bg-[#EADFCF] transition-colors">Отмена</button>
+              <button 
+                onClick={() => {
+                  if (customModal.type === 'prompt') {
+                    const val = document.getElementById('custom-modal-input').value;
+                    customModal.onSubmit(val);
+                  } else {
+                    customModal.onSubmit();
+                  }
+                }} 
+                className="px-4 py-2 rounded-xl font-bold text-xs text-white bg-[#A68970] hover:bg-[#92745C] transition-colors shadow-md"
+              >
+                ОК
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
