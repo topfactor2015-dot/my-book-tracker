@@ -25,6 +25,7 @@ const LayersBoxIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={
 const DownloadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>;
 const UploadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>;
 const PieChartIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>;
+const FlameIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 17c1.38 0 2.5-1.12 2.5-2.5 0-2-3-3.5-3-5.5 0-1.5 1-2.5 2-3-.5 2 2 3.5 2 5.5a4.5 4.5 0 1 1-9 0c0-2 1-3.5 2-5-1.5 1.5-2 3.5-2 5z"></path></svg>;
 
 const PREDEFINED_GENRES = [
   "Фантастика", "Фэнтези", "Детектив", "Психология", "Бизнес", "Роман", "Триллер", "Нон-фикшн",
@@ -63,14 +64,16 @@ const INITIAL_BOOKS = [
   {
     id: 1, title: 'Задача трех тел', author: 'Лю Цысинь', status: 'reading', genre: 'Фантастика', format: 'paper',
     seriesName: 'Воспоминания о прошлом Земли', seriesIndex: 1, seriesTotal: 3,
-    totalPages: 464, readPages: 180, rating: 0, annotation: 'Секретный военный проект «Красный берег» посылает сигналы внеземной цивилизации...', summary: '', notes: 'Очень интригующее начало про культурную революцию в Китае.', quotes: '— Куда вы посылаете сигнал?', 
+    totalPages: 464, readPages: 180, rating: 0, annotation: 'Секретный военный проект «Красный берег» посылает сигналы внеземной цивилизации...', summary: '', notes: '', quotes: '', 
     coverUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=300&h=400',
     tags: ['космос', 'научная фантастика'],
     dateStarted: getMoscowDateString(5),
     log: [
-      { date: getMoscowDateString(4), pages: 50, minutes: 75 }, 
-      { date: getMoscowDateString(2), pages: 60, minutes: 90 }, 
-      { date: getMoscowDateString(0), pages: 70, minutes: 105 }
+      { date: getMoscowDateString(4), pages: 30, minutes: 45 }, 
+      { date: getMoscowDateString(3), pages: 40, minutes: 60 }, 
+      { date: getMoscowDateString(2), pages: 35, minutes: 50 },
+      { date: getMoscowDateString(1), pages: 45, minutes: 70 },
+      { date: getMoscowDateString(0), pages: 30, minutes: 40 }
     ]
   },
   {
@@ -84,7 +87,7 @@ const INITIAL_BOOKS = [
   {
     id: 3, title: 'Дюна', author: 'Фрэнк Герберт', status: 'read', genre: 'Фантастика', format: 'combo',
     seriesName: 'Хроники Дюны', seriesIndex: 1, seriesTotal: 6,
-    totalPages: 700, readPages: 700, rating: 5, annotation: 'История Пола Атрейдеса на пустынной планете Арракис...', summary: 'Эпично и масштабно. Лучшая фантастика столетия.', notes: 'Перечитывал с большим удовольствием. Мир прописан невероятно детально.', quotes: 'Я не должен бояться. Страх — убийца разума.',
+    totalPages: 700, readPages: 700, rating: 5, annotation: 'История Пола Атрейдеса на пустынной планете Арракис...', summary: 'Эпично и масштабно. Лучшая фантастика столетия.', notes: 'Перечитывал с большим удовольствием.', quotes: 'Я не должен бояться. Страх — убийца разума.',
     coverUrl: 'https://images.unsplash.com/photo-1546552356-372989cfa124?auto=format&fit=crop&q=80&w=300&h=400',
     tags: ['любимое', 'классика'],
     dateStarted: getMoscowDateString(30), dateFinished: getMoscowDateString(15), 
@@ -224,7 +227,7 @@ export default function App() {
   
   const [books, setBooks] = useState(() => {
     try {
-      const savedBooks = localStorage.getItem('warm_readingTrackerBooks_v19');
+      const savedBooks = localStorage.getItem('warm_readingTrackerBooks_v25');
       if (savedBooks) return JSON.parse(savedBooks);
     } catch (e) { console.error(e); }
     return INITIAL_BOOKS;
@@ -232,7 +235,7 @@ export default function App() {
 
   const [goals, setGoals] = useState(() => {
     try {
-      const savedGoals = localStorage.getItem('warm_readingTrackerGoals_v19');
+      const savedGoals = localStorage.getItem('warm_readingTrackerGoals_v25');
       if (savedGoals) return JSON.parse(savedGoals);
     } catch (e) { console.error(e); }
     return { yearly: 20, monthly: 5 };
@@ -240,13 +243,13 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('warm_readingTrackerBooks_v19', JSON.stringify(books));
+      localStorage.setItem('warm_readingTrackerBooks_v25', JSON.stringify(books));
     } catch (e) { console.error(e); }
   }, [books]);
 
   useEffect(() => {
     try {
-      localStorage.setItem('warm_readingTrackerGoals_v19', JSON.stringify(goals));
+      localStorage.setItem('warm_readingTrackerGoals_v25', JSON.stringify(goals));
     } catch (e) { console.error(e); }
   }, [goals]);
   
@@ -325,7 +328,70 @@ export default function App() {
 
   const readBooksList = books.filter(b => b.status === 'read');
 
-  // Filtered read books based on selected analytics period
+  // Calculate Reading Streaks + Last 14 days timeline
+  const streakData = useMemo(() => {
+    const activeDatesSet = new Set();
+    books.forEach(b => {
+      if (b.log) {
+        b.log.forEach(entry => {
+          if ((entry.pages || 0) > 0) {
+            const dStr = new Date(entry.date).toISOString().split('T')[0];
+            activeDatesSet.add(dStr);
+          }
+        });
+      }
+    });
+
+    let currentStreak = 0;
+    let maxStreak = 0;
+    let tempStreak = 0;
+
+    let pointerDate = new Date(getMoscowDate());
+    let pointerStr = pointerDate.toISOString().split('T')[0];
+    
+    if (!activeDatesSet.has(pointerStr)) {
+      pointerDate.setDate(pointerDate.getDate() - 1);
+      pointerStr = pointerDate.toISOString().split('T')[0];
+    }
+
+    while (activeDatesSet.has(pointerStr)) {
+      currentStreak++;
+      pointerDate.setDate(pointerDate.getDate() - 1);
+      pointerStr = pointerDate.toISOString().split('T')[0];
+    }
+
+    const sortedDates = Array.from(activeDatesSet).sort();
+    if (sortedDates.length > 0) {
+      tempStreak = 1;
+      maxStreak = 1;
+      for (let i = 1; i < sortedDates.length; i++) {
+        const prev = new Date(sortedDates[i - 1]);
+        const curr = new Date(sortedDates[i]);
+        const diffDays = Math.round((curr - prev) / (1000 * 60 * 60 * 24));
+        if (diffDays === 1) {
+          tempStreak++;
+        } else if (diffDays > 1) {
+          tempStreak = 1;
+        }
+        if (tempStreak > maxStreak) maxStreak = tempStreak;
+      }
+    }
+    if (currentStreak > maxStreak) maxStreak = currentStreak;
+
+    const timelineDays = [];
+    for (let i = 13; i >= 0; i--) {
+      const d = getMoscowDate();
+      d.setDate(d.getDate() - i);
+      const dStr = d.toISOString().split('T')[0];
+      const hasRead = activeDatesSet.has(dStr);
+      const dayName = d.toLocaleDateString('ru-RU', { weekday: 'short' });
+      const dayNum = d.getDate();
+      timelineDays.push({ dateStr: dStr, dayName, dayNum, hasRead, isToday: i === 0 });
+    }
+
+    return { currentStreak, maxStreak, timelineDays };
+  }, [books]);
+
   const filteredReadBooksForStats = useMemo(() => {
     const now = getMoscowDate();
     return readBooksList.filter(b => {
@@ -344,7 +410,6 @@ export default function App() {
     });
   }, [readBooksList, statPeriod]);
 
-  // Genre statistics for selected period
   const genreStatsForPeriod = useMemo(() => {
     const stats = {};
     filteredReadBooksForStats.forEach(b => {
@@ -354,7 +419,6 @@ export default function App() {
     return Object.entries(stats).sort((a, b) => b[1] - a[1]);
   }, [filteredReadBooksForStats]);
 
-  // Format statistics for selected period
   const formatStatsForPeriod = useMemo(() => {
     const stats = { paper: 0, ebook: 0, audio: 0, combo: 0 };
     filteredReadBooksForStats.forEach(b => {
@@ -364,7 +428,6 @@ export default function App() {
     return stats;
   }, [filteredReadBooksForStats]);
 
-  // Series progress calculation helper
   const seriesStats = useMemo(() => {
     const stats = {};
     uniqueSeries.forEach(sName => {
@@ -376,22 +439,51 @@ export default function App() {
     return stats;
   }, [books, uniqueSeries]);
 
-  // Weekday activity statistics helper
   const weekdayStats = useMemo(() => {
-    const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+    const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
     const sums = [0, 0, 0, 0, 0, 0, 0];
     books.forEach(b => {
       if (b.log) {
         b.log.forEach(entry => {
           const d = new Date(entry.date);
-          let dayIdx = d.getDay() - 1; // 0 is Monday
-          if (dayIdx === -1) dayIdx = 6; // Sunday
+          let dayIdx = d.getDay() - 1;
+          if (dayIdx === -1) dayIdx = 6;
           sums[dayIdx] += (entry.pages || 0);
         });
       }
     });
     return days.map((day, idx) => ({ day, pages: sums[idx] }));
   }, [books]);
+
+  // Helper to render SVG Donut Chart Slices
+  const renderDonutSlices = (dataItems, totalCount) => {
+    if (totalCount <= 0) return null;
+    let accumulatedAngle = 0;
+    const colors = ['#846851', '#6F8E80', '#9E82A8', '#C98E5E', '#62839F', '#BFA892', '#D67C6B'];
+    
+    return dataItems.map(([label, count], idx) => {
+      const percentage = count / totalCount;
+      const strokeDasharray = `${percentage * 100} 100`;
+      const strokeDashoffset = -accumulatedAngle * 100;
+      accumulatedAngle += percentage;
+      const color = colors[idx % colors.length];
+
+      return (
+        <circle
+          key={label}
+          cx="21"
+          cy="21"
+          r="15.9155"
+          fill="transparent"
+          stroke={color}
+          strokeWidth="6"
+          strokeDasharray={strokeDasharray}
+          strokeDashoffset={strokeDashoffset}
+          className="transition-all duration-500 hover:opacity-80 cursor-pointer"
+        />
+      );
+    });
+  };
 
   const filteredBooks = books.filter(book => {
     const statusMatch = filter === 'all' || 
@@ -694,26 +786,26 @@ export default function App() {
       {/* Top Navigation */}
       <div className="bg-[#F7F2E8] border-b border-[#EADFCF] sticky top-0 z-20 shadow-sm backdrop-blur-md bg-opacity-95">
         <div className="max-w-6xl mx-auto px-4 flex justify-between items-center h-16">
-          <div className="font-black text-xl md:text-2xl text-[#846851] tracking-tight flex items-center gap-2">
-            <BookOpenIcon size={26} className="text-[#9C7A5E]" />
+          <div className="font-black text-lg sm:text-2xl text-[#846851] tracking-tight flex items-center gap-2">
+            <BookOpenIcon size={24} className="text-[#9C7A5E]" />
             КнигоТрекер
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <div className="hidden sm:flex bg-[#EFE7D8] rounded-2xl p-1 shadow-inner border border-[#E2D5C3]">
-              <button onClick={() => setActiveTab('diary')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'diary' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Дневник</button>
-              <button onClick={() => setActiveTab('library')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'library' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Библиотека</button>
-              <button onClick={() => setActiveTab('analytics')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'analytics' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Аналитика</button>
-              <button onClick={() => setActiveTab('roulette')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'roulette' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Рулетка</button>
-              <button onClick={() => setActiveTab('tournament')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'tournament' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Турнир</button>
+              <button onClick={() => setActiveTab('diary')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'diary' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Дневник</button>
+              <button onClick={() => setActiveTab('library')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'library' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Библиотека</button>
+              <button onClick={() => setActiveTab('analytics')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'analytics' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Аналитика</button>
+              <button onClick={() => setActiveTab('roulette')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'roulette' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Рулетка</button>
+              <button onClick={() => setActiveTab('tournament')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'tournament' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Турнир</button>
             </div>
 
             {/* Backup buttons */}
             <div className="flex items-center gap-1.5">
-              <button onClick={exportBackup} title="Скачать резервную копию библиотеки" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
+              <button onClick={exportBackup} title="Скачать резервную копию библиотеки" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2 sm:p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
                 <DownloadIcon size={16} /> <span className="hidden lg:inline">Бэкап</span>
               </button>
-              <button onClick={() => fileInputRef.current.click()} title="Восстановить библиотеку из файла" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
+              <button onClick={() => fileInputRef.current.click()} title="Восстановить библиотеку из файла" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2 sm:p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
                 <UploadIcon size={16} /> <span className="hidden lg:inline">Загрузить</span>
               </button>
               <input type="file" ref={fileInputRef} onChange={importBackup} accept=".json" className="hidden" />
@@ -728,6 +820,50 @@ export default function App() {
         {activeTab === 'diary' && (
           <div className="animate-fade-in space-y-5 md:space-y-6">
             
+            {/* Reading Streak Banner with Scrollable Days Timeline */}
+            <div className="bg-gradient-to-r from-[#D67C6B] via-[#C98E5E] to-[#A68970] rounded-3xl p-4 sm:p-5 shadow-sm text-white relative overflow-hidden space-y-3.5">
+               <div className="absolute right-[-10px] bottom-[-20px] opacity-15"><FlameIcon size={140} /></div>
+               
+               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10">
+                 <div className="flex items-center gap-3.5 text-center sm:text-left">
+                    <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-sm shadow-inner shrink-0"><FlameIcon size={32} /></div>
+                    <div>
+                      <h3 className="font-black text-lg sm:text-xl leading-tight">Серия дней без пропуска: {streakData.currentStreak} дн.</h3>
+                      <p className="text-white/90 text-xs mt-0.5">Личный рекорд: <span className="font-bold underline">{streakData.maxStreak} дн.</span> без перерыва!</p>
+                    </div>
+                 </div>
+                 <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-2xl text-xs font-bold text-center border border-white/30 shrink-0">
+                    {streakData.currentStreak > 0 ? '🔥 Вы в ударе! Так держать!' : '📌 Прочитайте сегодня хотя бы 1 страницу!'}
+                 </div>
+               </div>
+
+               {/* Scrollable Timeline Dots */}
+               <div className="pt-2 border-t border-white/20 relative z-10">
+                 <div className="flex justify-between items-center text-[10px] uppercase font-bold tracking-wider text-white/80 mb-2">
+                   <span>Последние 2 недели активности</span>
+                   <span>Прокрутите вправо →</span>
+                 </div>
+                 <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none items-center">
+                   {streakData.timelineDays.map((day, idx) => (
+                     <div key={idx} className="flex flex-col items-center gap-1 shrink-0">
+                       <span className="text-[10px] font-bold text-white/80">{day.dayName}</span>
+                       <div 
+                         title={`${day.dateStr}: ${day.hasRead ? 'Книга читалась ✓' : 'Пропущено ✗'}`}
+                         className={`w-9 h-9 rounded-2xl flex items-center justify-center text-xs font-bold transition-all shadow-sm ${
+                           day.hasRead 
+                             ? 'bg-white text-[#C98E5E] ring-2 ring-white/50 scale-105 shadow-md' 
+                             : 'bg-black/15 text-white/50 border border-white/20'
+                         } ${day.isToday ? 'ring-4 ring-yellow-200/60' : ''}`}
+                       >
+                         {day.hasRead ? <CheckIcon size={14} /> : day.dayNum}
+                       </div>
+                       <span className="text-[9px] text-white/70">{day.dayNum}</span>
+                     </div>
+                   ))}
+                 </div>
+               </div>
+            </div>
+
             {/* Stats Row */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
               <div className="bg-[#F7F2E8] p-3.5 md:p-4 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col items-center justify-center text-center">
@@ -935,25 +1071,25 @@ export default function App() {
                 )}
               </div>
 
-              {/* Calendar Column */}
-              <div className="bg-[#F7F2E8] rounded-3xl p-4 md:p-5 shadow-sm border border-[#EADFCF] lg:sticky lg:top-24">
-                <div className="flex justify-between items-center mb-3">
-                  <h3 className="font-black text-base md:text-lg text-[#564B41] capitalize">
+              {/* Compact Mobile-Friendly Calendar Column */}
+              <div className="bg-[#F7F2E8] rounded-3xl p-3 sm:p-4 shadow-sm border border-[#EADFCF] lg:sticky lg:top-24 max-w-sm mx-auto w-full">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="font-black text-sm sm:text-base text-[#564B41] capitalize">
                     {currentMonth.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}
                   </h3>
-                  <button onClick={() => setIsSummaryModalOpen(true)} className="text-[#846851] bg-[#EADFCF] hover:bg-[#DDD0BE] px-3 py-1.5 rounded-2xl text-xs font-bold transition-colors flex items-center gap-1 shadow-sm">
-                    <CameraIcon size={14}/> Итоги
+                  <button onClick={() => setIsSummaryModalOpen(true)} className="text-[#846851] bg-[#EADFCF] hover:bg-[#DDD0BE] px-2.5 py-1 rounded-xl text-[11px] font-bold transition-colors flex items-center gap-1 shadow-sm">
+                    <CameraIcon size={12}/> Итоги
                   </button>
                 </div>
                 
-                <div className="flex justify-between mb-3">
-                   <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="p-1.5 hover:bg-[#EADFCF] rounded-xl text-[#74675B]"><ChevronLeftIcon size={18}/></button>
-                   <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="p-1.5 hover:bg-[#EADFCF] rounded-xl text-[#74675B]"><ChevronRightIcon size={18}/></button>
+                <div className="flex justify-between mb-2">
+                   <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="p-1 hover:bg-[#EADFCF] rounded-lg text-[#74675B]"><ChevronLeftIcon size={16}/></button>
+                   <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="p-1 hover:bg-[#EADFCF] rounded-lg text-[#74675B]"><ChevronRightIcon size={16}/></button>
                 </div>
 
-                <div className="grid grid-cols-7 gap-1 text-center mb-1.5">
+                <div className="grid grid-cols-7 gap-1 text-center mb-1">
                   {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(d => (
-                    <div key={d} className="text-[10px] font-black text-[#9B8C80]">{d}</div>
+                    <div key={d} className="text-[9px] font-black text-[#9B8C80]">{d}</div>
                   ))}
                 </div>
                 
@@ -987,7 +1123,7 @@ export default function App() {
                     return (
                       <button 
                         key={idx} onClick={() => handleDateClick(day.date)} disabled={isFuture}
-                        className={`aspect-square rounded-xl flex items-center justify-center text-xs font-bold transition-all relative ${bgClass} ${isSelected ? 'ring-2 ring-[#A68970] ring-offset-1 scale-110 z-10' : ''}`}
+                        className={`aspect-square rounded-lg flex items-center justify-center text-[11px] font-bold transition-all relative ${bgClass} ${isSelected ? 'ring-2 ring-[#A68970] ring-offset-1 scale-110 z-10' : ''}`}
                         title={`${day.date.toLocaleDateString()} - ${day.pages} стр. / ${day.minutes} мин.`}
                       >
                         {day.date.getDate()}
@@ -997,12 +1133,12 @@ export default function App() {
                   })}
                 </div>
                 
-                <div className="mt-4 flex flex-wrap gap-1.5 text-[9px] font-bold text-[#74675B] justify-center items-center">
-                  <div className="flex items-center gap-1"><div className="w-2 h-2 bg-[#E8C2C2] rounded-sm"></div> 0</div>
-                  <div className="flex items-center gap-1"><div className="w-2 h-2 bg-[#D2E7DB] rounded-sm"></div> &lt;20</div>
-                  <div className="flex items-center gap-1"><div className="w-2 h-2 bg-[#98C4AB] rounded-sm"></div> 21-50</div>
-                  <div className="flex items-center gap-1"><div className="w-2 h-2 bg-[#6CA384] rounded-sm"></div> 51-100</div>
-                  <div className="flex items-center gap-1"><div className="w-2 h-2 bg-[#477C5E] rounded-sm"></div> 100+</div>
+                <div className="mt-3 flex flex-wrap gap-1 text-[8px] font-bold text-[#74675B] justify-center items-center">
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#E8C2C2] rounded-sm"></div> 0</div>
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#D2E7DB] rounded-sm"></div> &lt;20</div>
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#98C4AB] rounded-sm"></div> 21-50</div>
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#6CA384] rounded-sm"></div> 51-100</div>
+                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#477C5E] rounded-sm"></div> 100+</div>
                 </div>
               </div>
 
@@ -1017,9 +1153,9 @@ export default function App() {
               <div>
                 <h2 className="text-xl font-black text-[#564B41] flex items-center gap-2">
                   <span className="bg-[#EFE7D8] text-[#846851] p-2 rounded-2xl"><PieChartIcon size={20}/></span>
-                  Глубокая аналитика чтения
+                  Глубокая аналитика и круговые диаграммы
                 </h2>
-                <p className="text-xs text-[#847466] mt-0.5">Сравнивайте статистику по периодам, жанрам, форматам и дням недели.</p>
+                <p className="text-xs text-[#847466] mt-0.5">Сравнивайте статистику по периодам, жанрам, форматам с помощью круговых диаграмм.</p>
               </div>
 
               {/* Period Selector */}
@@ -1075,15 +1211,15 @@ export default function App() {
               </div>
             </div>
 
-            {/* Detailed Charts Grid */}
+            {/* Detailed Charts Grid with Pie / Donut Charts */}
             <div className="grid lg:grid-cols-2 gap-6">
               
-              {/* Genres Breakdown */}
-              <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-4">
+              {/* Genres Breakdown with Pie/Donut Chart */}
+              <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-6">
                 <div className="flex justify-between items-center">
                   <h3 className="font-black text-base text-[#564B41] flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#846851]"></span>
-                    Популярные жанры
+                    Жанровая структура (Круговая диаграмма)
                   </h3>
                   <span className="text-xs font-bold text-[#948477]">{genreStatsForPeriod.length} жанров</span>
                 </div>
@@ -1091,62 +1227,96 @@ export default function App() {
                 {genreStatsForPeriod.length === 0 ? (
                   <p className="text-xs text-[#948477] py-8 text-center">За выбранный период нет завершенных книг.</p>
                 ) : (
-                  <div className="space-y-3.5">
-                    {genreStatsForPeriod.map(([genre, count], idx) => {
-                      const total = filteredReadBooksForStats.length;
-                      const percent = total > 0 ? Math.round((count / total) * 100) : 0;
-                      const colors = ['bg-[#846851]', 'bg-[#6F8E80]', 'bg-[#9E82A8]', 'bg-[#C98E5E]', 'bg-[#62839F]', 'bg-[#BFA892]'];
-                      const barColor = colors[idx % colors.length];
+                  <div className="flex flex-col sm:flex-row items-center gap-6">
+                    {/* SVG Donut Chart */}
+                    <div className="relative w-44 h-44 shrink-0">
+                      <svg viewBox="0 0 42 42" className="w-full h-full transform -rotate-90">
+                        <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#EADFCF" strokeWidth="6" />
+                        {renderDonutSlices(genreStatsForPeriod, filteredReadBooksForStats.length)}
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                        <span className="text-2xl font-black text-[#4A4238]">{filteredReadBooksForStats.length}</span>
+                        <span className="text-[9px] font-bold text-[#948477] uppercase tracking-wider">Книг</span>
+                      </div>
+                    </div>
 
-                      return (
-                        <div key={genre} className="space-y-1.5">
-                          <div className="flex justify-between text-xs font-bold text-[#564B41]">
-                            <span>{genre}</span>
-                            <span>{count} книг ({percent}%)</span>
+                    {/* Legend */}
+                    <div className="flex-1 space-y-2 w-full">
+                      {genreStatsForPeriod.map(([genre, count], idx) => {
+                        const total = filteredReadBooksForStats.length;
+                        const percent = total > 0 ? Math.round((count / total) * 100) : 0;
+                        const colors = ['bg-[#846851]', 'bg-[#6F8E80]', 'bg-[#9E82A8]', 'bg-[#C98E5E]', 'bg-[#62839F]', 'bg-[#BFA892]'];
+                        const dotColor = colors[idx % colors.length];
+
+                        return (
+                          <div key={genre} className="flex items-center justify-between text-xs font-bold text-[#564B41]">
+                            <span className="flex items-center gap-2 truncate">
+                              <span className={`w-3 h-3 rounded-full shrink-0 ${dotColor}`}></span>
+                              <span className="truncate">{genre}</span>
+                            </span>
+                            <span className="shrink-0 text-[#74675B]">{count} ({percent}%)</span>
                           </div>
-                          <div className="w-full bg-[#EADFCF] rounded-full h-2.5 overflow-hidden shadow-inner">
-                            <div className={`${barColor} h-2.5 rounded-full transition-all duration-700`} style={{ width: `${percent}%` }}></div>
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
 
-              {/* Formats Breakdown */}
-              <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-4">
+              {/* Formats Breakdown with Pie/Donut Chart */}
+              <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-6">
                 <div className="flex justify-between items-center">
                   <h3 className="font-black text-base text-[#564B41] flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#6F8E80]"></span>
-                    Форматы чтения
+                    Форматы чтения (Круговая диаграмма)
                   </h3>
                   <span className="text-xs font-bold text-[#948477]">Всего {filteredReadBooksForStats.length} книг</span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                  {[
-                    { id: 'paper', label: 'Бумажные', count: formatStatsForPeriod.paper, color: 'text-[#846851]', bg: 'bg-[#846851]' },
-                    { id: 'ebook', label: 'Электронные', count: formatStatsForPeriod.ebook, color: 'text-[#62839F]', bg: 'bg-[#62839F]' },
-                    { id: 'audio', label: 'Аудиокниги', count: formatStatsForPeriod.audio, color: 'text-[#9E82A8]', bg: 'bg-[#9E82A8]' },
-                    { id: 'combo', label: 'Комбо', count: formatStatsForPeriod.combo, color: 'text-[#6F8E80]', bg: 'bg-[#6F8E80]' }
-                  ].map(f => {
-                    const total = filteredReadBooksForStats.length;
-                    const percent = total > 0 ? Math.round((f.count / total) * 100) : 0;
-                    return (
-                      <div key={f.id} className="bg-[#FCF9F2] p-4 rounded-2xl border border-[#EADFCF] flex flex-col justify-between shadow-sm">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-xs font-bold text-[#74675B]">{f.label}</span>
-                          <span className={`text-[10px] font-black px-2 py-0.5 rounded-full bg-white border border-[#EADFCF] ${f.color}`}>{percent}%</span>
-                        </div>
-                        <div className="text-2xl font-black text-[#4A4238] mb-2">{f.count} <span className="text-xs font-bold text-[#948477]">кн.</span></div>
-                        <div className="w-full bg-[#EADFCF] rounded-full h-1.5 overflow-hidden">
-                          <div className={`${f.bg} h-1.5 rounded-full transition-all duration-500`} style={{ width: `${percent}%` }}></div>
-                        </div>
+                {filteredReadBooksForStats.length === 0 ? (
+                  <p className="text-xs text-[#948477] py-8 text-center">За выбранный период нет завершенных книг.</p>
+                ) : (
+                  <div className="flex flex-col sm:flex-row items-center gap-6">
+                    {/* SVG Donut Chart */}
+                    <div className="relative w-44 h-44 shrink-0">
+                      <svg viewBox="0 0 42 42" className="w-full h-full transform -rotate-90">
+                        <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#EADFCF" strokeWidth="6" />
+                        {renderDonutSlices([
+                          ['Бумажные', formatStatsForPeriod.paper],
+                          ['Электронные', formatStatsForPeriod.ebook],
+                          ['Аудио', formatStatsForPeriod.audio],
+                          ['Комбо', formatStatsForPeriod.combo]
+                        ].filter(item => item[1] > 0), filteredReadBooksForStats.length)}
+                      </svg>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                        <span className="text-2xl font-black text-[#4A4238]">{filteredReadBooksForStats.length}</span>
+                        <span className="text-[9px] font-bold text-[#948477] uppercase tracking-wider">Книг</span>
                       </div>
-                    );
-                  })}
-                </div>
+                    </div>
+
+                    {/* Legend */}
+                    <div className="flex-1 space-y-2.5 w-full">
+                      {[
+                        { id: 'paper', label: 'Бумажные', count: formatStatsForPeriod.paper, bg: 'bg-[#846851]' },
+                        { id: 'ebook', label: 'Электронные', count: formatStatsForPeriod.ebook, bg: 'bg-[#62839F]' },
+                        { id: 'audio', label: 'Аудиокниги', count: formatStatsForPeriod.audio, bg: 'bg-[#9E82A8]' },
+                        { id: 'combo', label: 'Комбо', count: formatStatsForPeriod.combo, bg: 'bg-[#6F8E80]' }
+                      ].map(f => {
+                        const total = filteredReadBooksForStats.length;
+                        const percent = total > 0 ? Math.round((f.count / total) * 100) : 0;
+                        return (
+                          <div key={f.id} className="flex items-center justify-between text-xs font-bold text-[#564B41]">
+                            <span className="flex items-center gap-2">
+                              <span className={`w-3 h-3 rounded-full shrink-0 ${f.bg}`}></span>
+                              <span>{f.label}</span>
+                            </span>
+                            <span className="text-[#74675B]">{f.count} ({percent}%)</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Weekday Activity */}
