@@ -26,6 +26,210 @@ const DownloadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={p
 const UploadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>;
 const PieChartIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>;
 const FlameIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 17c1.38 0 2.5-1.12 2.5-2.5 0-2-3-3.5-3-5.5 0-1.5 1-2.5 2-3-.5 2 2 3.5 2 5.5a4.5 4.5 0 1 1-9 0c0-2 1-3.5 2-5-1.5 1.5-2 3.5-2 5z"></path></svg>;
+const AwardIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>;
+
+const BBC_TOP_200 = [
+  { rank: 1, title: "Властелин колец", author: "Дж. Р. Р. Толкин" },
+  { rank: 2, title: "Гордость и предубеждение", author: "Джейн Остин" },
+  { rank: 3, title: "Тёмные начала", author: "Филип Пулман" },
+  { rank: 4, title: "Автостопом по галактике", author: "Дуглас Адамс" },
+  { rank: 5, title: "Гарри Поттер и Кубок огня", author: "Дж. К. Роулинг" },
+  { rank: 6, title: "Убить пересмешника", author: "Харпер Ли" },
+  { rank: 7, title: "Винни-Пух", author: "А. А. Милн" },
+  { rank: 8, title: "1984", author: "Джордж Оруэлл" },
+  { rank: 9, title: "Лев, колдунья и платяной шкаф", author: "К. С. Льюис" },
+  { rank: 10, title: "Джейн Эйр", author: "Шарлотта Бронте" },
+  { rank: 11, title: "Уловка-22", author: "Джозеф Хеллер" },
+  { rank: 12, title: "Грозовой перевал", author: "Эмили Бронте" },
+  { rank: 13, title: "Пение птиц", author: "Себастьян Фолкс" },
+  { rank: 14, title: "Ребекка", author: "Дафна дю Морье" },
+  { rank: 15, title: "Над пропастью во ржи", author: "Дж. Д. Сэлинджер" },
+  { rank: 16, title: "Ветер в ивах", author: "Кеннет Грэм" },
+  { rank: 17, title: "Большие надежды", author: "Чарльз Диккенс" },
+  { rank: 18, title: "Маленькие женщины", author: "Луиза Мэй Олкотт" },
+  { rank: 19, title: "Мандолина капитана Корелли", author: "Луи де Берньер" },
+  { rank: 20, title: "Война и мир", author: "Лев Толстой" },
+  { rank: 21, title: "Унесённые ветром", author: "Маргарет Митчелл" },
+  { rank: 22, title: "Гарри Поттер и философский камень", author: "Дж. К. Роулинг" },
+  { rank: 23, title: "Гарри Поттер и Тайная комната", author: "Дж. К. Роулинг" },
+  { rank: 24, title: "Гарри Поттер и узник Азкабана", author: "Дж. К. Роулинг" },
+  { rank: 25, title: "Хоббит", author: "Дж. Р. Р. Толкин" },
+  { rank: 26, title: "Тэсс из рода д'Эрбервиллей", author: "Томас Харди" },
+  { rank: 27, title: "Миддлмарч", author: "Джордж Элиот" },
+  { rank: 28, title: "Молитва об Оуэне Мини", author: "Джон Ирвинг" },
+  { rank: 29, title: "Гроздья гнева", author: "Джон Стейнбек" },
+  { rank: 30, title: "Алиса в Стране чудес", author: "Льюис Кэрролл" },
+  { rank: 31, title: "Дневник Трейси Бикер", author: "Жаклин Уилсон" },
+  { rank: 32, title: "Сто лет одиночества", author: "Габриэль Гарсиа Маркес" },
+  { rank: 33, title: "Столпы Земли", author: "Кен Фоллетт" },
+  { rank: 34, title: "Дэвид Копперфильд", author: "Чарльз Диккенс" },
+  { rank: 35, title: "Чарли и шоколадная фабрика", author: "Роальд Даль" },
+  { rank: 36, title: "Остров сокровищ", author: "Роберт Льюис Стивенсон" },
+  { rank: 37, title: "Город как Элис", author: "Невил Шют" },
+  { rank: 38, title: "Доводы рассудка", author: "Джейн Остин" },
+  { rank: 39, title: "Дюна", author: "Фрэнк Герберт" },
+  { rank: 40, title: "Эмма", author: "Джейн Остин" },
+  { rank: 41, title: "Аня из Зелёных Мезонинов", author: "Люси Мод Монтгомери" },
+  { rank: 42, title: "Обитатели холмов", author: "Ричард Адамс" },
+  { rank: 43, title: "Великий Гэтсби", author: "Ф. Скотт Фицджеральд" },
+  { rank: 44, title: "Граф Монте-Кристо", author: "Александр Дюма" },
+  { rank: 45, title: "Возвращение в Брайдсхед", author: "Ивлин Во" },
+  { rank: 46, title: "Скотный двор", author: "Джордж Оруэлл" },
+  { rank: 47, title: "Рождественская песнь", author: "Чарльз Диккенс" },
+  { rank: 48, title: "Вдали от обезумевшей толпы", author: "Томас Харди" },
+  { rank: 49, title: "Спокойной ночи, мистер Том", author: "Мишель Магорян" },
+  { rank: 50, title: "Семейная реликвия", author: "Розамунда Пилчер" },
+  { rank: 51, title: "Таинственный сад", author: "Фрэнсис Бернетт" },
+  { rank: 52, title: "О мышах и людях", author: "Джон Стейнбек" },
+  { rank: 53, title: "Противостояние", author: "Стивен Кинг" },
+  { rank: 54, title: "Анна Каренина", author: "Лев Толстой" },
+  { rank: 55, title: "Подходящий жених", author: "Викрам Сет" },
+  { rank: 56, title: "БДВ, или Большой и добрый великан", author: "Роальд Даль" },
+  { rank: 57, title: "Ласточки и амазонки", author: "Артур Рэнсом" },
+  { rank: 58, title: "Чёрный красавчик", author: "Анна Сьюэлл" },
+  { rank: 59, title: "Артемис Фаул", author: "Йон Колфер" },
+  { rank: 60, title: "Преступление и наказание", author: "Фёдор Достоевский" },
+  { rank: 61, title: "Крестики-нолики", author: "Мэлори Блэкмен" },
+  { rank: 62, title: "Мемуары гейши", author: "Артур Голден" },
+  { rank: 63, title: "Повесть о двух городах", author: "Чарльз Диккенс" },
+  { rank: 64, title: "Поющие в терновнике", author: "Колин Маккалоу" },
+  { rank: 65, title: "Мор, ученик Смерти", author: "Терри Пратчетт" },
+  { rank: 66, title: "Далекое волшебное дерево", author: "Энид Блайтон" },
+  { rank: 67, title: "Волхв", author: "Джон Фаулз" },
+  { rank: 68, title: "Благие знамения", author: "Терри Пратчетт и Нил Гейман" },
+  { rank: 69, title: "Стража! Стража!", author: "Терри Пратчетт" },
+  { rank: 70, title: "Повелитель мух", author: "Уильям Голдинг" },
+  { rank: 71, title: "Парфюмер", author: "Патрик Зюскинд" },
+  { rank: 72, title: "Филантропы в рваных штанах", author: "Роберт Тресселл" },
+  { rank: 73, title: "Ночная стража", author: "Терри Пратчетт" },
+  { rank: 74, title: "Матильда", author: "Роальд Даль" },
+  { rank: 75, title: "Дневник Бриджит Джонс", author: "Хелен Филдинг" },
+  { rank: 76, title: "Тайная история", author: "Донна Тартт" },
+  { rank: 77, title: "Женщина в белом", author: "Уилки Коллинз" },
+  { rank: 78, title: "Улисс", author: "Джеймс Джойс" },
+  { rank: 79, title: "Холодный дом", author: "Чарльз Диккенс" },
+  { rank: 80, title: "Двойняшки", author: "Жаклин Уилсон" },
+  { rank: 81, title: "Семейство Твит", author: "Роальд Даль" },
+  { rank: 82, title: "Я захватываю замок", author: "Доди Смит" },
+  { rank: 83, title: "Ямы", author: "Луис Сачар" },
+  { rank: 84, title: "Горменгаст", author: "Мервин Пик" },
+  { rank: 85, title: "Бог мелочей", author: "Арундати Рой" },
+  { rank: 86, title: "Вики-Ангел", author: "Жаклин Уилсон" },
+  { rank: 87, title: "О дивный новый мир", author: "Олдос Хаксли" },
+  { rank: 88, title: "Неуютная ферма", author: "Стелла Гиббонс" },
+  { rank: 89, title: "Мастер-Чародей", author: "Раймонд Фэйст" },
+  { rank: 90, title: "В дороге", author: "Джек Керуак" },
+  { rank: 91, title: "Крёстный отец", author: "Марио Пьюзо" },
+  { rank: 92, title: "Клан пещерного медведя", author: "Джин М. Ауэл" },
+  { rank: 93, title: "Цвет волшебства", author: "Терри Пратчетт" },
+  { rank: 94, title: "Алхимик", author: "Пауло Коэльо" },
+  { rank: 95, title: "Леди Кэтрин", author: "Аня Сетон" },
+  { rank: 96, title: "Каин и Авель", author: "Джеффри Арчер" },
+  { rank: 97, title: "Любовь во время чумы", author: "Габриэль Гарсиа Маркес" },
+  { rank: 98, title: "Влюблённые девчонки", author: "Жаклин Уилсон" },
+  { rank: 99, title: "Дневники принцессы", author: "Мэг Кэбот" },
+  { rank: 100, title: "Дети полуночи", author: "Салман Рушди" },
+  { rank: 101, title: "Трое в лодке, не считая собаки", author: "Джером К. Джером" },
+  { rank: 102, title: "Мелкие боги", author: "Терри Пратчетт" },
+  { rank: 103, title: "Пляж", author: "Алекс Гарленд" },
+  { rank: 104, title: "Дракула", author: "Брэм Стокер" },
+  { rank: 105, title: "Белый пик", author: "Энтони Горовиц" },
+  { rank: 106, title: "Посмертные записки Пиквикского клуба", author: "Чарльз Диккенс" },
+  { rank: 107, title: "Громобой", author: "Энтони Горовиц" },
+  { rank: 108, title: "Осиная фабрика", author: "Иэн Бэнкс" },
+  { rank: 109, title: "День Шакала", author: "Фредерик Форсайт" },
+  { rank: 110, title: "Разрисованная мама", author: "Жаклин Уилсон" },
+  { rank: 111, title: "Джуд Незаметный", author: "Томас Харди" },
+  { rank: 112, title: "Тайный дневник Адриана Моула", author: "Сью Таунсенд" },
+  { rank: 113, title: "Жестокое море", author: "Николас Монсаррат" },
+  { rank: 114, title: "Отверженные", author: "Виктор Гюго" },
+  { rank: 115, title: "Мэр Кэстербриджа", author: "Томас Харди" },
+  { rank: 116, title: "Рискованные игры", author: "Жаклин Уилсон" },
+  { rank: 117, title: "Плохие девчонки", author: "Жаклин Уилсон" },
+  { rank: 118, title: "Портрет Дориана Грея", author: "Оскар Уайльд" },
+  { rank: 119, title: "Сёгун", author: "Джеймс Клавелл" },
+  { rank: 120, title: "День триффидов", author: "Джон Уиндем" },
+  { rank: 121, title: "Лола Роза", author: "Жаклин Уилсон" },
+  { rank: 122, title: "Ярмарка тщеславия", author: "Уильям Теккерей" },
+  { rank: 123, title: "Сага о Форсайтах", author: "Джон Голсуорси" },
+  { rank: 124, title: "Дом из листьев", author: "Марк Данилевский" },
+  { rank: 125, title: "Библия ядовитого леса", author: "Барбара Кингсолвер" },
+  { rank: 126, title: "Мрачный жнец", author: "Терри Пратчетт" },
+  { rank: 127, title: "Ангус, ремни и конкретные обжимашки", author: "Луиз Рэннисон" },
+  { rank: 128, title: "Собака Баскервиллей", author: "Артур Конан Дойл" },
+  { rank: 129, title: "Обладать", author: "Антония Сьюзен Байетт" },
+  { rank: 130, title: "Мастер и Маргарита", author: "Михаил Булгаков" },
+  { rank: 131, title: "Рассказ служанки", author: "Маргарет Этвуд" },
+  { rank: 132, title: "Дэнни — чемпион мира", author: "Роальд Даль" },
+  { rank: 133, title: "К востоку от Эдема", author: "Джон Стейнбек" },
+  { rank: 134, title: "Джордж и его чудо-лекарство", author: "Роальд Даль" },
+  { rank: 135, title: "Вещие сестрички", author: "Терри Пратчетт" },
+  { rank: 136, title: "Цвет пурпурный", author: "Элис Уокер" },
+  { rank: 137, title: "Санта-Хрякус", author: "Терри Пратчетт" },
+  { rank: 138, title: "Тридцать девять ступеней", author: "Джон Бьюкен" },
+  { rank: 139, title: "Девчонки в слезах", author: "Жаклин Уилсон" },
+  { rank: 140, title: "Ночёвки", author: "Жаклин Уилсон" },
+  { rank: 141, title: "На Западном фронте без перемен", author: "Эрих Мария Ремарк" },
+  { rank: 142, title: "За кулисами в музее", author: "Кейт Аткинсон" },
+  { rank: 143, title: "Hi-Fi", author: "Ник Хорнби" },
+  { rank: 144, title: "Оно", author: "Стивен Кинг" },
+  { rank: 145, title: "Джеймс и гигантский персик", author: "Роальд Даль" },
+  { rank: 146, title: "Зелёная миля", author: "Стивен Кинг" },
+  { rank: 147, title: "Папийон", author: "Анри Шарьер" },
+  { rank: 148, title: "К оружию! К оружию!", author: "Терри Пратчетт" },
+  { rank: 149, title: "Командир и штурман", author: "Патрик О'Брайан" },
+  { rank: 150, title: "Секретный ключ", author: "Энтони Горовиц" },
+  { rank: 151, title: "Роковая музыка", author: "Терри Пратчетт" },
+  { rank: 152, title: "Вор Времени", author: "Терри Пратчетт" },
+  { rank: 153, title: "Пятый элефант", author: "Терри Пратчетт" },
+  { rank: 154, title: "Искупление", author: "Иэн Макьюэн" },
+  { rank: 155, title: "Секреты", author: "Жаклин Уилсон" },
+  { rank: 156, title: "Серебряный меч", author: "Иан Серраиллер" },
+  { rank: 157, title: "Над кукушкиным гнездом", author: "Кен Кизи" },
+  { rank: 158, title: "Сердце тьмы", author: "Джозеф Конрад" },
+  { rank: 159, title: "Ким", author: "Редьярд Киплинг" },
+  { rank: 160, title: "Чужестранка", author: "Диана Гэблдон" },
+  { rank: 161, title: "Моби Дик", author: "Герман Мелвилл" },
+  { rank: 162, title: "Божество реки", author: "Уилбур Смит" },
+  { rank: 163, title: "Песнь заката", author: "Льюис Грассик Гиббонс" },
+  { rank: 164, title: "Корабельные новости", author: "Энни Пру" },
+  { rank: 165, title: "Мир глазами Гарпа", author: "Джон Ирвинг" },
+  { rank: 166, title: "Лорна Дун", author: "Р. Д. Блэкмор" },
+  { rank: 167, title: "Девчонки гуляют допоздна", author: "Жаклин Уилсон" },
+  { rank: 168, title: "Далёкие павильоны", author: "М. М. Кей" },
+  { rank: 169, title: "Ведьмы", author: "Роальд Даль" },
+  { rank: 170, title: "Паутина Шарлотты", author: "Э. Б. Уайт" },
+  { rank: 171, title: "Франкенштейн", author: "Мэри Шелли" },
+  { rank: 172, title: "Они играли на траве", author: "Терри Венаблс и Гордон Уильямс" },
+  { rank: 173, title: "Старик и море", author: "Эрнест Хемингуэй" },
+  { rank: 174, title: "Имя розы", author: "Умберто Эко" },
+  { rank: 175, title: "Мир Софии", author: "Юстейн Гордер" },
+  { rank: 176, title: "Найдёныш из мусорного бака", author: "Жаклин Уилсон" },
+  { rank: 177, title: "Потрясающий мистер Лис", author: "Роальд Даль" },
+  { rank: 178, title: "Лолита", author: "Владимир Набоков" },
+  { rank: 179, title: "Чайка по имени Джонатан Ливингстон", author: "Ричард Бах" },
+  { rank: 180, title: "Маленький принц", author: "Антуан де Сент-Экзюпери" },
+  { rank: 181, title: "Чемоданное дитя", author: "Жаклин Уилсон" },
+  { rank: 182, title: "Приключения Оливера Твиста", author: "Чарльз Диккенс" },
+  { rank: 183, title: "Сила единственного", author: "Брайс Кортни" },
+  { rank: 184, title: "Сайлас Марнер", author: "Джордж Элиот" },
+  { rank: 185, title: "Американский психопат", author: "Брет Истон Эллис" },
+  { rank: 186, title: "Дневник никого", author: "Джордж и Уидон Гроссмит" },
+  { rank: 187, title: "На игле", author: "Ирвин Уэлш" },
+  { rank: 188, title: "Мурашки", author: "Р. Л. Стайн" },
+  { rank: 189, title: "Хайди", author: "Йоханна Шпири" },
+  { rank: 190, title: "Сыновья и любовники", author: "Д. Г. Лоуренс" },
+  { rank: 191, title: "Невыносимая легкость бытия", author: "Милан Кундера" },
+  { rank: 192, title: "Man and Boy", author: "Тони Парсонс" },
+  { rank: 193, title: "Правда", author: "Терри Пратчетт" },
+  { rank: 194, title: "Война миров", author: "Г. Уэллс" },
+  { rank: 195, title: "Заклинатель лошадей", author: "Николас Эванс" },
+  { rank: 196, title: "Хрупкое равновесие", author: "Рохинтон Мистри" },
+  { rank: 197, title: "Ведьмы за границей", author: "Терри Пратчетт" },
+  { rank: 198, title: "Меч в камне", author: "Т. Х. Уайт" },
+  { rank: 199, title: "Очень голодная гусеница", author: "Эрик Карл" },
+  { rank: 200, title: "Цветы на чердаке", author: "В. К. Эндрюс" }
+];
 
 const PREDEFINED_GENRES = [
   "Фантастика", "Фэнтези", "Детектив", "Психология", "Бизнес", "Роман", "Триллер", "Нон-фикшн",
@@ -189,34 +393,6 @@ const INITIAL_BOOKS = [
     totalPages: 200, readPages: 0, rating: 0, annotation: 'Первое дело легендарного сыщика.', summary: '', notes: '', quotes: '',
     coverUrl: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&q=80&w=300&h=400',
     tags: ['детектив', 'классика'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 111, title: 'Убийство в Восточном экспрессе', author: 'Агата Кристи', status: 'wishlist', genre: 'Детектив', format: 'paper',
-    seriesName: 'Эркюль Пуаро', seriesIndex: 10, seriesTotal: 33,
-    totalPages: 250, readPages: 0, rating: 0, annotation: 'Знаменитый детектив распутывает убийство в застрявшем в снегу поезде.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['детектив', 'классика'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 112, title: 'Сияние', author: 'Стивен Кинг', status: 'wishlist', genre: 'Триллер', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 450, readPages: 0, rating: 0, annotation: 'Писатель с семьей устраивается на зиму смотрителем в изолированный отель.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['триллер', 'ужасы'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 113, title: 'Алиса в Стране чудес', author: 'Льюис Кэрролл', status: 'wishlist', genre: 'Фэнтези', format: 'ebook',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 160, readPages: 0, rating: 0, annotation: 'Необычайные приключения девочки в кроличьей норе.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['сказка', 'классика'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 114, title: 'Гарри Поттер и философский камень', author: 'Джоан Роулинг', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
-    seriesName: 'Гарри Поттер', seriesIndex: 1, seriesTotal: 7,
-    totalPages: 399, readPages: 0, rating: 0, annotation: 'Мальчик, который выжил, узнает, что он волшебник.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1618609377864-68609b857e90?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['фэнтези', 'бестселлер'], dateStarted: '', dateFinished: '', log: []
   }
 ];
 
@@ -227,7 +403,7 @@ export default function App() {
   
   const [books, setBooks] = useState(() => {
     try {
-      const savedBooks = localStorage.getItem('warm_readingTrackerBooks_v25');
+      const savedBooks = localStorage.getItem('warm_readingTrackerBooks_v28');
       if (savedBooks) return JSON.parse(savedBooks);
     } catch (e) { console.error(e); }
     return INITIAL_BOOKS;
@@ -235,7 +411,7 @@ export default function App() {
 
   const [goals, setGoals] = useState(() => {
     try {
-      const savedGoals = localStorage.getItem('warm_readingTrackerGoals_v25');
+      const savedGoals = localStorage.getItem('warm_readingTrackerGoals_v28');
       if (savedGoals) return JSON.parse(savedGoals);
     } catch (e) { console.error(e); }
     return { yearly: 20, monthly: 5 };
@@ -243,13 +419,13 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('warm_readingTrackerBooks_v25', JSON.stringify(books));
+      localStorage.setItem('warm_readingTrackerBooks_v28', JSON.stringify(books));
     } catch (e) { console.error(e); }
   }, [books]);
 
   useEffect(() => {
     try {
-      localStorage.setItem('warm_readingTrackerGoals_v25', JSON.stringify(goals));
+      localStorage.setItem('warm_readingTrackerGoals_v28', JSON.stringify(goals));
     } catch (e) { console.error(e); }
   }, [goals]);
   
@@ -264,6 +440,10 @@ export default function App() {
   const [seriesFilter, setSeriesFilter] = useState('all');
   const [tagFilter, setTagFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // BBC List search state
+  const [bbcSearch, setBbcSearch] = useState('');
+  const [bbcFilterStatus, setBbcFilterStatus] = useState('all'); // 'all' | 'read' | 'unread'
 
   const [logPagesInput, setLogPagesInput] = useState({});
   const [logMinutesInput, setLogMinutesInput] = useState({});
@@ -455,7 +635,6 @@ export default function App() {
     return days.map((day, idx) => ({ day, pages: sums[idx] }));
   }, [books]);
 
-  // Helper to render SVG Donut Chart Slices
   const renderDonutSlices = (dataItems, totalCount) => {
     if (totalCount <= 0) return null;
     let accumulatedAngle = 0;
@@ -792,10 +971,11 @@ export default function App() {
           </div>
           
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="hidden sm:flex bg-[#EFE7D8] rounded-2xl p-1 shadow-inner border border-[#E2D5C3]">
+            <div className="hidden md:flex bg-[#EFE7D8] rounded-2xl p-1 shadow-inner border border-[#E2D5C3]">
               <button onClick={() => setActiveTab('diary')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'diary' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Дневник</button>
               <button onClick={() => setActiveTab('library')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'library' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Библиотека</button>
               <button onClick={() => setActiveTab('analytics')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'analytics' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Аналитика</button>
+              <button onClick={() => setActiveTab('bbc200')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'bbc200' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>BBC 200</button>
               <button onClick={() => setActiveTab('roulette')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'roulette' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Рулетка</button>
               <button onClick={() => setActiveTab('tournament')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'tournament' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Турнир</button>
             </div>
@@ -1351,6 +1531,143 @@ export default function App() {
           </div>
         )}
 
+        {/* ================= BBC 200 TAB ================= */}
+        {activeTab === 'bbc200' && (
+          <div className="animate-fade-in space-y-6">
+            <div className="bg-[#F7F2E8] p-5 sm:p-8 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
+               <div className="absolute right-[-10px] bottom-[-10px] opacity-10"><AwardIcon size={160} /></div>
+               <div className="relative z-10">
+                 <h2 className="text-xl sm:text-2xl font-black text-[#564B41] flex items-center gap-2.5">
+                   <AwardIcon size={26} className="text-[#A68970]" />
+                   Рейтинг BBC «The Big Read» (Топ-200)
+                 </h2>
+                 <p className="text-xs sm:text-sm text-[#847466] mt-1 max-w-2xl">
+                   Легендарный список 200 лучших книг, составленный по итогам голосования более миллиона жителей Великобритании. Отмечайте прочитанные книги или добавляйте их в свою библиотеку в один клик!
+                 </p>
+               </div>
+               
+               <div className="bg-white/80 backdrop-blur-sm px-5 py-3 rounded-2xl border border-[#EADFCF] shadow-sm text-center shrink-0 relative z-10">
+                 <div className="text-2xl font-black text-[#846851]">
+                   {BBC_TOP_200.filter(item => books.some(b => b.title.toLowerCase() === item.title.toLowerCase() && b.status === 'read')).length} / 200
+                 </div>
+                 <div className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">Прочитано из списка</div>
+               </div>
+            </div>
+
+            {/* Search & Filter Bar */}
+            <div className="flex flex-col sm:flex-row gap-3 bg-[#F7F2E8] p-4 rounded-3xl border border-[#EADFCF] shadow-sm">
+              <div className="relative flex-1">
+                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9B8C80]"><SearchIcon size={16}/></div>
+                <input 
+                  type="text" 
+                  placeholder="Поиск по названию книги или автору..." 
+                  value={bbcSearch} 
+                  onChange={(e) => setBbcSearch(e.target.value)}
+                  className="w-full bg-[#FCF9F2] border border-[#EADFCF] text-[#4A4238] pl-10 pr-4 py-2.5 rounded-2xl font-bold text-xs md:text-sm outline-none focus:border-[#A68970]"
+                />
+                {bbcSearch && <button onClick={() => setBbcSearch('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9B8C80]"><XIcon size={14} /></button>}
+              </div>
+
+              <div className="flex gap-2">
+                {[
+                  { id: 'all', label: 'Все 200' },
+                  { id: 'read', label: 'Прочитанные' },
+                  { id: 'unread', label: 'Непрочитанные' }
+                ].map(f => (
+                  <button
+                    key={f.id}
+                    onClick={() => setBbcFilterStatus(f.id)}
+                    className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition-all ${bbcFilterStatus === f.id ? 'bg-[#A68970] text-white shadow-sm' : 'bg-[#EFE7D8] text-[#74675B] hover:bg-[#EADFCF]'}`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Books List Grid */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {BBC_TOP_200.filter(item => {
+                const matchesSearch = !bbcSearch || 
+                  item.title.toLowerCase().includes(bbcSearch.toLowerCase()) || 
+                  item.author.toLowerCase().includes(bbcSearch.toLowerCase());
+                
+                const isRead = books.some(b => b.title.toLowerCase() === item.title.toLowerCase() && b.status === 'read');
+                
+                if (bbcFilterStatus === 'read') return matchesSearch && isRead;
+                if (bbcFilterStatus === 'unread') return matchesSearch && !isRead;
+                return matchesSearch;
+              }).map(item => {
+                const existingBook = books.find(b => b.title.toLowerCase() === item.title.toLowerCase());
+                const isRead = existingBook?.status === 'read';
+
+                return (
+                  <div key={item.rank} className="bg-[#F7F2E8] border border-[#EADFCF] p-4 rounded-2xl shadow-sm flex flex-col justify-between gap-3 relative group hover:shadow-md transition-all">
+                    <div className="absolute top-3 right-3 bg-[#EFE7D8] text-[#846851] text-[10px] font-black px-2 py-0.5 rounded-lg border border-[#E2D5C3]">
+                      #{item.rank}
+                    </div>
+
+                    <div>
+                      <h4 className="font-bold text-sm text-[#4A4238] line-clamp-2 leading-snug pr-8">{item.title}</h4>
+                      <p className="text-xs text-[#847466] mt-1 font-medium">{item.author}</p>
+                    </div>
+
+                    <div className="pt-2 border-t border-[#EADFCF] flex items-center justify-between">
+                      {isRead ? (
+                        <span className="inline-flex items-center gap-1 text-xs font-bold text-[#4F6F61] bg-[#DDEAE3] px-2.5 py-1 rounded-xl">
+                          <CheckIcon size={14} /> Прочитано
+                        </span>
+                      ) : existingBook ? (
+                        <span className="inline-flex items-center gap-1 text-xs font-bold text-[#C98E5E] bg-[#F7EFE8] px-2.5 py-1 rounded-xl">
+                          📖 В библиотеке
+                        </span>
+                      ) : (
+                        <span className="text-xs text-[#948477] font-medium">Ещё не читали</span>
+                      )}
+
+                      {!existingBook ? (
+                        <button 
+                          onClick={() => {
+                            const newBook = {
+                              id: Date.now() + item.rank,
+                              title: item.title,
+                              author: item.author,
+                              status: 'wishlist',
+                              format: 'paper',
+                              totalPages: 300,
+                              readPages: 0,
+                              rating: 0,
+                              annotation: `Книга из списка BBC Топ-200 (позиция #${item.rank})`,
+                              summary: '', notes: '', quotes: '', coverUrl: '',
+                              tags: ['BBC 200', 'классика'],
+                              dateStarted: '', dateFinished: '', log: []
+                            };
+                            setBooks([...books, newBook]);
+                          }}
+                          className="bg-[#A68970] hover:bg-[#92745C] text-white p-2 rounded-xl transition-colors shadow-sm"
+                          title="Добавить в виш-лист"
+                        >
+                          <PlusIcon size={16} />
+                        </button>
+                      ) : !isRead ? (
+                        <button 
+                          onClick={() => {
+                            setBooks(books.map(b => b.id === existingBook.id ? {...b, status: 'read', readPages: b.totalPages || 300, dateFinished: getMoscowDateString(0)} : b));
+                          }}
+                          className="bg-[#DDEAE3] hover:bg-[#C9DEC2] text-[#4F6F61] p-2 rounded-xl transition-colors shadow-sm"
+                          title="Отметить прочитанной"
+                        >
+                          <CheckIcon size={16} />
+                        </button>
+                      ) : null}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* ================= LIBRARY TAB ================= */}
         {activeTab === 'library' && (
           <div className="animate-fade-in">
@@ -1722,6 +2039,10 @@ export default function App() {
         <button onClick={() => setActiveTab('analytics')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'analytics' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <PieChartIcon size={18} />
           <span className="text-[9px] font-bold">Аналитика</span>
+        </button>
+        <button onClick={() => setActiveTab('bbc200')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'bbc200' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
+          <AwardIcon size={18} />
+          <span className="text-[9px] font-bold">BBC 200</span>
         </button>
         <button onClick={() => setActiveTab('roulette')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'roulette' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <ShuffleIcon size={18} />
