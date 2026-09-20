@@ -24,48 +24,39 @@ const GridIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props
 const LayersBoxIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>;
 const DownloadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>;
 const UploadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>;
+const BarChart2Icon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>;
 const PieChartIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>;
-const FlameIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 17c1.38 0 2.5-1.12 2.5-2.5 0-2-3-3.5-3-5.5 0-1.5 1-2.5 2-3-.5 2 2 3.5 2 5.5a4.5 4.5 0 1 1-9 0c0-2 1-3.5 2-5-1.5 1.5-2 3.5-2 5z"></path></svg>;
-const AwardIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>;
-const ScanIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="12" x2="17" y2="12"></line></svg>;
+const FlameIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>;
+const AwardIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><circle cx="12" cy="8" r="6"></circle><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path></svg>;
+const ScanIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="7" y="7" width="10" height="10" rx="1" ry="1"></rect></svg>;
 
-const LibriMoriLogo = ({ size = 32 }) => (
-  <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-    <path d="M15 25C15 25 30 20 50 25C70 20 85 25 85 25V75C85 75 70 70 50 75C30 70 15 75 15 75V25Z" stroke="#846851" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M50 25V75" stroke="#846851" strokeWidth="5" strokeLinecap="round"/>
-    <path d="M28 35C38 35 42 45 32 50C22 55 35 65 42 65" stroke="#846851" strokeWidth="4" strokeLinecap="round"/>
-    <path d="M72 35C62 35 58 45 68 50C78 55 65 65 58 65" stroke="#846851" strokeWidth="4" strokeLinecap="round"/>
-    <path d="M56 45C56 42 53 40 50 42C47 44 48 48 50 50C52 52 53 56 50 58C47 60 44 58 44 55" stroke="#C98E5E" strokeWidth="3.5" strokeLinecap="round"/>
+const LibriMoriLogo = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" width={props.size || 24} height={props.size || 24} {...props}>
+    {/* Outline Book Left */}
+    <path d="M20 80 V20 C20 20 40 10 50 20 C60 10 80 20 80 20 V80 C80 80 60 70 50 80 C40 70 20 80 20 80 Z" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
+    {/* Center Binding */}
+    <path d="M50 20 V80" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
+    {/* Internal Maze Pages - Left */}
+    <path d="M30 40 H40 V60 H30 Z" stroke="#D67C6B" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+    {/* Internal Maze Pages - Right */}
+    <path d="M60 40 H70 V60 H60 Z" stroke="#D67C6B" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
-const BBC_TOP_200 = [
-  { rank: 1, title: "Властелин колец", author: "Дж. Р. Р. Толкин" },
-  { rank: 2, title: "Гордость и предубеждение", author: "Джейн Остин" },
-  { rank: 3, title: "Тёмные начала", author: "Филип Пулман" },
-  { rank: 4, title: "Автостопом по галактике", author: "Дуглас Адамс" },
-  { rank: 5, title: "Гарри Поттер и Кубок огня", author: "Дж. К. Роулинг" },
-  { rank: 6, title: "Убить пересмешника", author: "Харпер Ли" },
-  { rank: 7, title: "Винни-Пух", author: "А. А. Милн" },
-  { rank: 8, title: "1984", author: "Джордж Оруэлл" },
-  { rank: 9, title: "Лев, колдунья и платяной шкаф", author: "К. С. Льюис" },
-  { rank: 10, title: "Джейн Эйр", author: "Шарлотта Бронте" },
-  { rank: 11, title: "Уловка-22", author: "Джозеф Хеллер" },
-  { rank: 12, title: "Грозовой перевал", author: "Эмили Бронте" },
-  { rank: 13, title: "Пение птиц", author: "Себастьян Фолкс" },
-  { rank: 14, title: "Ребекка", author: "Дафна дю Морье" },
-  { rank: 15, title: "Над пропастью во ржи", author: "Дж. Д. Сэлинджер" },
-  { rank: 16, title: "Ветер в ивах", author: "Кеннет Грэм" },
-  { rank: 17, title: "Большие надежды", author: "Чарльз Диккенс" },
-  { rank: 18, title: "Маленькие женщины", author: "Луиза Мэй Олкотт" },
-  { rank: 19, title: "Мандолина капитана Корелли", author: "Луи де Берньер" },
-  { rank: 20, title: "Война и мир", author: "Лев Толстой" },
-  { rank: 21, title: "Унесённые ветром", author: "Маргарет Митчелл" },
-  { rank: 22, title: "Гарри Поттер и философский камень", author: "Дж. К. Роулинг" },
-  { rank: 23, title: "Гарри Поттер и Тайная комната", author: "Дж. К. Роулинг" },
-  { rank: 24, title: "Гарри Поттер и узник Азкабана", author: "Дж. К. Роулинг" },
-  { rank: 25, title: "Хоббит", author: "Дж. Р. Р. Толкин" }
-];
+// Dynamically load html5-qrcode library for robust cross-browser barcode scanning
+const loadHtml5Qrcode = () => {
+  return new Promise((resolve, reject) => {
+    if (window.Html5Qrcode) {
+      resolve(window.Html5Qrcode);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/html5-qrcode';
+    script.onload = () => resolve(window.Html5Qrcode);
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+};
 
 const PREDEFINED_GENRES = [
   "Фантастика", "Фэнтези", "Детектив", "Психология", "Бизнес", "Роман", "Триллер", "Нон-фикшн",
@@ -78,12 +69,57 @@ const FORMATS = [
   { id: 'audio', label: 'Аудио', icon: HeadphonesIcon },
   { id: 'combo', label: 'Комбо', icon: LayersIcon }
 ];
+
 const STATUSES = [
   { id: 'wishlist', label: 'Виш-лист' },
   { id: 'reading', label: 'Читаю сейчас' },
   { id: 'rereading', label: 'Перечитываю' },
   { id: 'read', label: 'Прочитано' },
   { id: 'dropped', label: 'Брошено' }
+];
+
+// Top 50 of the BBC Big Read list to provide a representative dataset without bloating the code size.
+const BBC_TOP_200 = [
+  { rank: 1, title: 'Властелин колец', author: 'Дж. Р. Р. Толкин' },
+  { rank: 2, title: 'Гордость и предубеждение', author: 'Джейн Остин' },
+  { rank: 3, title: 'Тёмные начала', author: 'Филип Пулман' },
+  { rank: 4, title: 'Автостопом по галактике', author: 'Дуглас Адамс' },
+  { rank: 5, title: 'Гарри Поттер и Кубок огня', author: 'Дж. К. Роулинг' },
+  { rank: 6, title: 'Убить пересмешника', author: 'Харпер Ли' },
+  { rank: 7, title: 'Винни-Пух', author: 'А. А. Милн' },
+  { rank: 8, title: '1984', author: 'Джордж Оруэлл' },
+  { rank: 9, title: 'Лев, колдунья и платяной шкаф', author: 'К. С. Льюис' },
+  { rank: 10, title: 'Джейн Эйр', author: 'Шарлотта Бронте' },
+  { rank: 11, title: 'Уловка-22', author: 'Джозеф Хеллер' },
+  { rank: 12, title: 'Грозовой перевал', author: 'Эмили Бронте' },
+  { rank: 13, title: 'Пение птиц', author: 'Себастьян Фолкс' },
+  { rank: 14, title: 'Ребекка', author: 'Дафна дю Морье' },
+  { rank: 15, title: 'Над пропастью во ржи', author: 'Дж. Д. Сэлинджер' },
+  { rank: 16, title: 'Ветер в ивах', author: 'Кеннет Грэм' },
+  { rank: 17, title: 'Большие надежды', author: 'Чарльз Диккенс' },
+  { rank: 18, title: 'Маленькие женщины', author: 'Луиза Мэй Олкотт' },
+  { rank: 19, title: 'Мандолина капитана Корелли', author: 'Луи де Берньер' },
+  { rank: 20, title: 'Война и мир', author: 'Лев Толстой' },
+  { rank: 21, title: 'Унесённые ветром', author: 'Маргарет Митчелл' },
+  { rank: 22, title: 'Гарри Поттер и философский камень', author: 'Дж. К. Роулинг' },
+  { rank: 23, title: 'Гарри Поттер и Тайная комната', author: 'Дж. К. Роулинг' },
+  { rank: 24, title: 'Гарри Поттер и узник Азкабана', author: 'Дж. К. Роулинг' },
+  { rank: 25, title: 'Хоббит', author: 'Дж. Р. Р. Толкин' },
+  { rank: 26, title: 'Тэсс из рода д\'Эрбервиллей', author: 'Томас Харди' },
+  { rank: 27, title: 'Миддлмарч', author: 'Джордж Элиот' },
+  { rank: 28, title: 'Молитва об Оуэне Мини', author: 'Джон Ирвинг' },
+  { rank: 29, title: 'Гроздья гнева', author: 'Джон Стейнбек' },
+  { rank: 30, title: 'Алиса в Стране чудес', author: 'Льюис Кэрролл' },
+  { rank: 31, title: 'Дневник Трейси Бикер', author: 'Жаклин Уилсон' },
+  { rank: 32, title: 'Сто лет одиночества', author: 'Габриэль Гарсиа Маркес' },
+  { rank: 33, title: 'Столпы Земли', author: 'Кен Фоллетт' },
+  { rank: 34, title: 'Дэвид Копперфильд', author: 'Чарльз Диккенс' },
+  { rank: 35, title: 'Чарли и шоколадная фабрика', author: 'Роальд Даль' },
+  { rank: 36, title: 'Остров сокровищ', author: 'Роберт Льюис Стивенсон' },
+  { rank: 37, title: 'Город как Элис', author: 'Невил Шют' },
+  { rank: 38, title: 'Доводы рассудка', author: 'Джейн Остин' },
+  { rank: 39, title: 'Дюна', author: 'Фрэнк Герберт' },
+  { rank: 40, title: 'Эмма', author: 'Джейн Остин' }
 ];
 
 const getMoscowDate = () => {
@@ -104,7 +140,7 @@ const INITIAL_BOOKS = [
   {
     id: 1, title: 'Задача трех тел', author: 'Лю Цысинь', status: 'reading', genre: 'Фантастика', format: 'paper',
     seriesName: 'Воспоминания о прошлом Земли', seriesIndex: 1, seriesTotal: 3,
-    totalPages: 464, readPages: 180, rating: 0, annotation: 'Секретный военный проект «Красный берег» посылает сигналы внеземной цивилизации...', summary: '', notes: '', quotes: '', 
+    totalPages: 464, readPages: 180, rating: 0, annotation: 'Секретный военный проект «Красный берег» посылает сигналы внеземной цивилизации...', summary: '', quotes: '', 
     coverUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=300&h=400',
     tags: ['космос', 'научная фантастика'],
     dateStarted: getMoscowDateString(5),
@@ -117,17 +153,9 @@ const INITIAL_BOOKS = [
     ]
   },
   {
-    id: 2, title: 'Темный лес', author: 'Лю Цысинь', status: 'wishlist', genre: 'Фантастика', format: 'paper',
-    seriesName: 'Воспоминания о прошлом Земли', seriesIndex: 2, seriesTotal: 3,
-    totalPages: 500, readPages: 0, rating: 0, annotation: 'Вторая книга трилогии Воспоминания о прошлом Земли.', summary: '', notes: '', quotes: '', 
-    coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['космос'],
-    dateStarted: '', dateFinished: '', log: []
-  },
-  {
     id: 3, title: 'Дюна', author: 'Фрэнк Герберт', status: 'read', genre: 'Фантастика', format: 'combo',
     seriesName: 'Хроники Дюны', seriesIndex: 1, seriesTotal: 6,
-    totalPages: 700, readPages: 700, rating: 5, annotation: 'История Пола Атрейдеса на пустынной планете Арракис...', summary: 'Эпично и масштабно. Лучшая фантастика столетия.', notes: 'Перечитывал с большим удовольствием.', quotes: 'Я не должен бояться. Страх — убийца разума.',
+    totalPages: 700, readPages: 700, rating: 5, annotation: 'История Пола Атрейдеса на пустынной планете Арракис...', summary: 'Эпично и масштабно. Лучшая фантастика столетия.', quotes: 'Я не должен бояться. Страх — убийца разума.',
     coverUrl: 'https://images.unsplash.com/photo-1546552356-372989cfa124?auto=format&fit=crop&q=80&w=300&h=400',
     tags: ['любимое', 'классика'],
     dateStarted: getMoscowDateString(30), dateFinished: getMoscowDateString(15), 
@@ -135,68 +163,17 @@ const INITIAL_BOOKS = [
       { date: getMoscowDateString(28), pages: 100, minutes: 150 },
       { date: getMoscowDateString(20), pages: 200, minutes: 300 }
     ]
-  },
-  {
-    id: 4, title: 'Евгений Онегин', author: 'Александр Пушкин', status: 'read', genre: 'Стихи', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 240, readPages: 240, rating: 5, annotation: 'Роман в стихах о русской интеллигенции первой трети XIX века.', summary: 'Великая классика стихотворной формы.', notes: 'Любимые строфы про письмо Татьяны.', quotes: 'Любви все возрасты покорны...',
-    coverUrl: 'https://images.unsplash.com/photo-1476275466078-4007374efbbe?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['классика', 'поэзия'],
-    dateStarted: getMoscowDateString(45), dateFinished: getMoscowDateString(40), log: []
-  },
-  {
-    id: 5, title: 'Шантарам', author: 'Грегори Дэвид Робертс', status: 'read', genre: 'Роман', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 850, readPages: 850, rating: 5, annotation: 'Побег из австралийской тюрьмы и новая жизнь в трущобах Бомбея.', summary: 'Невероятная атмосфера Индии.', notes: 'Очень много глубоких философских диалогов.', quotes: 'Судьба — это не то, что случается с нами...',
-    coverUrl: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['индия', 'бестселлер'],
-    dateStarted: getMoscowDateString(45), dateFinished: getMoscowDateString(20), log: []
-  },
-  {
-    id: 101, title: 'Мастер и Маргарита', author: 'Михаил Булгаков', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 480, readPages: 0, rating: 0, annotation: 'Визит Воланда и его свиты в Москву 1930-х годов.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['классика', 'мистика'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 102, title: '1984', author: 'Джордж Оруэлл', status: 'wishlist', genre: 'Фантастика', format: 'ebook',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 320, readPages: 0, rating: 0, annotation: 'Мрачная антиутопия о тоталитарном обществе и партии.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1495640388908-05fa85288e61?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['антиутопия', 'политика'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 103, title: 'Тёмная Башня: Стрелок', author: 'Стивен Кинг', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
-    seriesName: 'Тёмная Башня', seriesIndex: 1, seriesTotal: 7,
-    totalPages: 300, readPages: 0, rating: 0, annotation: 'Стрелок Роланд преследует Человека в черном по пустыне.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['фэнтези', 'кинг'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 105, title: 'Психология влияния', author: 'Роберт Чалдини', status: 'wishlist', genre: 'Психология', format: 'audio',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 400, readPages: 0, rating: 0, annotation: 'Как люди принимают решения и почему соглашаются.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['психология', 'бизнес'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 106, title: 'Богатый папа, бедный папа', author: 'Роберт Кийосаки', status: 'wishlist', genre: 'Бизнес', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 350, readPages: 0, rating: 0, annotation: 'Чему учат богатых детей тому, чему не учат в школе.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['финансы', 'инвестиции'], dateStarted: '', dateFinished: '', log: []
   }
 ];
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('diary'); 
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'shelf'
-  const [statPeriod, setStatPeriod] = useState('year'); // 'all' | 'year' | '3months' | 'month'
+  const [viewMode, setViewMode] = useState('grid'); 
+  const [statPeriod, setStatPeriod] = useState('year');
   
   const [books, setBooks] = useState(() => {
     try {
-      const savedBooks = localStorage.getItem('libriMori_books_v41');
+      const savedBooks = localStorage.getItem('libriMori_books_v43');
       if (savedBooks) return JSON.parse(savedBooks);
     } catch (e) { console.error(e); }
     return INITIAL_BOOKS;
@@ -204,22 +181,18 @@ export default function App() {
 
   const [goals, setGoals] = useState(() => {
     try {
-      const savedGoals = localStorage.getItem('libriMori_goals_v41');
+      const savedGoals = localStorage.getItem('libriMori_goals_v43');
       if (savedGoals) return JSON.parse(savedGoals);
     } catch (e) { console.error(e); }
     return { yearly: 20, monthly: 5 };
   });
 
   useEffect(() => {
-    try {
-      localStorage.setItem('libriMori_books_v41', JSON.stringify(books));
-    } catch (e) { console.error(e); }
+    try { localStorage.setItem('libriMori_books_v43', JSON.stringify(books)); } catch (e) { console.error(e); }
   }, [books]);
 
   useEffect(() => {
-    try {
-      localStorage.setItem('libriMori_goals_v41', JSON.stringify(goals));
-    } catch (e) { console.error(e); }
+    try { localStorage.setItem('libriMori_goals_v43', JSON.stringify(goals)); } catch (e) { console.error(e); }
   }, [goals]);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -230,7 +203,8 @@ export default function App() {
   // Barcode scanner modal state
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [scannerError, setScannerError] = useState('');
-  const videoRef = useRef(null);
+  const [isScannerLoading, setIsScannerLoading] = useState(false);
+  const scannerRef = useRef(null);
 
   const [filter, setFilter] = useState('all'); 
   const [genreFilter, setGenreFilter] = useState('all');
@@ -239,9 +213,8 @@ export default function App() {
   const [tagFilter, setTagFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // BBC List search state
   const [bbcSearch, setBbcSearch] = useState('');
-  const [bbcFilterStatus, setBbcFilterStatus] = useState('all'); // 'all' | 'read' | 'unread'
+  const [bbcFilterStatus, setBbcFilterStatus] = useState('all');
 
   const [logPagesInput, setLogPagesInput] = useState({});
   const [logMinutesInput, setLogMinutesInput] = useState({});
@@ -256,7 +229,6 @@ export default function App() {
   const [currentMatchIndex, setCurrentMatchIndex] = useState(0);
   const [tournamentWinner, setTournamentWinner] = useState(null);
 
-  // Roulette State
   const [rouletteBook, setRouletteBook] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
 
@@ -275,72 +247,59 @@ export default function App() {
     return () => clearInterval(interval);
   }, [activeTimer]);
 
-  // Barcode Scanner handler
   useEffect(() => {
-    let stream = null;
-    let barcodeDetector = null;
-    let intervalId = null;
-
     if (isScannerOpen) {
       setScannerError('');
-      navigator.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } })
-        .then(async (s) => {
-          stream = s;
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-            // Catch error if browser blocks autoplay
-            videoRef.current.play().catch(e => console.warn("Autoplay blocked", e));
-          }
+      setIsScannerLoading(true);
 
-          try {
-            if ('BarcodeDetector' in window) {
-              // Исправлено: EAN-13 — это стандартный технический формат штрих-кодов для книг (ISBN)
-              barcodeDetector = new window.BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e'] });
-              
-              intervalId = setInterval(async () => {
-                if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
-                  try {
-                    const barcodes = await barcodeDetector.detect(videoRef.current);
-                    if (barcodes.length > 0) {
-                      const isbn = barcodes[0].rawValue.trim();
-                      stopScanner();
-                      fetchBookByISBN(isbn);
-                    }
-                  } catch (e) {
-                    console.debug("Detection error:", e);
-                  }
-                }
-              }, 500);
-            } else {
-              setScannerError('Встроенный сканер не поддерживается вашим браузером (например, в iOS Safari). Пожалуйста, введите ISBN или данные вручную.');
-            }
-          } catch (initError) {
-            console.error("Scanner init error:", initError);
-            setScannerError('Ошибка запуска сканера штрих-кодов. Возможно, ваш браузер устарел.');
-          }
+      loadHtml5Qrcode()
+        .then((Html5Qrcode) => {
+          setIsScannerLoading(false);
+          // Wait for DOM
+          setTimeout(() => {
+            const html5Qrcode = new Html5Qrcode("reader");
+            scannerRef.current = html5Qrcode;
+
+            const config = { fps: 10, qrbox: { width: 250, height: 150 }, aspectRatio: 1.0 };
+            
+            html5Qrcode.start(
+              { facingMode: "environment" },
+              config,
+              (decodedText) => {
+                // Success
+                stopScanner();
+                fetchBookByISBN(decodedText.trim());
+              },
+              () => {
+                // Ignore routine scanning errors (fires constantly until it detects a barcode)
+              }
+            ).catch((err) => {
+              console.error("Scanner startup error:", err);
+              setScannerError('Не удалось запустить камеру. Убедитесь, что вы дали разрешение на использование камеры в браузере.');
+            });
+          }, 100);
         })
         .catch(err => {
-          console.error("Camera error:", err);
-          // Выводим ошибку камеры, только если поток действительно не был создан
-          if (!stream) {
-            setScannerError('Не удалось получить доступ к камере. Убедитесь, что разрешили доступ в настройках браузера.');
-          }
+          console.error("Failed to load scanner:", err);
+          setIsScannerLoading(false);
+          setScannerError('Не удалось загрузить библиотеку сканера. Проверьте интернет.');
         });
     }
 
     const stopScanner = () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
+      if (scannerRef.current) {
+        scannerRef.current.stop().then(() => {
+          scannerRef.current.clear();
+          scannerRef.current = null;
+        }).catch(err => console.error("Error stopping scanner", err));
       }
-      if (intervalId) clearInterval(intervalId);
       setIsScannerOpen(false);
     };
 
     return () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
+      if (scannerRef.current) {
+        scannerRef.current.stop().then(() => scannerRef.current.clear()).catch(() => {});
       }
-      if (intervalId) clearInterval(intervalId);
     };
   }, [isScannerOpen]);
 
@@ -362,12 +321,12 @@ export default function App() {
           ...prev,
           title,
           author,
-          totalPages: data.number_of_pages || 300,
+          totalPages: data.number_of_pages || prev.totalPages,
           coverUrl: `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`
         }));
-        alert(`Книга успешно распознана по штрих-коду (${isbn})!`);
+        alert(`Успех! Штрих-код (${isbn}) распознан.`);
       } else {
-        alert(`Штрих-код ${isbn} успешно отсканирован, но в базе Open Library книга не найдена. Заполните данные вручную.`);
+        alert(`Штрих-код ${isbn} отсканирован, но в международной базе Open Library книга не найдена. Заполните данные вручную.`);
         setCurrentBook(prev => ({ ...prev, annotation: `ISBN: ${isbn}` }));
       }
     } catch (e) {
@@ -402,11 +361,9 @@ export default function App() {
   const uniqueAuthors = Array.from(new Set(books.map(b => b.author).filter(Boolean))).sort();
   const uniqueGenres = Array.from(new Set(books.map(b => b.genre).filter(Boolean))).sort();
   const uniqueSeries = Array.from(new Set(books.map(b => b.seriesName).filter(Boolean))).sort();
-  const uniqueTags = Array.from(new Set(books.flatMap(b => b.tags || []).filter(Boolean))).sort();
 
   const readBooksList = books.filter(b => b.status === 'read');
 
-  // Calculate Reading Streaks + Last 14 days timeline
   const streakData = useMemo(() => {
     const activeDatesSet = new Set();
     books.forEach(b => {
@@ -423,7 +380,6 @@ export default function App() {
     let currentStreak = 0;
     let maxStreak = 0;
     let tempStreak = 0;
-
     let pointerDate = new Date(getMoscowDate());
     let pointerStr = pointerDate.toISOString().split('T')[0];
     
@@ -1440,7 +1396,7 @@ export default function App() {
                    Рейтинг BBC «The Big Read» (Топ-200)
                  </h2>
                  <p className="text-xs sm:text-sm text-[#847466] mt-1 max-w-2xl">
-                   Легендарный список 200 лучших книг, составленный по итогам голосования более миллиона жителей Великобритании. Отмечайте прочитанные книги или добавляйте их в свою библиотеку в один клик!
+                   Легендарный список лучших книг по версии BBC. Отмечайте прочитанные книги или добавляйте их в свою библиотеку в один клик!
                  </p>
                </div>
                
@@ -1468,7 +1424,7 @@ export default function App() {
 
               <div className="flex gap-2">
                 {[
-                  { id: 'all', label: 'Все 200' },
+                  { id: 'all', label: 'Все' },
                   { id: 'read', label: 'Прочитанные' },
                   { id: 'unread', label: 'Непрочитанные' }
                 ].map(f => (
@@ -1954,7 +1910,7 @@ export default function App() {
 
       {/* Summary Modal */}
       {isSummaryModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#4A4238]/60 backdrop-blur-sm" onClick={() => setIsSummaryModalOpen(false)}></div>
           <div className="bg-[#F7F2E8] rounded-[2.5rem] shadow-2xl relative z-10 w-full max-w-[340px] overflow-hidden flex flex-col animate-fade-in border border-[#EADFCF]">
              <div className="bg-gradient-to-br from-[#BFA892] via-[#A896B5] to-[#D67C6B] p-5 text-white text-center flex flex-col items-center">
@@ -1984,7 +1940,7 @@ export default function App() {
                      <div className="flex flex-wrap justify-center gap-1.5">
                         {readThisTargetMonth.map(b => (
                            <div key={b.id} className="w-10 aspect-[2/3] bg-[#4A4238] rounded-xl shadow-md overflow-hidden border border-white/30">
-                              {b.coverUrl ? <img src={b.coverUrl} className="w-full h-full object-cover" /> : <div className="text-[5px] p-0.5 text-center font-bold">{b.title}</div>}
+                              {b.coverUrl ? <img src={b.coverUrl} className="w-full h-full object-cover" alt="" /> : <div className="text-[5px] p-0.5 text-center font-bold">{b.title}</div>}
                            </div>
                         ))}
                      </div>
@@ -2003,14 +1959,31 @@ export default function App() {
       {isScannerOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsScannerOpen(false)}></div>
-          <div className="bg-[#F7F2E8] rounded-3xl p-5 relative z-10 w-full max-w-md text-center space-y-4">
-            <h3 className="font-bold text-base text-[#4A4238]">Наведите камеру на штрих-код ISBN</h3>
-            <div className="relative aspect-video bg-black rounded-2xl overflow-hidden flex items-center justify-center">
-              <video ref={videoRef} className="w-full h-full object-cover" playsInline muted></video>
-              <div className="absolute inset-x-10 inset-y-8 border-2 border-dashed border-[#C98E5E] rounded-xl pointer-events-none"></div>
+          <div className="bg-[#F7F2E8] rounded-3xl p-5 relative z-10 w-full max-w-md text-center space-y-4 shadow-2xl animate-fade-in border border-[#EADFCF]">
+            <h3 className="font-black text-lg text-[#564B41]">Сканирование ISBN</h3>
+            <p className="text-xs text-[#847466] mb-2">Наведите камеру на штрих-код книги</p>
+            
+            <div className="relative w-full aspect-square bg-[#EFE7D8] rounded-2xl overflow-hidden shadow-inner border-2 border-dashed border-[#D5C6B4] flex items-center justify-center">
+              {isScannerLoading ? (
+                <div className="text-sm font-bold text-[#846851] animate-pulse">Запуск камеры...</div>
+              ) : (
+                <div id="reader" className="w-full h-full"></div>
+              )}
             </div>
-            {scannerError && <p className="text-xs text-[#C56B5D] font-bold">{scannerError}</p>}
-            <button onClick={() => setIsScannerOpen(false)} className="bg-[#A68970] text-white px-6 py-2 rounded-xl text-xs font-bold">Закрыть сканер</button>
+            
+            {scannerError && <p className="text-xs text-[#C56B5D] font-bold bg-[#FCEAE8] p-2 rounded-xl">{scannerError}</p>}
+            
+            <button onClick={() => setIsScannerOpen(false)} className="w-full bg-[#EADFCF] hover:bg-[#DDD0BE] text-[#564B41] px-6 py-3 rounded-2xl text-sm font-bold transition-colors mt-2">
+              Отмена
+            </button>
+            <style>{`
+              #reader img { display: none !important; }
+              #reader__dashboard_section_csr span { color: #564B41 !important; font-family: inherit !important; font-size: 12px; font-weight: bold;}
+              #reader__dashboard_section_swaplink { text-decoration: none !important; color: #846851 !important; font-weight: bold; }
+              #reader button { background-color: #EFE7D8 !important; color: #564B41 !important; border: 1px solid #D5C6B4 !important; border-radius: 8px !important; padding: 4px 10px !important; font-weight: bold !important; cursor: pointer; }
+              #reader__scan_region { background: black; }
+              #reader video { object-fit: cover !important; }
+            `}</style>
           </div>
         </div>
       )}
@@ -2024,7 +1997,7 @@ export default function App() {
             <div className="flex justify-between items-center p-4 sm:p-5 border-b border-[#EADFCF] sticky top-0 bg-[#F7F2E8]/95 backdrop-blur-md z-20">
               <div className="flex items-center gap-3">
                 <h2 className="text-lg sm:text-xl font-black text-[#564B41]">{currentBook.id.toString().length > 10 ? 'Новая книга' : 'Редактирование'}</h2>
-                <button onClick={() => setIsScannerOpen(true)} className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#846851] px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-[#E2D5C3] shadow-sm">
+                <button type="button" onClick={() => setIsScannerOpen(true)} className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#846851] px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-[#E2D5C3] shadow-sm">
                   <ScanIcon size={14} /> Сканировать ISBN
                 </button>
               </div>
