@@ -206,6 +206,7 @@ export default function App() {
   const [isScannerLoading, setIsScannerLoading] = useState(false);
   const scannerRef = useRef(null);
   const [isBookSearching, setIsBookSearching] = useState(false);
+  const [lastScannedISBN, setLastScannedISBN] = useState('');
 
   const [filter, setFilter] = useState('all'); 
   const [genreFilter, setGenreFilter] = useState('all');
@@ -320,10 +321,11 @@ export default function App() {
 
   const fetchBookByISBN = async (isbn) => {
     setIsBookSearching(true);
+    setLastScannedISBN(isbn);
     let bookFound = false;
 
-    // Helper timeout for network fetch (5s max)
-    const fetchWithTimeout = async (url, options = {}, timeout = 5000) => {
+    // Безопасный fetch с таймаутом (4 секунды)
+    const fetchWithTimeout = async (url, options = {}, timeout = 4000) => {
       const controller = new AbortController();
       const id = setTimeout(() => controller.abort(), timeout);
       try {
@@ -336,129 +338,103 @@ export default function App() {
       }
     };
 
+    // Применение найденных данных в форму
+    const applyBookData = (title, author, totalPages, annotation, coverUrl) => {
+      setCurrentBook(prev => ({
+        ...prev,
+        title: title || prev.title,
+        author: author || prev.author,
+        totalPages: totalPages || prev.totalPages,
+        annotation: annotation || prev.annotation,
+        coverUrl: coverUrl || prev.coverUrl
+      }));
+
+      setCustomModal({
+        title: 'Книга найдена!',
+        message: `«${title}» (${author || 'автор не указан'}) успешно загружена из каталога.`,
+        type: 'alert'
+      });
+      bookFound = true;
+    };
+
     try {
-      // 1. Попытка 1: Google Books API
+      // 1. Попытка 1: Google Books API (прямой запрос)
       try {
         const gRes = await fetchWithTimeout(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
         if (gRes && gRes.ok) {
           const gData = await gRes.json();
           if (gData.items && gData.items.length > 0) {
             const info = gData.items[0].volumeInfo;
-            const title = info.title || '';
-            const author = info.authors ? info.authors.join(', ') : '';
-            const totalPages = info.pageCount || '';
-            const annotation = info.description || `ISBN: ${isbn}`;
-            let coverUrl = '';
-            if (info.imageLinks) {
-              coverUrl = (info.imageLinks.thumbnail || info.imageLinks.smallThumbnail || '').replace('http:', 'https:');
-            }
-
-            if (title) {
-              setCurrentBook(prev => ({
-                ...prev,
-                title: title || prev.title,
-                author: author || prev.author,
-                totalPages: totalPages || prev.totalPages,
-                annotation: annotation || prev.annotation,
-                coverUrl: coverUrl || prev.coverUrl
-              }));
-
-              setCustomModal({
-                title: 'Книга найдена!',
-                message: `«${title}» (${author || 'автор не указан'}) успешно найдена и добавлена в форму.`,
-                type: 'alert'
-              });
-              bookFound = true;
-            }
+            const cover = info.imageLinks ? (info.imageLinks.thumbnail || info.imageLinks.smallThumbnail || '').replace('http:', 'https:') : '';
+            applyBookData(info.title, info.authors?.join(', '), info.pageCount, info.description || `ISBN: ${isbn}`, cover);
           }
         }
       } catch (e) {
-        console.warn("Google Books request failed, trying fallback...", e);
+        console.warn("Direct Google Books failed, proceeding to proxy fallback...", e);
       }
 
-      // 2. Попытка 2: Open Library Data API (если Google не ответил)
+      // 2. Попытка 2: Google Books через защищенный CORS-прокси (если провайдер блокирует googleapis в РФ)
+      if (!bookFound) {
+        try {
+          const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)}`;
+          const pRes = await fetchWithTimeout(proxyUrl, {}, 5000);
+          if (pRes && pRes.ok) {
+            const pData = await pRes.json();
+            if (pData.items && pData.items.length > 0) {
+              const info = pData.items[0].volumeInfo;
+              const cover = info.imageLinks ? (info.imageLinks.thumbnail || info.imageLinks.smallThumbnail || '').replace('http:', 'https:') : '';
+              applyBookData(info.title, info.authors?.join(', '), info.pageCount, info.description || `ISBN: ${isbn}`, cover);
+            }
+          }
+        } catch (e) {
+          console.warn("Proxy Google Books failed...", e);
+        }
+      }
+
+      // 3. Попытка 3: Open Library Search API
+      if (!bookFound) {
+        try {
+          const olSearchRes = await fetchWithTimeout(`https://openlibrary.org/search.json?isbn=${isbn}`);
+          if (olSearchRes && olSearchRes.ok) {
+            const olData = await olSearchRes.json();
+            if (olData.docs && olData.docs.length > 0) {
+              const doc = olData.docs[0];
+              const cover = doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg` : `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
+              applyBookData(doc.title, doc.author_name?.join(', '), doc.number_of_pages_median || doc.number_of_pages, `ISBN: ${isbn}`, cover);
+            }
+          }
+        } catch (e) {
+          console.warn("OpenLibrary search failed...", e);
+        }
+      }
+
+      // 4. Попытка 4: Open Library Data API
       if (!bookFound) {
         try {
           const olRes = await fetchWithTimeout(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
           if (olRes && olRes.ok) {
             const data = await olRes.json();
-            const bookData = data[`ISBN:${isbn}`];
-            if (bookData) {
-              const title = bookData.title || '';
-              const author = bookData.authors ? bookData.authors.map(a => a.name).join(', ') : '';
-              const totalPages = bookData.number_of_pages || '';
-              const coverUrl = bookData.cover ? (bookData.cover.large || bookData.cover.medium || bookData.cover.small || '') : '';
-
-              if (title) {
-                setCurrentBook(prev => ({
-                  ...prev,
-                  title: title || prev.title,
-                  author: author || prev.author,
-                  totalPages: totalPages || prev.totalPages,
-                  coverUrl: coverUrl || prev.coverUrl
-                }));
-
-                setCustomModal({
-                  title: 'Книга найдена!',
-                  message: `«${title}» найдена в открытом каталоге.`,
-                  type: 'alert'
-                });
-                bookFound = true;
-              }
+            const bData = data[`ISBN:${isbn}`];
+            if (bData && bData.title) {
+              const cover = bData.cover ? (bData.cover.large || bData.cover.medium || '') : '';
+              applyBookData(bData.title, bData.authors?.map(a => a.name).join(', '), bData.number_of_pages, `ISBN: ${isbn}`, cover);
             }
           }
         } catch (e) {
-          console.warn("OpenLibrary Data API failed, trying endpoint 3...", e);
+          console.warn("OpenLibrary Data API failed...", e);
         }
       }
 
-      // 3. Попытка 3: Прямой ISBN JSON в Open Library
-      if (!bookFound) {
-        try {
-          const directRes = await fetchWithTimeout(`https://openlibrary.org/isbn/${isbn}.json`);
-          if (directRes && directRes.ok) {
-            const directData = await directRes.json();
-            if (directData && directData.title) {
-              const title = directData.title;
-              let author = '';
-              if (directData.authors && directData.authors.length > 0) {
-                const authorRes = await fetchWithTimeout(`https://openlibrary.org${directData.authors[0].key}.json`, {}, 3000);
-                if (authorRes && authorRes.ok) {
-                  const authorData = await authorRes.json();
-                  author = authorData.name || '';
-                }
-              }
-
-              setCurrentBook(prev => ({
-                ...prev,
-                title: title || prev.title,
-                author: author || prev.author,
-                totalPages: directData.number_of_pages || prev.totalPages,
-                coverUrl: `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`
-              }));
-
-              setCustomModal({
-                title: 'Книга найдена!',
-                message: `«${title}» найдена в каталоге.`,
-                type: 'alert'
-              });
-              bookFound = true;
-            }
-          }
-        } catch (e) {
-          console.warn("OpenLibrary direct JSON failed", e);
-        }
-      }
-
-      // 4. Если каталоги не ответили или издания нет в базах — сохраняем ISBN и не блокируем пользователя!
+      // 5. Если тираж совсем новый и отсутствует в мировых реестрах — не бросаем пользователя!
       if (!bookFound) {
         setCurrentBook(prev => ({
           ...prev,
-          annotation: prev.annotation ? `${prev.annotation} | ISBN: ${isbn}` : `ISBN: ${isbn}`
+          annotation: prev.annotation ? `${prev.annotation}\nISBN: ${isbn}` : `ISBN: ${isbn}`
         }));
+
         setCustomModal({
           title: 'Штрих-код распознан!',
-          message: `Код ${isbn} успешно считан. В сетевых базах информации о конкретном издании пока нет, но ISBN уже сохранен в аннотации. Пожалуйста, введите название вручную.`,
+          message: `Номер ${isbn} успешно считан. Это свежий тираж, которого ещё нет в открытых международных каталогах. Нажмите одну из кнопок быстрого поиска ниже, чтобы заполнить название за секунду!`,
           type: 'alert'
         });
       }
@@ -2162,6 +2138,42 @@ export default function App() {
 
             <form onSubmit={handleSaveBook} className="p-4 sm:p-6 space-y-5 sm:space-y-6">
               
+              {/* Панель быстрого поиска для свежих российских изданий по отсканированному ISBN */}
+              {lastScannedISBN && (
+                <div className="bg-[#FAF3E8] border border-[#E2D5C3] p-3.5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs shadow-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-[#846851]">Код:</span>
+                    <span className="font-mono font-bold bg-white px-2 py-0.5 rounded-lg border border-[#EADFCF] text-[#4A4238]">{lastScannedISBN}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 w-full sm:w-auto">
+                    <a
+                      href={`https://www.chitai-gorod.ru/search?phrase=${lastScannedISBN}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]"
+                    >
+                      🔍 Читай-Город
+                    </a>
+                    <a
+                      href={`https://www.labirint.ru/search/${lastScannedISBN}/`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]"
+                    >
+                      🔍 Лабиринт
+                    </a>
+                    <a
+                      href={`https://ya.ru/search/?text=${encodeURIComponent(`книга ISBN ${lastScannedISBN}`)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="bg-[#A68970] hover:bg-[#92745C] text-white font-bold px-2.5 py-1.5 rounded-xl transition-colors flex items-center gap-1 shadow-sm text-[11px]"
+                    >
+                      Яндекс
+                    </a>
+                  </div>
+                </div>
+              )}
+
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                 <div className="w-full sm:w-40 shrink-0 flex flex-col gap-2.5">
                   <div className="aspect-[2/3] bg-[#EFE7D8] rounded-3xl border-2 border-dashed border-[#D5C6B4] overflow-hidden relative flex items-center justify-center group max-w-[160px] mx-auto sm:max-w-none w-full">
