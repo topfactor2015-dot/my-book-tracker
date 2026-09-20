@@ -2147,6 +2147,14 @@ export default function App() {
                   </div>
                   <div className="flex flex-wrap gap-1.5 w-full sm:w-auto">
                     <a
+                      href={`https://search.rsl.ru/ru/search#q=${lastScannedISBN}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]"
+                    >
+                      🏛️ РГБ (Ленинка)
+                    </a>
+                    <a
                       href={`https://www.chitai-gorod.ru/search?phrase=${lastScannedISBN}`}
                       target="_blank"
                       rel="noreferrer"
