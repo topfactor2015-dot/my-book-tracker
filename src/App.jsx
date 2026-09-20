@@ -257,21 +257,35 @@ export default function App() {
           setIsScannerLoading(false);
           // Wait for DOM
           setTimeout(() => {
-            const html5Qrcode = new Html5Qrcode("reader");
+            const formatsToSupport = window.Html5QrcodeSupportedFormats ? [
+              window.Html5QrcodeSupportedFormats.EAN_13,
+              window.Html5QrcodeSupportedFormats.EAN_8
+            ] : undefined;
+
+            const html5Qrcode = new Html5Qrcode("reader", formatsToSupport ? { formatsToSupport } : undefined);
             scannerRef.current = html5Qrcode;
 
-            const config = { fps: 10, qrbox: { width: 250, height: 150 }, aspectRatio: 1.0 };
+            const config = { fps: 15, qrbox: { width: 280, height: 160 }, aspectRatio: 1.0 };
             
             html5Qrcode.start(
               { facingMode: "environment" },
               config,
               (decodedText) => {
-                // Success
+                const clean = decodedText.trim().replace(/[-\s]/g, '');
+                // Book barcodes (EAN-13) always have 13 digits and start with 978 or 979, or legacy 10-digit ISBN
+                const isBookISBN = (clean.length === 13 && (clean.startsWith('978') || clean.startsWith('979'))) || (clean.length === 10);
+                
+                if (!isBookISBN) {
+                  // Ignore accidental blurry / partial frame reads so camera continues focusing on real ISBN
+                  return;
+                }
+
+                // Valid book ISBN confirmed!
                 stopScanner();
-                fetchBookByISBN(decodedText.trim());
+                fetchBookByISBN(clean);
               },
               () => {
-                // Ignore routine scanning errors (fires constantly until it detects a barcode)
+                // Ignore routine scanning frame errors
               }
             ).catch((err) => {
               console.error("Scanner startup error:", err);
@@ -305,9 +319,43 @@ export default function App() {
 
   const fetchBookByISBN = async (isbn) => {
     try {
-      const res = await fetch(`https://openlibrary.org/isbn/${isbn}.json`);
-      if (res.ok) {
-        const data = await res.json();
+      // 1. Try Google Books API (broadest coverage for Russian and international editions)
+      const gRes = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
+      if (gRes.ok) {
+        const gData = await gRes.json();
+        if (gData.items && gData.items.length > 0) {
+          const info = gData.items[0].volumeInfo;
+          const title = info.title || 'Без названия';
+          const author = info.authors ? info.authors.join(', ') : 'Неизвестный автор';
+          const totalPages = info.pageCount || '';
+          const annotation = info.description || `ISBN: ${isbn}`;
+          let coverUrl = '';
+          if (info.imageLinks) {
+            coverUrl = (info.imageLinks.thumbnail || info.imageLinks.smallThumbnail || '').replace('http:', 'https:');
+          }
+
+          setCurrentBook(prev => ({
+            ...prev,
+            title,
+            author,
+            totalPages: totalPages || prev.totalPages,
+            annotation,
+            coverUrl: coverUrl || prev.coverUrl
+          }));
+
+          setCustomModal({
+            title: 'Книга найдена!',
+            message: `«${title}» (${author}) успешно распознана и добавлена в форму.`,
+            type: 'alert'
+          });
+          return;
+        }
+      }
+
+      // 2. Fallback to Open Library
+      const olRes = await fetch(`https://openlibrary.org/isbn/${isbn}.json`);
+      if (olRes.ok) {
+        const data = await olRes.json();
         const title = data.title || 'Книга по ISBN';
         let author = 'Неизвестный автор';
         if (data.authors && data.authors.length > 0) {
@@ -324,13 +372,28 @@ export default function App() {
           totalPages: data.number_of_pages || prev.totalPages,
           coverUrl: `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`
         }));
-        alert(`Успех! Штрих-код (${isbn}) распознан.`);
-      } else {
-        alert(`Штрих-код ${isbn} отсканирован, но в международной базе Open Library книга не найдена. Заполните данные вручную.`);
-        setCurrentBook(prev => ({ ...prev, annotation: `ISBN: ${isbn}` }));
+        setCustomModal({
+          title: 'Книга найдена!',
+          message: `«${title}» найдена в каталоге Open Library.`,
+          type: 'alert'
+        });
+        return;
       }
+
+      // 3. Fallback if not found in catalog
+      setCurrentBook(prev => ({ ...prev, annotation: prev.annotation ? `${prev.annotation} | ISBN: ${isbn}` : `ISBN: ${isbn}` }));
+      setCustomModal({
+        title: 'Штрих-код распознан',
+        message: `Штрих-код (${isbn}) успешно считан. В открытых интернет-каталогах книга пока не найдена, но ISBN уже сохранен в аннотации. Пожалуйста, введите название и автора вручную.`,
+        type: 'alert'
+      });
     } catch (e) {
-      alert('Ошибка при запросе к книжной базе данных.');
+      console.error(e);
+      setCustomModal({
+        title: 'Ошибка поиска',
+        message: 'Не удалось связаться с базой данных книг. Проверьте интернет-соединение.',
+        type: 'alert'
+      });
     }
   };
 
@@ -743,12 +806,24 @@ export default function App() {
           if (parsed && parsed.books) {
             setBooks(parsed.books);
             if (parsed.goals) setGoals(parsed.goals);
-            alert('Резервная копия LibriMori успешно восстановлена!');
+            setCustomModal({
+              title: 'Успешно',
+              message: 'Резервная копия LibriMori успешно восстановлена!',
+              type: 'alert'
+            });
           } else {
-            alert('Неверный формат файла бэкапа.');
+            setCustomModal({
+              title: 'Ошибка',
+              message: 'Неверный формат файла бэкапа.',
+              type: 'alert'
+            });
           }
         } catch (err) {
-          alert('Ошибка при чтении файла.');
+          setCustomModal({
+            title: 'Ошибка',
+            message: 'Ошибка при чтении файла.',
+            type: 'alert'
+          });
         }
       };
     }
@@ -2175,7 +2250,7 @@ export default function App() {
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#4A4238]/60 backdrop-blur-sm" onClick={() => setCustomModal(null)}></div>
           <div className="bg-[#F7F2E8] rounded-[2rem] p-5 shadow-2xl relative z-10 w-full max-w-sm animate-fade-in border border-[#EADFCF]">
-            <h3 className="text-base font-bold text-[#564B41] mb-3">{customModal.title}</h3>
+            <h3 className="text-base font-bold text-[#564B41] mb-2">{customModal.title}</h3>
             
             {customModal.type === 'prompt' && (
               <input 
@@ -2192,15 +2267,23 @@ export default function App() {
               />
             )}
 
+            {customModal.type === 'alert' && customModal.message && (
+              <p className="text-xs text-[#847466] mb-5 leading-relaxed">{customModal.message}</p>
+            )}
+
             <div className="flex gap-2.5 justify-end">
-              <button onClick={() => setCustomModal(null)} className="px-4 py-2 rounded-xl font-bold text-xs text-[#74675B] hover:bg-[#EADFCF] transition-colors">Отмена</button>
+              {customModal.type !== 'alert' && (
+                <button onClick={() => setCustomModal(null)} className="px-4 py-2 rounded-xl font-bold text-xs text-[#74675B] hover:bg-[#EADFCF] transition-colors">Отмена</button>
+              )}
               <button 
                 onClick={() => {
                   if (customModal.type === 'prompt') {
                     const val = document.getElementById('custom-modal-input').value;
                     customModal.onSubmit(val);
-                  } else {
+                  } else if (customModal.onSubmit) {
                     customModal.onSubmit();
+                  } else {
+                    setCustomModal(null);
                   }
                 }} 
                 className="px-4 py-2 rounded-xl font-bold text-xs text-white bg-[#A68970] hover:bg-[#92745C] transition-colors shadow-md"
