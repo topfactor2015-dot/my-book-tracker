@@ -205,6 +205,7 @@ export default function App() {
   const [scannerError, setScannerError] = useState('');
   const [isScannerLoading, setIsScannerLoading] = useState(false);
   const scannerRef = useRef(null);
+  const [isBookSearching, setIsBookSearching] = useState(false);
 
   const [filter, setFilter] = useState('all'); 
   const [genreFilter, setGenreFilter] = useState('all');
@@ -318,82 +319,151 @@ export default function App() {
   }, [isScannerOpen]);
 
   const fetchBookByISBN = async (isbn) => {
+    setIsBookSearching(true);
+    let bookFound = false;
+
+    // Helper timeout for network fetch (5s max)
+    const fetchWithTimeout = async (url, options = {}, timeout = 5000) => {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+      try {
+        const response = await fetch(url, { ...options, signal: controller.signal });
+        clearTimeout(id);
+        return response;
+      } catch (err) {
+        clearTimeout(id);
+        return null;
+      }
+    };
+
     try {
-      // 1. Try Google Books API (broadest coverage for Russian and international editions)
-      const gRes = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
-      if (gRes.ok) {
-        const gData = await gRes.json();
-        if (gData.items && gData.items.length > 0) {
-          const info = gData.items[0].volumeInfo;
-          const title = info.title || 'Без названия';
-          const author = info.authors ? info.authors.join(', ') : 'Неизвестный автор';
-          const totalPages = info.pageCount || '';
-          const annotation = info.description || `ISBN: ${isbn}`;
-          let coverUrl = '';
-          if (info.imageLinks) {
-            coverUrl = (info.imageLinks.thumbnail || info.imageLinks.smallThumbnail || '').replace('http:', 'https:');
+      // 1. Попытка 1: Google Books API
+      try {
+        const gRes = await fetchWithTimeout(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
+        if (gRes && gRes.ok) {
+          const gData = await gRes.json();
+          if (gData.items && gData.items.length > 0) {
+            const info = gData.items[0].volumeInfo;
+            const title = info.title || '';
+            const author = info.authors ? info.authors.join(', ') : '';
+            const totalPages = info.pageCount || '';
+            const annotation = info.description || `ISBN: ${isbn}`;
+            let coverUrl = '';
+            if (info.imageLinks) {
+              coverUrl = (info.imageLinks.thumbnail || info.imageLinks.smallThumbnail || '').replace('http:', 'https:');
+            }
+
+            if (title) {
+              setCurrentBook(prev => ({
+                ...prev,
+                title: title || prev.title,
+                author: author || prev.author,
+                totalPages: totalPages || prev.totalPages,
+                annotation: annotation || prev.annotation,
+                coverUrl: coverUrl || prev.coverUrl
+              }));
+
+              setCustomModal({
+                title: 'Книга найдена!',
+                message: `«${title}» (${author || 'автор не указан'}) успешно найдена и добавлена в форму.`,
+                type: 'alert'
+              });
+              bookFound = true;
+            }
           }
+        }
+      } catch (e) {
+        console.warn("Google Books request failed, trying fallback...", e);
+      }
 
-          setCurrentBook(prev => ({
-            ...prev,
-            title,
-            author,
-            totalPages: totalPages || prev.totalPages,
-            annotation,
-            coverUrl: coverUrl || prev.coverUrl
-          }));
+      // 2. Попытка 2: Open Library Data API (если Google не ответил)
+      if (!bookFound) {
+        try {
+          const olRes = await fetchWithTimeout(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
+          if (olRes && olRes.ok) {
+            const data = await olRes.json();
+            const bookData = data[`ISBN:${isbn}`];
+            if (bookData) {
+              const title = bookData.title || '';
+              const author = bookData.authors ? bookData.authors.map(a => a.name).join(', ') : '';
+              const totalPages = bookData.number_of_pages || '';
+              const coverUrl = bookData.cover ? (bookData.cover.large || bookData.cover.medium || bookData.cover.small || '') : '';
 
-          setCustomModal({
-            title: 'Книга найдена!',
-            message: `«${title}» (${author}) успешно распознана и добавлена в форму.`,
-            type: 'alert'
-          });
-          return;
+              if (title) {
+                setCurrentBook(prev => ({
+                  ...prev,
+                  title: title || prev.title,
+                  author: author || prev.author,
+                  totalPages: totalPages || prev.totalPages,
+                  coverUrl: coverUrl || prev.coverUrl
+                }));
+
+                setCustomModal({
+                  title: 'Книга найдена!',
+                  message: `«${title}» найдена в открытом каталоге.`,
+                  type: 'alert'
+                });
+                bookFound = true;
+              }
+            }
+          }
+        } catch (e) {
+          console.warn("OpenLibrary Data API failed, trying endpoint 3...", e);
         }
       }
 
-      // 2. Fallback to Open Library
-      const olRes = await fetch(`https://openlibrary.org/isbn/${isbn}.json`);
-      if (olRes.ok) {
-        const data = await olRes.json();
-        const title = data.title || 'Книга по ISBN';
-        let author = 'Неизвестный автор';
-        if (data.authors && data.authors.length > 0) {
-          const authorRes = await fetch(`https://openlibrary.org${data.authors[0].key}.json`);
-          if (authorRes.ok) {
-            const authorData = await authorRes.json();
-            author = authorData.name || author;
+      // 3. Попытка 3: Прямой ISBN JSON в Open Library
+      if (!bookFound) {
+        try {
+          const directRes = await fetchWithTimeout(`https://openlibrary.org/isbn/${isbn}.json`);
+          if (directRes && directRes.ok) {
+            const directData = await directRes.json();
+            if (directData && directData.title) {
+              const title = directData.title;
+              let author = '';
+              if (directData.authors && directData.authors.length > 0) {
+                const authorRes = await fetchWithTimeout(`https://openlibrary.org${directData.authors[0].key}.json`, {}, 3000);
+                if (authorRes && authorRes.ok) {
+                  const authorData = await authorRes.json();
+                  author = authorData.name || '';
+                }
+              }
+
+              setCurrentBook(prev => ({
+                ...prev,
+                title: title || prev.title,
+                author: author || prev.author,
+                totalPages: directData.number_of_pages || prev.totalPages,
+                coverUrl: `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`
+              }));
+
+              setCustomModal({
+                title: 'Книга найдена!',
+                message: `«${title}» найдена в каталоге.`,
+                type: 'alert'
+              });
+              bookFound = true;
+            }
           }
+        } catch (e) {
+          console.warn("OpenLibrary direct JSON failed", e);
         }
+      }
+
+      // 4. Если каталоги не ответили или издания нет в базах — сохраняем ISBN и не блокируем пользователя!
+      if (!bookFound) {
         setCurrentBook(prev => ({
           ...prev,
-          title,
-          author,
-          totalPages: data.number_of_pages || prev.totalPages,
-          coverUrl: `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`
+          annotation: prev.annotation ? `${prev.annotation} | ISBN: ${isbn}` : `ISBN: ${isbn}`
         }));
         setCustomModal({
-          title: 'Книга найдена!',
-          message: `«${title}» найдена в каталоге Open Library.`,
+          title: 'Штрих-код распознан!',
+          message: `Код ${isbn} успешно считан. В сетевых базах информации о конкретном издании пока нет, но ISBN уже сохранен в аннотации. Пожалуйста, введите название вручную.`,
           type: 'alert'
         });
-        return;
       }
-
-      // 3. Fallback if not found in catalog
-      setCurrentBook(prev => ({ ...prev, annotation: prev.annotation ? `${prev.annotation} | ISBN: ${isbn}` : `ISBN: ${isbn}` }));
-      setCustomModal({
-        title: 'Штрих-код распознан',
-        message: `Штрих-код (${isbn}) успешно считан. В открытых интернет-каталогах книга пока не найдена, но ISBN уже сохранен в аннотации. Пожалуйста, введите название и автора вручную.`,
-        type: 'alert'
-      });
-    } catch (e) {
-      console.error(e);
-      setCustomModal({
-        title: 'Ошибка поиска',
-        message: 'Не удалось связаться с базой данных книг. Проверьте интернет-соединение.',
-        type: 'alert'
-      });
+    } finally {
+      setIsBookSearching(false);
     }
   };
 
@@ -2059,6 +2129,17 @@ export default function App() {
               #reader__scan_region { background: black; }
               #reader video { object-fit: cover !important; }
             `}</style>
+          </div>
+        </div>
+      )}
+
+      {/* Loading overlay during online book search */}
+      {isBookSearching && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-2xl flex flex-col items-center gap-3 animate-fade-in max-w-xs text-center">
+            <div className="w-9 h-9 border-4 border-[#A68970] border-t-transparent rounded-full animate-spin"></div>
+            <h4 className="font-black text-sm text-[#564B41]">Поиск в каталогах...</h4>
+            <p className="text-[11px] text-[#847466]">Ищем название, автора и обложку по отсканированному штрих-коду</p>
           </div>
         </div>
       )}
