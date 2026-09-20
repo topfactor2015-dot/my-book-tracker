@@ -90,37 +90,7 @@ const BBC_TOP_200 = [
   { rank: 7, title: 'Винни-Пух', author: 'А. А. Милн' },
   { rank: 8, title: '1984', author: 'Джордж Оруэлл' },
   { rank: 9, title: 'Лев, колдунья и платяной шкаф', author: 'К. С. Льюис' },
-  { rank: 10, title: 'Джейн Эйр', author: 'Шарлотта Бронте' },
-  { rank: 11, title: 'Уловка-22', author: 'Джозеф Хеллер' },
-  { rank: 12, title: 'Грозовой перевал', author: 'Эмили Бронте' },
-  { rank: 13, title: 'Пение птиц', author: 'Себастьян Фолкс' },
-  { rank: 14, title: 'Ребекка', author: 'Дафна дю Морье' },
-  { rank: 15, title: 'Над пропастью во ржи', author: 'Дж. Д. Сэлинджер' },
-  { rank: 16, title: 'Ветер в ивах', author: 'Кеннет Грэм' },
-  { rank: 17, title: 'Большие надежды', author: 'Чарльз Диккенс' },
-  { rank: 18, title: 'Маленькие женщины', author: 'Луиза Мэй Олкотт' },
-  { rank: 19, title: 'Мандолина капитана Корелли', author: 'Луи де Берньер' },
-  { rank: 20, title: 'Война и мир', author: 'Лев Толстой' },
-  { rank: 21, title: 'Унесённые ветром', author: 'Маргарет Митчелл' },
-  { rank: 22, title: 'Гарри Поттер и философский камень', author: 'Дж. К. Роулинг' },
-  { rank: 23, title: 'Гарри Поттер и Тайная комната', author: 'Дж. К. Роулинг' },
-  { rank: 24, title: 'Гарри Поттер и узник Азкабана', author: 'Дж. К. Роулинг' },
-  { rank: 25, title: 'Хоббит', author: 'Дж. Р. Р. Толкин' },
-  { rank: 26, title: 'Тэсс из рода д\'Эрбервиллей', author: 'Томас Харди' },
-  { rank: 27, title: 'Миддлмарч', author: 'Джордж Элиот' },
-  { rank: 28, title: 'Молитва об Оуэне Мини', author: 'Джон Ирвинг' },
-  { rank: 29, title: 'Гроздья гнева', author: 'Джон Стейнбек' },
-  { rank: 30, title: 'Алиса в Стране чудес', author: 'Льюис Кэрролл' },
-  { rank: 31, title: 'Дневник Трейси Бикер', author: 'Жаклин Уилсон' },
-  { rank: 32, title: 'Сто лет одиночества', author: 'Габриэль Гарсиа Маркес' },
-  { rank: 33, title: 'Столпы Земли', author: 'Кен Фоллетт' },
-  { rank: 34, title: 'Дэвид Копперфильд', author: 'Чарльз Диккенс' },
-  { rank: 35, title: 'Чарли и шоколадная фабрика', author: 'Роальд Даль' },
-  { rank: 36, title: 'Остров сокровищ', author: 'Роберт Льюис Стивенсон' },
-  { rank: 37, title: 'Город как Элис', author: 'Невил Шют' },
-  { rank: 38, title: 'Доводы рассудка', author: 'Джейн Остин' },
-  { rank: 39, title: 'Дюна', author: 'Фрэнк Герберт' },
-  { rank: 40, title: 'Эмма', author: 'Джейн Остин' }
+  { rank: 10, title: 'Джейн Эйр', author: 'Шарлотта Бронте' }
 ];
 
 const getMoscowDate = () => {
@@ -150,120 +120,6 @@ const INITIAL_BOOKS = [
       { date: getMoscowDateString(2), pages: 60, minutes: 90 }, 
       { date: getMoscowDateString(0), pages: 70, minutes: 105 }
     ]
-  },
-  {
-    id: 2, title: 'Темный лес', author: 'Лю Цысинь', status: 'wishlist', genre: 'Фантастика', format: 'paper',
-    seriesName: 'Воспоминания о прошлом Земли', seriesIndex: 2, seriesTotal: 3,
-    totalPages: 500, readPages: 0, rating: 0, annotation: 'Вторая книга трилогии Воспоминания о прошлом Земли.', summary: '', quotes: '', 
-    coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['космос'],
-    dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 3, title: 'Дюна', author: 'Фрэнк Герберт', status: 'read', genre: 'Фантастика', format: 'combo',
-    seriesName: 'Хроники Дюны', seriesIndex: 1, seriesTotal: 6,
-    totalPages: 700, readPages: 700, rating: 5, annotation: 'История Пола Атрейдеса на пустынной планете Арракис...', summary: 'Эпично и масштабно. Лучшая фантастика столетия.', quotes: 'Я не должен бояться. Страх — убийца разума.',
-    coverUrl: 'https://images.unsplash.com/photo-1546552356-372989cfa124?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['любимое', 'классика'],
-    dateStarted: getMoscowDateString(30), dateFinished: getMoscowDateString(15), 
-    log: [
-      { date: getMoscowDateString(28), pages: 100, minutes: 150 },
-      { date: getMoscowDateString(20), pages: 200, minutes: 300 }
-    ]
-  },
-  {
-    id: 4, title: 'Евгений Онегин', author: 'Александр Пушкин', status: 'read', genre: 'Стихи', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 240, readPages: 240, rating: 5, annotation: 'Роман в стихах о русской интеллигенции первой трети XIX века.', summary: 'Великая классика стихотворной формы.', quotes: 'Любви все возрасты покорны...',
-    coverUrl: 'https://images.unsplash.com/photo-1476275466078-4007374efbbe?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['классика', 'поэзия'],
-    dateStarted: getMoscowDateString(45), dateFinished: getMoscowDateString(40), log: []
-  },
-  {
-    id: 5, title: 'Мцыри', author: 'Михаил Лермонтов', status: 'read', genre: 'Баллады', format: 'ebook',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 80, readPages: 80, rating: 5, annotation: 'Поэма о свободолюбивом юноше-монахе, рвущемся на родину в горы.', summary: 'Мощнейшая романтическая поэма.', quotes: 'И божий мир увял в душе...',
-    coverUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['поэзия', 'классика'],
-    dateStarted: getMoscowDateString(60), dateFinished: getMoscowDateString(58), log: []
-  },
-  {
-    id: 6, title: 'Шантарам', author: 'Грегори Дэвид Робертс', status: 'read', genre: 'Роман', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 850, readPages: 850, rating: 5, annotation: 'Побег из австралийской тюрьмы и новая жизнь в трущобах Бомбея.', summary: 'Невероятная атмосфера Индии.', quotes: 'Судьба — это не то, что случается с нами...',
-    coverUrl: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['индия', 'бестселлер'],
-    dateStarted: getMoscowDateString(45), dateFinished: getMoscowDateString(20), log: []
-  },
-  {
-    id: 101, title: 'Мастер и Маргарита', author: 'Михаил Булгаков', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 480, readPages: 0, rating: 0, annotation: 'Визит Воланда и его свиты в Москву 1930-х годов.', summary: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['классика', 'мистика'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 102, title: '1984', author: 'Джордж Оруэлл', status: 'wishlist', genre: 'Фантастика', format: 'ebook',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 320, readPages: 0, rating: 0, annotation: 'Мрачная антиутопия о тоталитарном обществе и партии.', summary: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1495640388908-05fa85288e61?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['антиутопия', 'политика'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 103, title: 'Тёмная Башня: Стрелок', author: 'Стивен Кинг', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
-    seriesName: 'Тёмная Башня', seriesIndex: 1, seriesTotal: 7,
-    totalPages: 300, readPages: 0, rating: 0, annotation: 'Стрелок Роланд преследует Человека в черном по пустыне.', summary: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['фэнтези', 'кинг'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 104, title: 'Тёмная Башня II: Извлечение троих', author: 'Стивен Кинг', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
-    seriesName: 'Тёмная Башня', seriesIndex: 2, seriesTotal: 7,
-    totalPages: 400, readPages: 0, rating: 0, annotation: 'Продолжение путешествия Роланда.', summary: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['фэнтези', 'кинг'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 105, title: 'Психология влияния', author: 'Роберт Чалдини', status: 'wishlist', genre: 'Психология', format: 'audio',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 400, readPages: 0, rating: 0, annotation: 'Как люди принимают решения и почему соглашаются.', summary: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['психология', 'бизнес'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 106, title: 'Богатый папа, бедный папа', author: 'Роберт Кийосаки', status: 'wishlist', genre: 'Бизнес', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 350, readPages: 0, rating: 0, annotation: 'Чему учат богатых детей тому, чему не учат в школе.', summary: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['финансы', 'инвестиции'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 107, title: 'Преступление и наказание', author: 'Фёдор Достоевский', status: 'wishlist', genre: 'Проза', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 600, readPages: 0, rating: 0, annotation: 'Психологический отчет об одном преступлении.', summary: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1476275466078-4007374efbbe?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['классика', 'философия'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 108, title: 'Маленький принц', author: 'Антуан де Сент-Экзюпери', status: 'wishlist', genre: 'Фэнтези', format: 'ebook',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 120, readPages: 0, rating: 0, annotation: 'Мудрая философская сказка о дружбе и ответственности.', summary: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['притча', 'классика'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 109, title: 'Властелин Колец: Братство Кольца', author: 'Джон Толкин', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
-    seriesName: 'Властелин Колец', seriesIndex: 1, seriesTotal: 3,
-    totalPages: 500, readPages: 0, rating: 0, annotation: 'Начало великого похода к Ородруину.', summary: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['фэнтези', 'эпик'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 110, title: 'Шерлок Холмс: Этюд в багровых тонах', author: 'Артур Конан Дойл', status: 'wishlist', genre: 'Детектив', format: 'audio',
-    seriesName: 'Приключения Шерлока Холмса', seriesIndex: 1, seriesTotal: 10,
-    totalPages: 200, readPages: 0, rating: 0, annotation: 'Первое дело легендарного сыщика.', summary: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['детектив', 'классика'], dateStarted: '', dateFinished: '', log: []
   }
 ];
 
@@ -305,7 +161,7 @@ export default function App() {
   
   const [books, setBooks] = useState(() => {
     try {
-      const savedBooks = localStorage.getItem('libriMori_books_v44');
+      const savedBooks = localStorage.getItem('libriMori_books_v55');
       if (savedBooks) return JSON.parse(savedBooks);
     } catch (e) { console.error(e); }
     return INITIAL_BOOKS;
@@ -313,18 +169,18 @@ export default function App() {
 
   const [goals, setGoals] = useState(() => {
     try {
-      const savedGoals = localStorage.getItem('libriMori_goals_v44');
+      const savedGoals = localStorage.getItem('libriMori_goals_v55');
       if (savedGoals) return JSON.parse(savedGoals);
     } catch (e) { console.error(e); }
     return { yearly: 20, monthly: 5 };
   });
 
   useEffect(() => {
-    try { localStorage.setItem('libriMori_books_v44', JSON.stringify(books)); } catch (e) { console.error(e); }
+    try { localStorage.setItem('libriMori_books_v55', JSON.stringify(books)); } catch (e) { console.error(e); }
   }, [books]);
 
   useEffect(() => {
-    try { localStorage.setItem('libriMori_goals_v44', JSON.stringify(goals)); } catch (e) { console.error(e); }
+    try { localStorage.setItem('libriMori_goals_v55', JSON.stringify(goals)); } catch (e) { console.error(e); }
   }, [goals]);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -332,7 +188,6 @@ export default function App() {
   const [currentBook, setCurrentBook] = useState(null);
   const [customModal, setCustomModal] = useState(null); 
   
-  // Barcode scanner modal state
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [scannerError, setScannerError] = useState('');
   const [isScannerLoading, setIsScannerLoading] = useState(false);
@@ -363,12 +218,10 @@ export default function App() {
   const [currentMatchIndex, setCurrentMatchIndex] = useState(0);
   const [tournamentWinner, setTournamentWinner] = useState(null);
 
-  // Roulette State
   const [rouletteBook, setRouletteBook] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [rouletteGenre, setRouletteGenre] = useState('all');
 
-  // Timer State
   const [activeTimer, setActiveTimer] = useState(null);
   const [timerDisplay, setTimerDisplay] = useState(0);
   const fileInputRef = useRef(null);
@@ -418,12 +271,7 @@ export default function App() {
         .then((Html5Qrcode) => {
           setIsScannerLoading(false);
           setTimeout(() => {
-            const formatsToSupport = window.Html5QrcodeSupportedFormats ? [
-              window.Html5QrcodeSupportedFormats.EAN_13,
-              window.Html5QrcodeSupportedFormats.EAN_8
-            ] : undefined;
-
-            const html5Qrcode = new Html5Qrcode("reader", formatsToSupport ? { formatsToSupport } : undefined);
+            const html5Qrcode = new Html5Qrcode("reader");
             scannerRef.current = html5Qrcode;
 
             const config = { fps: 15, qrbox: { width: 280, height: 160 }, aspectRatio: 1.0 };
@@ -433,10 +281,9 @@ export default function App() {
               config,
               (decodedText) => {
                 const clean = decodedText.trim().replace(/[-\s]/g, '');
-                // Ожидаем корректный EAN-13 (начинается с 978 или 979) или старый ISBN-10
                 const isBookISBN = (clean.length === 13 && (clean.startsWith('978') || clean.startsWith('979'))) || (clean.length === 10);
                 
-                if (!isBookISBN) return; // Игнорируем случайные форматы и UPC
+                if (!isBookISBN) return;
 
                 stopScanner();
                 fetchBookByISBN(clean);
@@ -444,14 +291,14 @@ export default function App() {
               () => {} 
             ).catch((err) => {
               console.error("Scanner startup error:", err);
-              setScannerError('Не удалось запустить камеру. Убедитесь, что вы дали разрешение на использование камеры в браузере.');
+              setScannerError('Не удалось запустить камеру. Убедитесь, что разрешили доступ к камере.');
             });
           }, 100);
         })
         .catch(err => {
           console.error("Failed to load scanner:", err);
           setIsScannerLoading(false);
-          setScannerError('Не удалось загрузить библиотеку сканера. Проверьте интернет.');
+          setScannerError('Не удалось загрузить библиотеку сканера.');
         });
     }
 
@@ -509,7 +356,6 @@ export default function App() {
     };
 
     try {
-      // 1. Прямой Google Books API
       try {
         const gRes = await fetchWithTimeout(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
         if (gRes && gRes.ok) {
@@ -520,11 +366,8 @@ export default function App() {
             applyBookData(info.title, info.authors?.join(', '), info.pageCount, info.description || `ISBN: ${isbn}`, cover);
           }
         }
-      } catch (e) {
-        console.warn("Direct Google Books failed...", e);
-      }
+      } catch (e) { console.warn(e); }
 
-      // 2. Google Books через CORS-прокси
       if (!bookFound) {
         try {
           const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)}`;
@@ -537,29 +380,9 @@ export default function App() {
               applyBookData(info.title, info.authors?.join(', '), info.pageCount, info.description || `ISBN: ${isbn}`, cover);
             }
           }
-        } catch (e) {
-          console.warn("Proxy Google Books failed...", e);
-        }
+        } catch (e) { console.warn(e); }
       }
 
-      // 3. Open Library Search API
-      if (!bookFound) {
-        try {
-          const olSearchRes = await fetchWithTimeout(`https://openlibrary.org/search.json?isbn=${isbn}`);
-          if (olSearchRes && olSearchRes.ok) {
-            const olData = await olSearchRes.json();
-            if (olData.docs && olData.docs.length > 0) {
-              const doc = olData.docs[0];
-              const cover = doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg` : `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
-              applyBookData(doc.title, doc.author_name?.join(', '), doc.number_of_pages_median || doc.number_of_pages, `ISBN: ${isbn}`, cover);
-            }
-          }
-        } catch (e) {
-          console.warn("OpenLibrary search failed...", e);
-        }
-      }
-
-      // 4. Open Library Data API
       if (!bookFound) {
         try {
           const olRes = await fetchWithTimeout(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
@@ -571,21 +394,17 @@ export default function App() {
               applyBookData(bData.title, bData.authors?.map(a => a.name).join(', '), bData.number_of_pages, `ISBN: ${isbn}`, cover);
             }
           }
-        } catch (e) {
-          console.warn("OpenLibrary Data API failed...", e);
-        }
+        } catch (e) { console.warn(e); }
       }
 
-      // 5. Если тираж совсем новый
       if (!bookFound) {
         setCurrentBook(prev => ({
           ...prev,
           annotation: prev.annotation ? `${prev.annotation}\nISBN: ${isbn}` : `ISBN: ${isbn}`
         }));
-
         setCustomModal({
           title: 'Штрих-код распознан!',
-          message: `Номер ${isbn} успешно считан. Это свежий тираж, которого ещё нет в открытых международных каталогах. Нажмите одну из кнопок быстрого поиска ниже, чтобы заполнить название за секунду!`,
+          message: `Номер ${isbn} считан. Книга свежая, воспользуйтесь кнопками быстрого поиска ниже, чтобы заполнить данные.`,
           type: 'alert'
         });
       }
@@ -849,7 +668,7 @@ export default function App() {
   const openNewBookModal = () => {
     setCurrentBook({
       id: Date.now(),
-      title: '', author: '', genre: '', seriesName: '', seriesIndex: '', seriesTotal: '',
+      title: '', author: '', genre: 'Фантастика', seriesName: '', seriesIndex: '', seriesTotal: '',
       status: 'wishlist', format: 'paper',
       totalPages: '', readPages: 0, rating: 0, annotation: '', summary: '', notes: '', quotes: '', coverUrl: '',
       tags: [], dateStarted: '', dateFinished: '', log: []
@@ -1095,7 +914,6 @@ export default function App() {
               <button onClick={() => setActiveTab('tournament')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'tournament' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Турнир</button>
             </div>
 
-            {/* Backup buttons */}
             <div className="flex items-center gap-1.5 ml-2">
               <button onClick={exportBackup} title="Скачать резервную копию библиотеки" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2 sm:p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
                 <DownloadIcon size={16} /> <span className="hidden lg:inline">Бэкап</span>
@@ -1129,12 +947,11 @@ export default function App() {
                  </div>
                  <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-2xl text-xs font-bold text-center border border-white/30 shrink-0">
                     {streakData.currentStreak > 0 
-                      ? MOTIVATIONAL_STREAK[getMoscowDate().getDate() % MOTIVATIONAL_STREAK.length] 
-                      : MOTIVATIONAL_NO_STREAK[getMoscowDate().getDate() % MOTIVATIONAL_NO_STREAK.length]}
+                      ? MOTIVATIONAL_STREAK[new Date().getDate() % MOTIVATIONAL_STREAK.length] 
+                      : MOTIVATIONAL_NO_STREAK[new Date().getDate() % MOTIVATIONAL_NO_STREAK.length]}
                  </div>
                </div>
 
-               {/* Scrollable Timeline Dots */}
                <div className="pt-2 border-t border-white/20 relative z-10">
                  <div className="flex justify-between items-center text-[10px] uppercase font-bold tracking-wider text-white/80 mb-2">
                    <span>Последние 2 недели активности</span>
@@ -1268,12 +1085,13 @@ export default function App() {
 
                       return (
                         <div key={book.id} className="bg-[#F7F2E8] rounded-3xl p-4 md:p-5 shadow-sm border border-[#EADFCF]">
-                          <div className="flex gap-3.5 md:gap-4">
-                            <div className="w-16 sm:w-20 aspect-[3/4] bg-[#EFE7D8] rounded-2xl shrink-0 overflow-hidden shadow-sm border border-[#E2D5C3] relative">
+                          <div className="flex gap-3.5 md:gap-4 items-stretch">
+                            {/* FIXED COVER STRETCHING BUG: added aspect-[3/4] and h-auto object-cover */}
+                            <div className="w-24 sm:w-28 aspect-[3/4] bg-[#EFE7D8] rounded-2xl shrink-0 overflow-hidden shadow-sm border border-[#E2D5C3] relative flex items-center justify-center">
                                {book.coverUrl ? (
                                 <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover" />
                                ) : (
-                                <div className="w-full h-full flex items-center justify-center bg-[#EAE2D2] text-[#846851] p-1.5 text-center text-[9px] font-bold leading-tight">
+                                <div className="w-full h-full flex items-center justify-center bg-[#EAE2D2] text-[#846851] p-1.5 text-center text-[10px] font-bold leading-tight">
                                   {book.title}
                                 </div>
                                )}
@@ -1302,7 +1120,6 @@ export default function App() {
                                 </div>
                               </div>
                               
-                              {/* Quick increment buttons for mobile usability */}
                               <div className="mt-2.5 flex flex-wrap items-center gap-1.5 overflow-x-auto pb-1">
                                 <span className="text-[9px] font-bold text-[#948477] uppercase shrink-0">Быстро:</span>
                                 {[10, 25, 50].map(p => (
@@ -1445,7 +1262,6 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Day Summary Card below calendar for quick mobile view */}
                 <div className="bg-[#F7F2E8] rounded-2xl p-4 shadow-sm border border-[#EADFCF] flex justify-between items-center animate-fade-in">
                   <div className="flex flex-col">
                     <span className="font-bold text-[#564B41] text-sm">
@@ -1478,7 +1294,6 @@ export default function App() {
                 <p className="text-xs text-[#847466] mt-0.5">Сравнивайте статистику по периодам, жанрам, форматам с помощью круговых диаграмм.</p>
               </div>
 
-              {/* Period Selector */}
               <div className="flex flex-wrap bg-[#EFE7D8] rounded-2xl p-1 border border-[#E2D5C3] w-full md:w-auto">
                 {[
                   { id: 'month', label: 'Этот месяц' },
@@ -1497,7 +1312,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* Overview Summary Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-[#F7F2E8] p-5 rounded-3xl border border-[#EADFCF] shadow-sm">
                 <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider block mb-1">Прочитано книг</span>
@@ -1531,10 +1345,8 @@ export default function App() {
               </div>
             </div>
 
-            {/* Detailed Charts Grid with Pie / Donut Charts */}
             <div className="grid lg:grid-cols-2 gap-6">
               
-              {/* Genres Breakdown with Pie/Donut Chart */}
               <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-6">
                 <div className="flex justify-between items-center">
                   <h3 className="font-black text-base text-[#564B41] flex items-center gap-2">
@@ -1548,7 +1360,6 @@ export default function App() {
                   <p className="text-xs text-[#948477] py-8 text-center">За выбранный период нет завершенных книг.</p>
                 ) : (
                   <div className="flex flex-col sm:flex-row items-center gap-6">
-                    {/* SVG Donut Chart */}
                     <div className="relative w-44 h-44 shrink-0">
                       <svg viewBox="0 0 42 42" className="w-full h-full transform -rotate-90">
                         <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#EADFCF" strokeWidth="6" />
@@ -1560,7 +1371,6 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* Legend */}
                     <div className="flex-1 space-y-2 w-full">
                       {genreStatsForPeriod.map(([genre, count], idx) => {
                         const total = filteredReadBooksForStats.length;
@@ -1583,7 +1393,6 @@ export default function App() {
                 )}
               </div>
 
-              {/* Formats Breakdown with Pie/Donut Chart */}
               <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-6">
                 <div className="flex justify-between items-center">
                   <h3 className="font-black text-base text-[#564B41] flex items-center gap-2">
@@ -1597,7 +1406,6 @@ export default function App() {
                   <p className="text-xs text-[#948477] py-8 text-center">За выбранный период нет завершенных книг.</p>
                 ) : (
                   <div className="flex flex-col sm:flex-row items-center gap-6">
-                    {/* SVG Donut Chart */}
                     <div className="relative w-44 h-44 shrink-0">
                       <svg viewBox="0 0 42 42" className="w-full h-full transform -rotate-90">
                         <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#EADFCF" strokeWidth="6" />
@@ -1614,7 +1422,6 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* Legend */}
                     <div className="flex-1 space-y-2.5 w-full">
                       {[
                         { id: 'paper', label: 'Бумажные', count: formatStatsForPeriod.paper, bg: 'bg-[#846851]' },
@@ -1639,7 +1446,6 @@ export default function App() {
                 )}
               </div>
 
-              {/* Weekday Activity */}
               <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-4 lg:col-span-2">
                 <div className="flex justify-between items-center">
                   <h3 className="font-black text-base text-[#564B41] flex items-center gap-2">
@@ -1694,7 +1500,6 @@ export default function App() {
                </div>
             </div>
 
-            {/* Search & Filter Bar */}
             <div className="flex flex-col sm:flex-row gap-3 bg-[#F7F2E8] p-4 rounded-3xl border border-[#EADFCF] shadow-sm">
               <div className="relative flex-1">
                 <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9B8C80]"><SearchIcon size={16}/></div>
@@ -1725,7 +1530,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* Books List Grid */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {BBC_TOP_200.filter(item => {
                 const matchesSearch = !bbcSearch || 
@@ -1833,7 +1637,6 @@ export default function App() {
                   ))}
                 </div>
 
-                {/* View Mode Switcher */}
                 <div className="flex bg-[#EFE7D8] rounded-2xl p-1 border border-[#E2D5C3]">
                   <button onClick={() => setViewMode('grid')} title="Сетка обложек" className={`p-2 rounded-xl transition-all ${viewMode === 'grid' ? 'bg-white text-[#846851] shadow-sm' : 'text-[#74675B]'}`}>
                     <GridIcon size={16} />
@@ -1866,13 +1669,12 @@ export default function App() {
                   </select>
                   <select value={genreFilter} onChange={(e) => setGenreFilter(e.target.value)} className="appearance-none bg-[#FCF9F2] border border-[#EADFCF] text-[#564B41] px-3 py-2.5 rounded-2xl font-bold text-xs outline-none cursor-pointer min-w-[110px]">
                     <option value="all">Все жанры</option>
-                    {uniqueGenres.map(g => <option key={g} value={g}>{g}</option>)}
+                    {PREDEFINED_GENRES.map(g => <option key={g} value={g}>{g}</option>)}
                   </select>
                 </div>
               </div>
             </div>
 
-            {/* Grid View */}
             {viewMode === 'grid' && (
               <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
                 <button onClick={openNewBookModal} className="bg-[#F7F2E8] border-2 border-dashed border-[#D5C6B4] rounded-2xl flex flex-col items-center justify-center text-[#9B8C80] hover:text-[#846851] hover:border-[#A68970] hover:bg-[#EFE7D8] transition-all aspect-[2/3] group shadow-sm">
@@ -1943,12 +1745,10 @@ export default function App() {
               </div>
             )}
 
-            {/* Virtual Bookshelf View */}
             {viewMode === 'shelf' && (
               <div className="space-y-6 pt-2">
                 {bookshelfShelves.map((shelfBooks, shelfIdx) => (
                   <div key={shelfIdx} className="relative pt-4">
-                    {/* Shelf Content */}
                     <div className="flex flex-wrap items-end gap-3 sm:gap-6 px-4 pb-2 min-h-[210px]">
                       {shelfIdx === 0 && (
                         <div onClick={openNewBookModal} className="w-20 sm:w-28 h-36 sm:h-48 border-2 border-dashed border-[#D5C6B4] bg-[#F7F2E8]/80 rounded-xl flex flex-col items-center justify-center text-[#9B8C80] hover:text-[#846851] hover:border-[#A68970] transition-all cursor-pointer shadow-sm mb-1">
@@ -2001,7 +1801,6 @@ export default function App() {
                       })}
                     </div>
 
-                    {/* Wooden Shelf Plank */}
                     <div className="h-4 sm:h-5 bg-gradient-to-b from-[#A68970] via-[#8C745E] to-[#6A5443] rounded-sm shadow-xl border-t border-[#C7B299] relative z-10 flex items-center justify-between px-6">
                       <div className="w-2 h-2 rounded-full bg-[#524133] shadow-inner"></div>
                       <div className="w-2 h-2 rounded-full bg-[#524133] shadow-inner"></div>
@@ -2019,7 +1818,7 @@ export default function App() {
           </div>
         )}
 
-        {/* ================= РУЛЕТКА ================= */}
+        {/* ================= ROULETTE ================= */}
         {activeTab === 'roulette' && (
           <div className="max-w-xl mx-auto animate-fade-in text-center py-6">
             <div className="bg-[#F7F2E8] rounded-[2.5rem] p-6 sm:p-10 shadow-sm border border-[#EADFCF]">
@@ -2035,7 +1834,6 @@ export default function App() {
                  </div>
                ) : (
                  <div className="mb-8">
-                   {/* Жанровый фильтр для рулетки */}
                    <div className="flex flex-wrap justify-center items-center gap-3 mb-6 bg-[#EFE7D8] p-3 rounded-2xl border border-[#E2D5C3] mx-auto w-fit">
                      <span className="text-[10px] font-black text-[#847466] uppercase tracking-wider">Искать среди:</span>
                      <select 
@@ -2087,7 +1885,7 @@ export default function App() {
           </div>
         )}
 
-        {/* ================= ТУРНИР ================= */}
+        {/* ================= TOURNAMENT ================= */}
         {activeTab === 'tournament' && (
           <div className="max-w-4xl mx-auto animate-fade-in">
             {tournamentPhase === 'setup' && (
@@ -2182,7 +1980,6 @@ export default function App() {
         )}
       </main>
 
-      {}
       <div className="fixed bottom-0 left-0 right-0 bg-[#F7F2E8]/95 backdrop-blur-md border-t border-[#EADFCF] py-2 px-3 z-30 flex justify-around items-center md:hidden shadow-lg overflow-x-auto gap-2">
         <button onClick={() => setActiveTab('diary')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'diary' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <ClockIcon size={18} />
@@ -2210,7 +2007,6 @@ export default function App() {
         </button>
       </div>
 
-      {/* Summary Modal */}
       {isSummaryModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#4A4238]/60 backdrop-blur-sm" onClick={() => setIsSummaryModalOpen(false)}></div>
@@ -2257,7 +2053,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Barcode Scanner Modal */}
       {isScannerOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsScannerOpen(false)}></div>
@@ -2290,7 +2085,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Loading overlay during online book search */}
       {isBookSearching && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-2xl flex flex-col items-center gap-3 animate-fade-in max-w-xs text-center">
@@ -2301,7 +2095,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Book Edit Modal */}
       {isModalOpen && currentBook && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
           <div className="absolute inset-0 bg-[#4A4238]/50 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
@@ -2319,7 +2112,6 @@ export default function App() {
 
             <form onSubmit={handleSaveBook} className="p-4 sm:p-6 space-y-5 sm:space-y-6">
               
-              {/* Quick Search Panel for freshly scanned ISBNs */}
               {lastScannedISBN && (
                 <div className="bg-[#FAF3E8] border border-[#E2D5C3] p-3.5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs shadow-sm">
                   <div className="flex items-center gap-2">
@@ -2381,14 +2173,17 @@ export default function App() {
                     <div className="space-y-1 flex-1">
                       <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider">Жанр</label>
                       <div className="relative">
-                        <input list="genre-list" type="text" value={currentBook.genre || ''} onChange={(e) => setCurrentBook({...currentBook, genre: e.target.value})} onFocus={(e) => e.target.select()} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 pr-8 font-bold text-xs sm:text-sm focus:border-[#A68970] outline-none bg-[#FCF9F2] text-[#4A4238]" />
-                        {currentBook.genre && <button type="button" onClick={() => setCurrentBook({...currentBook, genre: ''})} className="absolute right-2 top-1/2 -translate-y-1/2 text-[#9B8C80] p-1"><XIcon size={12} /></button>}
+                        <select 
+                          value={currentBook.genre || 'Фантастика'} 
+                          onChange={(e) => setCurrentBook({...currentBook, genre: e.target.value})}
+                          className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-bold text-xs sm:text-sm focus:border-[#A68970] outline-none bg-[#FCF9F2] text-[#4A4238] cursor-pointer appearance-none"
+                        >
+                          {PREDEFINED_GENRES.map(g => <option key={g} value={g}>{g}</option>)}
+                        </select>
                       </div>
-                      <datalist id="genre-list">{PREDEFINED_GENRES.map(g => <option key={g} value={g} />)}</datalist>
                     </div>
                   </div>
 
-                  {/* Series and Cycle Inputs */}
                   <div className="bg-[#EFE7D8] p-3 rounded-2xl border border-[#EADFCF] space-y-2">
                     <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider">Книжная серия / Цикл</label>
                     <div className="flex gap-2">
@@ -2465,7 +2260,6 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Enhanced Notes & Review Sections */}
               <div className="space-y-4 bg-[#F2ECE1] p-4 sm:p-5 rounded-3xl border border-[#E2D5C3]">
                 <h3 className="text-xs font-black text-[#74675B] uppercase tracking-wider flex items-center gap-1.5">
                   <Edit3Icon size={14} /> Заметки, рецензии и цитаты
@@ -2507,7 +2301,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Custom Modal Dialog */}
       {customModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#4A4238]/60 backdrop-blur-sm" onClick={() => setCustomModal(null)}></div>
@@ -2548,7 +2341,7 @@ export default function App() {
                     setCustomModal(null);
                   }
                 }} 
-                className="px-4 py-2 rounded-xl font-bold text-xs text-white bg-[#A68970] hover:bg-[#92745C] transition-colors shadow-md"
+                className="px-5 py-2 rounded-xl font-bold text-xs text-white bg-[#A68970] hover:bg-[#92745C] transition-colors shadow-md"
               >
                 ОК
               </button>
