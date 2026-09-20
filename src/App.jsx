@@ -27,6 +27,7 @@ const UploadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={pro
 const PieChartIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>;
 const FlameIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 17c1.38 0 2.5-1.12 2.5-2.5 0-2-3-3.5-3-5.5 0-1.5 1-2.5 2-3-.5 2 2 3.5 2 5.5a4.5 4.5 0 1 1-9 0c0-2 1-3.5 2-5-1.5 1.5-2 3.5-2 5z"></path></svg>;
 const AwardIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>;
+const ScanIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><line x1="7" y1="12" x2="17" y2="12"></line></svg>;
 
 const LibriMoriLogo = ({ size = 32 }) => (
   <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
@@ -195,7 +196,7 @@ export default function App() {
   
   const [books, setBooks] = useState(() => {
     try {
-      const savedBooks = localStorage.getItem('libriMori_books_v40');
+      const savedBooks = localStorage.getItem('libriMori_books_v41');
       if (savedBooks) return JSON.parse(savedBooks);
     } catch (e) { console.error(e); }
     return INITIAL_BOOKS;
@@ -203,7 +204,7 @@ export default function App() {
 
   const [goals, setGoals] = useState(() => {
     try {
-      const savedGoals = localStorage.getItem('libriMori_goals_v40');
+      const savedGoals = localStorage.getItem('libriMori_goals_v41');
       if (savedGoals) return JSON.parse(savedGoals);
     } catch (e) { console.error(e); }
     return { yearly: 20, monthly: 5 };
@@ -211,13 +212,13 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('libriMori_books_v40', JSON.stringify(books));
+      localStorage.setItem('libriMori_books_v41', JSON.stringify(books));
     } catch (e) { console.error(e); }
   }, [books]);
 
   useEffect(() => {
     try {
-      localStorage.setItem('libriMori_goals_v40', JSON.stringify(goals));
+      localStorage.setItem('libriMori_goals_v41', JSON.stringify(goals));
     } catch (e) { console.error(e); }
   }, [goals]);
   
@@ -226,6 +227,11 @@ export default function App() {
   const [currentBook, setCurrentBook] = useState(null);
   const [customModal, setCustomModal] = useState(null); 
   
+  // Barcode scanner modal state
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
+  const [scannerError, setScannerError] = useState('');
+  const videoRef = useRef(null);
+
   const [filter, setFilter] = useState('all'); 
   const [genreFilter, setGenreFilter] = useState('all');
   const [authorFilter, setAuthorFilter] = useState('all');
@@ -268,6 +274,94 @@ export default function App() {
     }
     return () => clearInterval(interval);
   }, [activeTimer]);
+
+  // Barcode Scanner handler
+  useEffect(() => {
+    let stream = null;
+    let barcodeDetector = null;
+    let intervalId = null;
+
+    if (isScannerOpen) {
+      setScannerError('');
+      navigator.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } })
+        .then(s => {
+          stream = s;
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+            videoRef.current.play();
+          }
+
+          if ('BarcodeDetector' in window) {
+            barcodeDetector = new window.BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'isbn'] });
+            intervalId = setInterval(async () => {
+              if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
+                try {
+                  const barcodes = await barcodeDetector.detect(videoRef.current);
+                  if (barcodes.length > 0) {
+                    const isbn = barcodes[0].rawValue;
+                    stopScanner();
+                    fetchBookByISBN(isbn);
+                  }
+                } catch (e) {
+                  console.debug(e);
+                }
+              }
+            }, 500);
+          } else {
+            setScannerError('Сканер штрих-кодов не поддерживается вашим браузером. Вы можете ввести ISBN или данные вручную.');
+          }
+        })
+        .catch(err => {
+          setScannerError('Не удалось получить доступ к камере. Убедитесь, что разрешили доступ.');
+        });
+    }
+
+    const stopScanner = () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+      if (intervalId) clearInterval(intervalId);
+      setIsScannerOpen(false);
+    };
+
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isScannerOpen]);
+
+  const fetchBookByISBN = async (isbn) => {
+    try {
+      const res = await fetch(`https://openlibrary.org/isbn/${isbn}.json`);
+      if (res.ok) {
+        const data = await res.json();
+        const title = data.title || 'Книга по ISBN';
+        let author = 'Неизвестный автор';
+        if (data.authors && data.authors.length > 0) {
+          const authorRes = await fetch(`https://openlibrary.org${data.authors[0].key}.json`);
+          if (authorRes.ok) {
+            const authorData = await authorRes.json();
+            author = authorData.name || author;
+          }
+        }
+        setCurrentBook(prev => ({
+          ...prev,
+          title,
+          author,
+          totalPages: data.number_of_pages || 300,
+          coverUrl: `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`
+        }));
+        alert(`Книга успешно распознана по штрих-коду (${isbn})!`);
+      } else {
+        alert(`Штрих-код ${isbn} успешно отсканирован, но в базе Open Library книга не найдена. Заполните данные вручную.`);
+        setCurrentBook(prev => ({ ...prev, annotation: `ISBN: ${isbn}` }));
+      }
+    } catch (e) {
+      alert('Ошибка при запросе к книжной базе данных.');
+    }
+  };
 
   const toggleTimer = (bookId) => {
     if (activeTimer && activeTimer.bookId === bookId) {
@@ -1893,6 +1987,22 @@ export default function App() {
         </div>
       )}
 
+      {/* Barcode Scanner Modal */}
+      {isScannerOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsScannerOpen(false)}></div>
+          <div className="bg-[#F7F2E8] rounded-3xl p-5 relative z-10 w-full max-w-md text-center space-y-4">
+            <h3 className="font-bold text-base text-[#4A4238]">Наведите камеру на штрих-код ISBN</h3>
+            <div className="relative aspect-video bg-black rounded-2xl overflow-hidden flex items-center justify-center">
+              <video ref={videoRef} className="w-full h-full object-cover" playsInline muted></video>
+              <div className="absolute inset-x-10 inset-y-8 border-2 border-dashed border-[#C98E5E] rounded-xl pointer-events-none"></div>
+            </div>
+            {scannerError && <p className="text-xs text-[#C56B5D] font-bold">{scannerError}</p>}
+            <button onClick={() => setIsScannerOpen(false)} className="bg-[#A68970] text-white px-6 py-2 rounded-xl text-xs font-bold">Закрыть сканер</button>
+          </div>
+        </div>
+      )}
+
       {/* Book Edit Modal */}
       {isModalOpen && currentBook && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
@@ -1900,7 +2010,12 @@ export default function App() {
           <div className="bg-[#F7F2E8] rounded-[2.5rem] shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative z-10 animate-fade-in flex flex-col border border-[#EADFCF]">
             
             <div className="flex justify-between items-center p-4 sm:p-5 border-b border-[#EADFCF] sticky top-0 bg-[#F7F2E8]/95 backdrop-blur-md z-20">
-              <h2 className="text-lg sm:text-xl font-black text-[#564B41]">{currentBook.id.toString().length > 10 ? 'Новая книга' : 'Редактирование'}</h2>
+              <div className="flex items-center gap-3">
+                <h2 className="text-lg sm:text-xl font-black text-[#564B41]">{currentBook.id.toString().length > 10 ? 'Новая книга' : 'Редактирование'}</h2>
+                <button onClick={() => setIsScannerOpen(true)} className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#846851] px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-[#E2D5C3] shadow-sm">
+                  <ScanIcon size={14} /> Сканировать ISBN
+                </button>
+              </div>
               <button onClick={() => setIsModalOpen(false)} className="bg-[#EADFCF] hover:bg-[#DDD0BE] p-2 rounded-full text-[#74675B] transition-colors"><XIcon size={18}/></button>
             </div>
 
