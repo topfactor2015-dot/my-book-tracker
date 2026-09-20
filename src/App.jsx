@@ -284,35 +284,47 @@ export default function App() {
     if (isScannerOpen) {
       setScannerError('');
       navigator.mediaDevices?.getUserMedia({ video: { facingMode: 'environment' } })
-        .then(s => {
+        .then(async (s) => {
           stream = s;
           if (videoRef.current) {
             videoRef.current.srcObject = stream;
-            videoRef.current.play();
+            // Catch error if browser blocks autoplay
+            videoRef.current.play().catch(e => console.warn("Autoplay blocked", e));
           }
 
-          if ('BarcodeDetector' in window) {
-            barcodeDetector = new window.BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'isbn'] });
-            intervalId = setInterval(async () => {
-              if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
-                try {
-                  const barcodes = await barcodeDetector.detect(videoRef.current);
-                  if (barcodes.length > 0) {
-                    const isbn = barcodes[0].rawValue;
-                    stopScanner();
-                    fetchBookByISBN(isbn);
+          try {
+            if ('BarcodeDetector' in window) {
+              // Исправлено: EAN-13 — это стандартный технический формат штрих-кодов для книг (ISBN)
+              barcodeDetector = new window.BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e'] });
+              
+              intervalId = setInterval(async () => {
+                if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
+                  try {
+                    const barcodes = await barcodeDetector.detect(videoRef.current);
+                    if (barcodes.length > 0) {
+                      const isbn = barcodes[0].rawValue.trim();
+                      stopScanner();
+                      fetchBookByISBN(isbn);
+                    }
+                  } catch (e) {
+                    console.debug("Detection error:", e);
                   }
-                } catch (e) {
-                  console.debug(e);
                 }
-              }
-            }, 500);
-          } else {
-            setScannerError('Сканер штрих-кодов не поддерживается вашим браузером. Вы можете ввести ISBN или данные вручную.');
+              }, 500);
+            } else {
+              setScannerError('Встроенный сканер не поддерживается вашим браузером (например, в iOS Safari). Пожалуйста, введите ISBN или данные вручную.');
+            }
+          } catch (initError) {
+            console.error("Scanner init error:", initError);
+            setScannerError('Ошибка запуска сканера штрих-кодов. Возможно, ваш браузер устарел.');
           }
         })
         .catch(err => {
-          setScannerError('Не удалось получить доступ к камере. Убедитесь, что разрешили доступ.');
+          console.error("Camera error:", err);
+          // Выводим ошибку камеры, только если поток действительно не был создан
+          if (!stream) {
+            setScannerError('Не удалось получить доступ к камере. Убедитесь, что разрешили доступ в настройках браузера.');
+          }
         });
     }
 
