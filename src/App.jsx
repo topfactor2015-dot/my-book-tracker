@@ -32,18 +32,13 @@ const ScanIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props
 
 const LibriMoriLogo = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" width={props.size || 24} height={props.size || 24} {...props}>
-    {/* Outline Book Left */}
     <path d="M20 80 V20 C20 20 40 10 50 20 C60 10 80 20 80 20 V80 C80 80 60 70 50 80 C40 70 20 80 20 80 Z" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
-    {/* Center Binding */}
     <path d="M50 20 V80" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
-    {/* Internal Maze Pages - Left */}
     <path d="M30 40 H40 V60 H30 Z" stroke="#D67C6B" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-    {/* Internal Maze Pages - Right */}
     <path d="M60 40 H70 V60 H60 Z" stroke="#D67C6B" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
-// Dynamically load html5-qrcode library for robust cross-browser barcode scanning
 const loadHtml5Qrcode = () => {
   return new Promise((resolve, reject) => {
     if (window.Html5Qrcode) {
@@ -78,7 +73,6 @@ const STATUSES = [
   { id: 'dropped', label: 'Брошено' }
 ];
 
-// Top 50 of the BBC Big Read list to provide a representative dataset without bloating the code size.
 const BBC_TOP_200 = [
   { rank: 1, title: 'Властелин колец', author: 'Дж. Р. Р. Толкин' },
   { rank: 2, title: 'Гордость и предубеждение', author: 'Джейн Остин' },
@@ -145,12 +139,18 @@ const INITIAL_BOOKS = [
     tags: ['космос', 'научная фантастика'],
     dateStarted: getMoscowDateString(5),
     log: [
-      { date: getMoscowDateString(4), pages: 30, minutes: 45 }, 
-      { date: getMoscowDateString(3), pages: 40, minutes: 60 }, 
-      { date: getMoscowDateString(2), pages: 35, minutes: 50 },
-      { date: getMoscowDateString(1), pages: 45, minutes: 70 },
-      { date: getMoscowDateString(0), pages: 30, minutes: 40 }
+      { date: getMoscowDateString(4), pages: 50, minutes: 75 }, 
+      { date: getMoscowDateString(2), pages: 60, minutes: 90 }, 
+      { date: getMoscowDateString(0), pages: 70, minutes: 105 }
     ]
+  },
+  {
+    id: 2, title: 'Темный лес', author: 'Лю Цысинь', status: 'wishlist', genre: 'Фантастика', format: 'paper',
+    seriesName: 'Воспоминания о прошлом Земли', seriesIndex: 2, seriesTotal: 3,
+    totalPages: 500, readPages: 0, rating: 0, annotation: 'Вторая книга трилогии Воспоминания о прошлом Земли.', summary: '', quotes: '', 
+    coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['космос'],
+    dateStarted: '', dateFinished: '', log: []
   },
   {
     id: 3, title: 'Дюна', author: 'Фрэнк Герберт', status: 'read', genre: 'Фантастика', format: 'combo',
@@ -163,7 +163,132 @@ const INITIAL_BOOKS = [
       { date: getMoscowDateString(28), pages: 100, minutes: 150 },
       { date: getMoscowDateString(20), pages: 200, minutes: 300 }
     ]
+  },
+  {
+    id: 4, title: 'Евгений Онегин', author: 'Александр Пушкин', status: 'read', genre: 'Стихи', format: 'paper',
+    seriesName: '', seriesIndex: '', seriesTotal: '',
+    totalPages: 240, readPages: 240, rating: 5, annotation: 'Роман в стихах о русской интеллигенции первой трети XIX века.', summary: 'Великая классика стихотворной формы.', quotes: 'Любви все возрасты покорны...',
+    coverUrl: 'https://images.unsplash.com/photo-1476275466078-4007374efbbe?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['классика', 'поэзия'],
+    dateStarted: getMoscowDateString(45), dateFinished: getMoscowDateString(40), log: []
+  },
+  {
+    id: 5, title: 'Мцыри', author: 'Михаил Лермонтов', status: 'read', genre: 'Баллады', format: 'ebook',
+    seriesName: '', seriesIndex: '', seriesTotal: '',
+    totalPages: 80, readPages: 80, rating: 5, annotation: 'Поэма о свободолюбивом юноше-монахе, рвущемся на родину в горы.', summary: 'Мощнейшая романтическая поэма.', quotes: 'И божий мир увял в душе...',
+    coverUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['поэзия', 'классика'],
+    dateStarted: getMoscowDateString(60), dateFinished: getMoscowDateString(58), log: []
+  },
+  {
+    id: 6, title: 'Шантарам', author: 'Грегори Дэвид Робертс', status: 'read', genre: 'Роман', format: 'paper',
+    seriesName: '', seriesIndex: '', seriesTotal: '',
+    totalPages: 850, readPages: 850, rating: 5, annotation: 'Побег из австралийской тюрьмы и новая жизнь в трущобах Бомбея.', summary: 'Невероятная атмосфера Индии.', quotes: 'Судьба — это не то, что случается с нами...',
+    coverUrl: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['индия', 'бестселлер'],
+    dateStarted: getMoscowDateString(45), dateFinished: getMoscowDateString(20), log: []
+  },
+  {
+    id: 101, title: 'Мастер и Маргарита', author: 'Михаил Булгаков', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
+    seriesName: '', seriesIndex: '', seriesTotal: '',
+    totalPages: 480, readPages: 0, rating: 0, annotation: 'Визит Воланда и его свиты в Москву 1930-х годов.', summary: '', quotes: '',
+    coverUrl: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['классика', 'мистика'], dateStarted: '', dateFinished: '', log: []
+  },
+  {
+    id: 102, title: '1984', author: 'Джордж Оруэлл', status: 'wishlist', genre: 'Фантастика', format: 'ebook',
+    seriesName: '', seriesIndex: '', seriesTotal: '',
+    totalPages: 320, readPages: 0, rating: 0, annotation: 'Мрачная антиутопия о тоталитарном обществе и партии.', summary: '', quotes: '',
+    coverUrl: 'https://images.unsplash.com/photo-1495640388908-05fa85288e61?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['антиутопия', 'политика'], dateStarted: '', dateFinished: '', log: []
+  },
+  {
+    id: 103, title: 'Тёмная Башня: Стрелок', author: 'Стивен Кинг', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
+    seriesName: 'Тёмная Башня', seriesIndex: 1, seriesTotal: 7,
+    totalPages: 300, readPages: 0, rating: 0, annotation: 'Стрелок Роланд преследует Человека в черном по пустыне.', summary: '', quotes: '',
+    coverUrl: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['фэнтези', 'кинг'], dateStarted: '', dateFinished: '', log: []
+  },
+  {
+    id: 104, title: 'Тёмная Башня II: Извлечение троих', author: 'Стивен Кинг', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
+    seriesName: 'Тёмная Башня', seriesIndex: 2, seriesTotal: 7,
+    totalPages: 400, readPages: 0, rating: 0, annotation: 'Продолжение путешествия Роланда.', summary: '', quotes: '',
+    coverUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['фэнтези', 'кинг'], dateStarted: '', dateFinished: '', log: []
+  },
+  {
+    id: 105, title: 'Психология влияния', author: 'Роберт Чалдини', status: 'wishlist', genre: 'Психология', format: 'audio',
+    seriesName: '', seriesIndex: '', seriesTotal: '',
+    totalPages: 400, readPages: 0, rating: 0, annotation: 'Как люди принимают решения и почему соглашаются.', summary: '', quotes: '',
+    coverUrl: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['психология', 'бизнес'], dateStarted: '', dateFinished: '', log: []
+  },
+  {
+    id: 106, title: 'Богатый папа, бедный папа', author: 'Роберт Кийосаки', status: 'wishlist', genre: 'Бизнес', format: 'paper',
+    seriesName: '', seriesIndex: '', seriesTotal: '',
+    totalPages: 350, readPages: 0, rating: 0, annotation: 'Чему учат богатых детей тому, чему не учат в школе.', summary: '', quotes: '',
+    coverUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['финансы', 'инвестиции'], dateStarted: '', dateFinished: '', log: []
+  },
+  {
+    id: 107, title: 'Преступление и наказание', author: 'Фёдор Достоевский', status: 'wishlist', genre: 'Проза', format: 'paper',
+    seriesName: '', seriesIndex: '', seriesTotal: '',
+    totalPages: 600, readPages: 0, rating: 0, annotation: 'Психологический отчет об одном преступлении.', summary: '', quotes: '',
+    coverUrl: 'https://images.unsplash.com/photo-1476275466078-4007374efbbe?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['классика', 'философия'], dateStarted: '', dateFinished: '', log: []
+  },
+  {
+    id: 108, title: 'Маленький принц', author: 'Антуан де Сент-Экзюпери', status: 'wishlist', genre: 'Фэнтези', format: 'ebook',
+    seriesName: '', seriesIndex: '', seriesTotal: '',
+    totalPages: 120, readPages: 0, rating: 0, annotation: 'Мудрая философская сказка о дружбе и ответственности.', summary: '', quotes: '',
+    coverUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['притча', 'классика'], dateStarted: '', dateFinished: '', log: []
+  },
+  {
+    id: 109, title: 'Властелин Колец: Братство Кольца', author: 'Джон Толкин', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
+    seriesName: 'Властелин Колец', seriesIndex: 1, seriesTotal: 3,
+    totalPages: 500, readPages: 0, rating: 0, annotation: 'Начало великого похода к Ородруину.', summary: '', quotes: '',
+    coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['фэнтези', 'эпик'], dateStarted: '', dateFinished: '', log: []
+  },
+  {
+    id: 110, title: 'Шерлок Холмс: Этюд в багровых тонах', author: 'Артур Конан Дойл', status: 'wishlist', genre: 'Детектив', format: 'audio',
+    seriesName: 'Приключения Шерлока Холмса', seriesIndex: 1, seriesTotal: 10,
+    totalPages: 200, readPages: 0, rating: 0, annotation: 'Первое дело легендарного сыщика.', summary: '', quotes: '',
+    coverUrl: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&q=80&w=300&h=400',
+    tags: ['детектив', 'классика'], dateStarted: '', dateFinished: '', log: []
   }
+];
+
+const MOTIVATIONAL_STREAK = [
+  '🔥 Вы в ударе! Так держать!',
+  '📚 Отличный темп, не останавливайтесь!',
+  '🚀 Ваша начитанность растет с каждым днем!',
+  '✨ Каждая страница делает вас лучше.',
+  '📖 Еще один день, еще одна глава.',
+  '🧠 Ваш мозг скажет вам спасибо!',
+  '🌟 Замечательная привычка! Продолжайте!',
+  '💪 Чтение — лучшая тренировка для ума.',
+  '🏆 Вы на пути к новой книжной победе!',
+  '☕ Время налить чай и прочесть пару страниц.',
+  '💫 Книга за книгой, день за днем!',
+  '🎯 Цель всё ближе! Отличная серия.',
+  '🧩 Каждая строчка собирает пазл вашей эрудиции.',
+  '🧭 Книги указывают верный путь. Идем дальше!',
+  '🔥 Ни дня без строчки! Отличный настрой.'
+];
+
+const MOTIVATIONAL_NO_STREAK = [
+  '📌 Прочитайте сегодня хотя бы 1 страницу!',
+  '🛋️ Самое время уютно устроиться с книгой.',
+  '📖 Книги скучают по вам. Начнем?',
+  '⚡ Всего 10 минут чтения изменят ваш день.',
+  '🌱 Начните новую серию уже сегодня!',
+  '🔔 Пора стряхнуть пыль с закладок!',
+  '✨ Откройте книгу — магия ждет.',
+  '👀 Ждем вашего возвращения в мир книг!',
+  '🚀 Самый сложный шаг — открыть первую страницу.',
+  '☕ Чашка чая и хорошая книга — идеальный план.'
 ];
 
 export default function App() {
@@ -173,7 +298,7 @@ export default function App() {
   
   const [books, setBooks] = useState(() => {
     try {
-      const savedBooks = localStorage.getItem('libriMori_books_v43');
+      const savedBooks = localStorage.getItem('libriMori_books_v44');
       if (savedBooks) return JSON.parse(savedBooks);
     } catch (e) { console.error(e); }
     return INITIAL_BOOKS;
@@ -181,18 +306,18 @@ export default function App() {
 
   const [goals, setGoals] = useState(() => {
     try {
-      const savedGoals = localStorage.getItem('libriMori_goals_v43');
+      const savedGoals = localStorage.getItem('libriMori_goals_v44');
       if (savedGoals) return JSON.parse(savedGoals);
     } catch (e) { console.error(e); }
     return { yearly: 20, monthly: 5 };
   });
 
   useEffect(() => {
-    try { localStorage.setItem('libriMori_books_v43', JSON.stringify(books)); } catch (e) { console.error(e); }
+    try { localStorage.setItem('libriMori_books_v44', JSON.stringify(books)); } catch (e) { console.error(e); }
   }, [books]);
 
   useEffect(() => {
-    try { localStorage.setItem('libriMori_goals_v43', JSON.stringify(goals)); } catch (e) { console.error(e); }
+    try { localStorage.setItem('libriMori_goals_v44', JSON.stringify(goals)); } catch (e) { console.error(e); }
   }, [goals]);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -231,13 +356,17 @@ export default function App() {
   const [currentMatchIndex, setCurrentMatchIndex] = useState(0);
   const [tournamentWinner, setTournamentWinner] = useState(null);
 
+  // Roulette State
   const [rouletteBook, setRouletteBook] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
+  const [rouletteGenre, setRouletteGenre] = useState('all');
 
+  // Timer State
   const [activeTimer, setActiveTimer] = useState(null);
   const [timerDisplay, setTimerDisplay] = useState(0);
-
   const fileInputRef = useRef(null);
+
+  useEffect(() => { setRouletteBook(null); }, [rouletteGenre]);
 
   useEffect(() => {
     let interval;
@@ -249,6 +378,30 @@ export default function App() {
     return () => clearInterval(interval);
   }, [activeTimer]);
 
+  const toggleTimer = (bookId) => {
+    if (activeTimer && activeTimer.bookId === bookId) {
+      const mins = Math.ceil(timerDisplay / 60);
+      const currentInput = parseInt(logMinutesInput[bookId] || 0);
+      setLogMinutesInput(prev => ({ ...prev, [bookId]: currentInput + mins }));
+      setActiveTimer(null);
+      setTimerDisplay(0);
+    } else {
+      if (activeTimer) {
+        const mins = Math.ceil(timerDisplay / 60);
+        const currentInput = parseInt(logMinutesInput[activeTimer.bookId] || 0);
+        setLogMinutesInput(prev => ({ ...prev, [activeTimer.bookId]: currentInput + mins }));
+      }
+      setActiveTimer({ bookId, start: Date.now(), elapsed: 0 });
+      setTimerDisplay(0);
+    }
+  };
+
+  const formatTimer = (totalSeconds) => {
+    const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+    const s = (totalSeconds % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
   useEffect(() => {
     if (isScannerOpen) {
       setScannerError('');
@@ -257,7 +410,6 @@ export default function App() {
       loadHtml5Qrcode()
         .then((Html5Qrcode) => {
           setIsScannerLoading(false);
-          // Wait for DOM
           setTimeout(() => {
             const formatsToSupport = window.Html5QrcodeSupportedFormats ? [
               window.Html5QrcodeSupportedFormats.EAN_13,
@@ -274,21 +426,15 @@ export default function App() {
               config,
               (decodedText) => {
                 const clean = decodedText.trim().replace(/[-\s]/g, '');
-                // Book barcodes (EAN-13) always have 13 digits and start with 978 or 979, or legacy 10-digit ISBN
+                // Ожидаем корректный EAN-13 (начинается с 978 или 979) или старый ISBN-10
                 const isBookISBN = (clean.length === 13 && (clean.startsWith('978') || clean.startsWith('979'))) || (clean.length === 10);
                 
-                if (!isBookISBN) {
-                  // Ignore accidental blurry / partial frame reads so camera continues focusing on real ISBN
-                  return;
-                }
+                if (!isBookISBN) return; // Игнорируем случайные форматы и UPC
 
-                // Valid book ISBN confirmed!
                 stopScanner();
                 fetchBookByISBN(clean);
               },
-              () => {
-                // Ignore routine scanning frame errors
-              }
+              () => {} 
             ).catch((err) => {
               console.error("Scanner startup error:", err);
               setScannerError('Не удалось запустить камеру. Убедитесь, что вы дали разрешение на использование камеры в браузере.');
@@ -324,7 +470,6 @@ export default function App() {
     setLastScannedISBN(isbn);
     let bookFound = false;
 
-    // Безопасный fetch с таймаутом (4 секунды)
     const fetchWithTimeout = async (url, options = {}, timeout = 4000) => {
       const controller = new AbortController();
       const id = setTimeout(() => controller.abort(), timeout);
@@ -338,7 +483,6 @@ export default function App() {
       }
     };
 
-    // Применение найденных данных в форму
     const applyBookData = (title, author, totalPages, annotation, coverUrl) => {
       setCurrentBook(prev => ({
         ...prev,
@@ -358,7 +502,7 @@ export default function App() {
     };
 
     try {
-      // 1. Попытка 1: Google Books API (прямой запрос)
+      // 1. Прямой Google Books API
       try {
         const gRes = await fetchWithTimeout(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
         if (gRes && gRes.ok) {
@@ -370,10 +514,10 @@ export default function App() {
           }
         }
       } catch (e) {
-        console.warn("Direct Google Books failed, proceeding to proxy fallback...", e);
+        console.warn("Direct Google Books failed...", e);
       }
 
-      // 2. Попытка 2: Google Books через защищенный CORS-прокси (если провайдер блокирует googleapis в РФ)
+      // 2. Google Books через CORS-прокси
       if (!bookFound) {
         try {
           const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)}`;
@@ -391,7 +535,7 @@ export default function App() {
         }
       }
 
-      // 3. Попытка 3: Open Library Search API
+      // 3. Open Library Search API
       if (!bookFound) {
         try {
           const olSearchRes = await fetchWithTimeout(`https://openlibrary.org/search.json?isbn=${isbn}`);
@@ -408,7 +552,7 @@ export default function App() {
         }
       }
 
-      // 4. Попытка 4: Open Library Data API
+      // 4. Open Library Data API
       if (!bookFound) {
         try {
           const olRes = await fetchWithTimeout(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
@@ -425,7 +569,7 @@ export default function App() {
         }
       }
 
-      // 5. Если тираж совсем новый и отсутствует в мировых реестрах — не бросаем пользователя!
+      // 5. Если тираж совсем новый
       if (!bookFound) {
         setCurrentBook(prev => ({
           ...prev,
@@ -443,35 +587,13 @@ export default function App() {
     }
   };
 
-  const toggleTimer = (bookId) => {
-    if (activeTimer && activeTimer.bookId === bookId) {
-      const mins = Math.ceil(timerDisplay / 60);
-      const currentInput = parseInt(logMinutesInput[bookId] || 0);
-      setLogMinutesInput(prev => ({ ...prev, [bookId]: currentInput + mins }));
-      setActiveTimer(null);
-      setTimerDisplay(0);
-    } else {
-      if (activeTimer) {
-        const mins = Math.ceil(timerDisplay / 60);
-        const currentInput = parseInt(logMinutesInput[activeTimer.bookId] || 0);
-        setLogMinutesInput(prev => ({ ...prev, [activeTimer.bookId]: currentInput + mins }));
-      }
-      setActiveTimer({ bookId, start: Date.now(), elapsed: 0 });
-      setTimerDisplay(0);
-    }
-  };
-
-  const formatTimer = (totalSeconds) => {
-    const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-    const s = (totalSeconds % 60).toString().padStart(2, '0');
-    return `${m}:${s}`;
-  };
-
   const uniqueAuthors = Array.from(new Set(books.map(b => b.author).filter(Boolean))).sort();
   const uniqueGenres = Array.from(new Set(books.map(b => b.genre).filter(Boolean))).sort();
   const uniqueSeries = Array.from(new Set(books.map(b => b.seriesName).filter(Boolean))).sort();
 
   const readBooksList = books.filter(b => b.status === 'read');
+  const wishlistBooks = books.filter(b => b.status === 'wishlist');
+  const activeBooks = books.filter(b => b.status === 'reading' || b.status === 'rereading');
 
   const streakData = useMemo(() => {
     const activeDatesSet = new Set();
@@ -643,10 +765,6 @@ export default function App() {
     return statusMatch && genreMatch && authorMatch && seriesMatch && tagMatch && searchMatch;
   });
 
-  const activeBooks = books.filter(b => b.status === 'reading' || b.status === 'rereading');
-  const readBooks = readBooksList;
-  const wishlistBooks = books.filter(b => b.status === 'wishlist');
-
   const todayMoscow = getMoscowDate();
   
   const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
@@ -694,18 +812,28 @@ export default function App() {
   const totalMinutesThisMonth = calendarDays.reduce((acc, day) => day ? acc + day.minutes : acc, 0);
   const avgPagesPerDay = Math.round(totalPagesThisMonth / avgDivisor);
   
-  const totalReadBooks = readBooks.length;
+  const totalReadBooks = readBooksList.length;
   const totalReadPages = books.reduce((sum, b) => sum + (b.readPages || 0), 0);
   const totalMinutesAllTime = books.reduce((sum, b) => {
     return sum + (b.log ? b.log.reduce((s, entry) => s + (entry.minutes || 0), 0) : 0);
   }, 0);
 
   const currentYear = todayMoscow.getFullYear();
-  const readThisYear = readBooks.filter(b => b.dateFinished && new Date(b.dateFinished).getFullYear() === currentYear).length;
+  const readThisYear = readBooksList.filter(b => b.dateFinished && new Date(b.dateFinished).getFullYear() === currentYear).length;
   
   const targetMonthNum = currentMonth.getMonth();
   const targetYearNum = currentMonth.getFullYear();
-  const readThisTargetMonth = readBooks.filter(b => b.dateFinished && new Date(b.dateFinished).getMonth() === targetMonthNum && new Date(b.dateFinished).getFullYear() === targetYearNum);
+  const readThisTargetMonth = readBooksList.filter(b => b.dateFinished && new Date(b.dateFinished).getMonth() === targetMonthNum && new Date(b.dateFinished).getFullYear() === targetYearNum);
+
+  const pagesOnSelectedDateAllBooks = books.reduce((sum, b) => {
+    if (!b.log) return sum;
+    return sum + b.log.reduce((acc, entry) => new Date(entry.date).toDateString() === selectedDate.toDateString() ? acc + (entry.pages || 0) : acc, 0);
+  }, 0);
+
+  const minsOnSelectedDateAllBooks = books.reduce((sum, b) => {
+    if (!b.log) return sum;
+    return sum + b.log.reduce((acc, entry) => new Date(entry.date).toDateString() === selectedDate.toDateString() ? acc + (entry.minutes || 0) : acc, 0);
+  }, 0);
 
   const handleDateClick = (date) => {
     if (date <= todayMoscow) setSelectedDate(date);
@@ -816,13 +944,18 @@ export default function App() {
   };
 
   const spinRoulette = () => {
-    if (wishlistBooks.length === 0) return;
+    const eligibleBooks = rouletteGenre === 'all' 
+      ? wishlistBooks 
+      : wishlistBooks.filter(b => b.genre === rouletteGenre);
+
+    if (eligibleBooks.length === 0) return;
+    
     setIsSpinning(true);
     setRouletteBook(null);
     let counter = 0;
     const interval = setInterval(() => {
-      const randomIndex = Math.floor(Math.random() * wishlistBooks.length);
-      setRouletteBook(wishlistBooks[randomIndex]);
+      const randomIndex = Math.floor(Math.random() * eligibleBooks.length);
+      setRouletteBook(eligibleBooks[randomIndex]);
       counter++;
       if (counter > 15) {
         clearInterval(interval);
@@ -946,7 +1079,7 @@ export default function App() {
           </div>
           
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="hidden md:flex bg-[#EFE7D8] rounded-2xl p-1 shadow-inner border border-[#E2D5C3]">
+            <div className="hidden md:flex bg-[#EFE7D8] rounded-2xl p-1 shadow-inner border border-[#E2D5C3] overflow-x-auto">
               <button onClick={() => setActiveTab('diary')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'diary' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Дневник</button>
               <button onClick={() => setActiveTab('library')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'library' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Библиотека</button>
               <button onClick={() => setActiveTab('analytics')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'analytics' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Аналитика</button>
@@ -956,7 +1089,7 @@ export default function App() {
             </div>
 
             {/* Backup buttons */}
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 ml-2">
               <button onClick={exportBackup} title="Скачать резервную копию библиотеки" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2 sm:p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
                 <DownloadIcon size={16} /> <span className="hidden lg:inline">Бэкап</span>
               </button>
@@ -971,11 +1104,11 @@ export default function App() {
 
       <main className="pt-4 md:pt-8 max-w-6xl mx-auto px-4">
         
-        {/* ================= DIARY TAB ================= */}
+        {/* ================= ДНЕВНИК ================= */}
         {activeTab === 'diary' && (
           <div className="animate-fade-in space-y-5 md:space-y-6">
             
-            {/* Reading Streak Banner with Scrollable Days Timeline */}
+            {/* Reading Streak Banner */}
             <div className="bg-gradient-to-r from-[#D67C6B] via-[#C98E5E] to-[#A68970] rounded-3xl p-4 sm:p-5 shadow-sm text-white relative overflow-hidden space-y-3.5">
                <div className="absolute right-[-10px] bottom-[-20px] opacity-15"><FlameIcon size={140} /></div>
                
@@ -988,7 +1121,9 @@ export default function App() {
                     </div>
                  </div>
                  <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-2xl text-xs font-bold text-center border border-white/30 shrink-0">
-                    {streakData.currentStreak > 0 ? '🔥 Вы в ударе! Так держать!' : '📌 Прочитайте сегодня хотя бы 1 страницу!'}
+                    {streakData.currentStreak > 0 
+                      ? MOTIVATIONAL_STREAK[getMoscowDate().getDate() % MOTIVATIONAL_STREAK.length] 
+                      : MOTIVATIONAL_NO_STREAK[getMoscowDate().getDate() % MOTIVATIONAL_NO_STREAK.length]}
                  </div>
                </div>
 
@@ -1098,9 +1233,14 @@ export default function App() {
                       <span className="bg-[#EFE7D8] text-[#846851] p-2 rounded-2xl"><ClockIcon size={18}/></span>
                       Записи за: {selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
                     </h2>
-                    {selectedDate.toDateString() === todayMoscow.toDateString() && (
-                      <span className="inline-block bg-[#DDEAE3] text-[#4F6F61] text-[10px] font-bold px-2.5 py-0.5 rounded-full mt-1.5 uppercase tracking-wider">Сегодня</span>
-                    )}
+                    <div className="flex flex-wrap items-center gap-2 mt-2">
+                      {selectedDate.toDateString() === todayMoscow.toDateString() && (
+                        <span className="inline-block bg-[#DDEAE3] text-[#4F6F61] text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">Сегодня</span>
+                      )}
+                      <span className="inline-block bg-[#EFE7D8] text-[#846851] text-[11px] font-bold px-3 py-1 rounded-full border border-[#E2D5C3] shadow-sm">
+                        Итог дня: {pagesOnSelectedDateAllBooks} стр. / {Math.floor(minsOnSelectedDateAllBooks / 60)}ч {minsOnSelectedDateAllBooks % 60}м
+                      </span>
+                    </div>
                   </div>
                   <button onClick={openNewBookModal} className="bg-[#A68970] hover:bg-[#92745C] text-white w-full sm:w-auto px-4 py-2.5 rounded-2xl font-bold text-xs md:text-sm transition-colors flex items-center justify-center gap-2 shadow-sm">
                     <PlusIcon size={16}/> Добавить книгу
@@ -1226,74 +1366,92 @@ export default function App() {
                 )}
               </div>
 
-              {/* Compact Mobile-Friendly Calendar Column */}
-              <div className="bg-[#F7F2E8] rounded-3xl p-3 sm:p-4 shadow-sm border border-[#EADFCF] lg:sticky lg:top-24 max-w-sm mx-auto w-full">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-black text-sm sm:text-base text-[#564B41] capitalize">
-                    {currentMonth.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}
-                  </h3>
-                  <button onClick={() => setIsSummaryModalOpen(true)} className="text-[#846851] bg-[#EADFCF] hover:bg-[#DDD0BE] px-2.5 py-1 rounded-xl text-[11px] font-bold transition-colors flex items-center gap-1 shadow-sm">
-                    <CameraIcon size={12}/> Итоги
-                  </button>
-                </div>
-                
-                <div className="flex justify-between mb-2">
-                   <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="p-1 hover:bg-[#EADFCF] rounded-lg text-[#74675B]"><ChevronLeftIcon size={16}/></button>
-                   <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="p-1 hover:bg-[#EADFCF] rounded-lg text-[#74675B]"><ChevronRightIcon size={16}/></button>
+              {/* Calendar Column */}
+              <div className="space-y-3 lg:sticky lg:top-24 max-w-sm mx-auto w-full">
+                <div className="bg-[#F7F2E8] rounded-3xl p-3 sm:p-4 shadow-sm border border-[#EADFCF]">
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="font-black text-sm sm:text-base text-[#564B41] capitalize">
+                      {currentMonth.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}
+                    </h3>
+                    <button onClick={() => setIsSummaryModalOpen(true)} className="text-[#846851] bg-[#EADFCF] hover:bg-[#DDD0BE] px-2.5 py-1.5 rounded-2xl text-[10px] font-bold transition-colors flex items-center gap-1 shadow-sm">
+                      <CameraIcon size={12}/> Итоги
+                    </button>
+                  </div>
+                  
+                  <div className="flex justify-between mb-2">
+                     <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="p-1 hover:bg-[#EADFCF] rounded-lg text-[#74675B]"><ChevronLeftIcon size={16}/></button>
+                     <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="p-1 hover:bg-[#EADFCF] rounded-lg text-[#74675B]"><ChevronRightIcon size={16}/></button>
+                  </div>
+
+                  <div className="grid grid-cols-7 gap-1 text-center mb-1">
+                    {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(d => (
+                      <div key={d} className="text-[9px] font-black text-[#9B8C80]">{d}</div>
+                    ))}
+                  </div>
+                  
+                  <div className="grid grid-cols-7 gap-1">
+                    {calendarDays.map((day, idx) => {
+                      if (!day) return <div key={`empty-${idx}`} className="aspect-square"></div>;
+                      
+                      const isToday = day.date.toDateString() === todayMoscow.toDateString();
+                      const isSelected = day.date.toDateString() === selectedDate.toDateString();
+                      const isFuture = day.date > todayMoscow;
+                      const isPastOrToday = day.date <= todayMoscow;
+                      
+                      let bgClass = 'bg-[#EFE7D8] hover:bg-[#E2D5C3] text-[#74675B]';
+                      
+                      if (day.pages > 0) {
+                         if (day.pages <= 20) {
+                           bgClass = 'bg-[#D2E7DB] hover:bg-[#C0DEC9] text-[#3E5C4E] shadow-sm'; 
+                         } else if (day.pages <= 50) {
+                           bgClass = 'bg-[#98C4AB] hover:bg-[#83B398] text-white shadow-sm'; 
+                         } else if (day.pages <= 100) {
+                           bgClass = 'bg-[#6CA384] hover:bg-[#5B9273] text-white shadow-sm'; 
+                         } else {
+                           bgClass = 'bg-[#477C5E] hover:bg-[#3D6B51] text-white shadow-sm'; 
+                         }
+                      } else if (isPastOrToday) {
+                         bgClass = 'bg-[#E8C2C2] hover:bg-[#DFB3B3] text-[#7A3E3E] shadow-sm'; 
+                      } else if (isFuture) {
+                         bgClass = 'bg-transparent opacity-30 cursor-not-allowed text-[#9B8C80]';
+                      }
+
+                      return (
+                        <button 
+                          key={idx} onClick={() => handleDateClick(day.date)} disabled={isFuture}
+                          className={`aspect-square rounded-lg flex items-center justify-center text-[11px] font-bold transition-all relative ${bgClass} ${isSelected ? 'ring-2 ring-[#A68970] ring-offset-1 scale-110 z-10' : ''}`}
+                          title={`${day.date.toLocaleDateString()} - ${day.pages} стр. / ${day.minutes} мин.`}
+                        >
+                          {day.date.getDate()}
+                          {isToday && <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#846851] rounded-full"></div>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  
+                  <div className="mt-3 flex flex-wrap gap-1 text-[8px] font-bold text-[#74675B] justify-center items-center">
+                    <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#E8C2C2] rounded-sm"></div> 0</div>
+                    <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#D2E7DB] rounded-sm"></div> &lt;20</div>
+                    <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#98C4AB] rounded-sm"></div> 21-50</div>
+                    <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#6CA384] rounded-sm"></div> 51-100</div>
+                    <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#477C5E] rounded-sm"></div> 100+</div>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-7 gap-1 text-center mb-1">
-                  {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(d => (
-                    <div key={d} className="text-[9px] font-black text-[#9B8C80]">{d}</div>
-                  ))}
-                </div>
-                
-                <div className="grid grid-cols-7 gap-1">
-                  {calendarDays.map((day, idx) => {
-                    if (!day) return <div key={`empty-${idx}`} className="aspect-square"></div>;
-                    
-                    const isToday = day.date.toDateString() === todayMoscow.toDateString();
-                    const isSelected = day.date.toDateString() === selectedDate.toDateString();
-                    const isFuture = day.date > todayMoscow;
-                    const isPastOrToday = day.date <= todayMoscow;
-                    
-                    let bgClass = 'bg-[#EFE7D8] hover:bg-[#E2D5C3] text-[#74675B]';
-                    
-                    if (day.pages > 0) {
-                       if (day.pages <= 20) {
-                         bgClass = 'bg-[#D2E7DB] hover:bg-[#C0DEC9] text-[#3E5C4E] shadow-sm'; 
-                       } else if (day.pages <= 50) {
-                         bgClass = 'bg-[#98C4AB] hover:bg-[#83B398] text-white shadow-sm'; 
-                       } else if (day.pages <= 100) {
-                         bgClass = 'bg-[#6CA384] hover:bg-[#5B9273] text-white shadow-sm'; 
-                       } else {
-                         bgClass = 'bg-[#477C5E] hover:bg-[#3D6B51] text-white shadow-sm'; 
-                       }
-                    } else if (isPastOrToday) {
-                       bgClass = 'bg-[#E8C2C2] hover:bg-[#DFB3B3] text-[#7A3E3E] shadow-sm'; 
-                    } else if (isFuture) {
-                       bgClass = 'bg-transparent opacity-30 cursor-not-allowed text-[#9B8C80]';
-                    }
-
-                    return (
-                      <button 
-                        key={idx} onClick={() => handleDateClick(day.date)} disabled={isFuture}
-                        className={`aspect-square rounded-lg flex items-center justify-center text-[11px] font-bold transition-all relative ${bgClass} ${isSelected ? 'ring-2 ring-[#A68970] ring-offset-1 scale-110 z-10' : ''}`}
-                        title={`${day.date.toLocaleDateString()} - ${day.pages} стр. / ${day.minutes} мин.`}
-                      >
-                        {day.date.getDate()}
-                        {isToday && <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#846851] rounded-full"></div>}
-                      </button>
-                    );
-                  })}
-                </div>
-                
-                <div className="mt-3 flex flex-wrap gap-1 text-[8px] font-bold text-[#74675B] justify-center items-center">
-                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#E8C2C2] rounded-sm"></div> 0</div>
-                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#D2E7DB] rounded-sm"></div> &lt;20</div>
-                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#98C4AB] rounded-sm"></div> 21-50</div>
-                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#6CA384] rounded-sm"></div> 51-100</div>
-                  <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#477C5E] rounded-sm"></div> 100+</div>
+                {/* Day Summary Card below calendar for quick mobile view */}
+                <div className="bg-[#F7F2E8] rounded-2xl p-4 shadow-sm border border-[#EADFCF] flex justify-between items-center animate-fade-in">
+                  <div className="flex flex-col">
+                    <span className="font-bold text-[#564B41] text-sm">
+                      {selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}
+                    </span>
+                    {selectedDate.toDateString() === todayMoscow.toDateString() && (
+                      <span className="text-[9px] font-black text-[#4F6F61] uppercase tracking-wider mt-0.5">Сегодня</span>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="font-black text-[#846851] text-lg leading-none">{pagesOnSelectedDateAllBooks} <span className="text-[10px] uppercase text-[#948477]">стр</span></span>
+                    <span className="text-[11px] font-bold text-[#74675B] mt-1">{Math.floor(minsOnSelectedDateAllBooks / 60)}ч {minsOnSelectedDateAllBooks % 60}м</span>
+                  </div>
                 </div>
               </div>
 
@@ -1301,7 +1459,7 @@ export default function App() {
           </div>
         )}
 
-        {/* ================= ANALYTICS TAB ================= */}
+        {/* ================= АНАЛИТИКА ================= */}
         {activeTab === 'analytics' && (
           <div className="animate-fade-in space-y-6">
             <div className="bg-[#F7F2E8] p-5 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -1374,7 +1532,7 @@ export default function App() {
                 <div className="flex justify-between items-center">
                   <h3 className="font-black text-base text-[#564B41] flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#846851]"></span>
-                    Жанровая структура (Круговая диаграмма)
+                    Жанровая структура
                   </h3>
                   <span className="text-xs font-bold text-[#948477]">{genreStatsForPeriod.length} жанров</span>
                 </div>
@@ -1423,7 +1581,7 @@ export default function App() {
                 <div className="flex justify-between items-center">
                   <h3 className="font-black text-base text-[#564B41] flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#6F8E80]"></span>
-                    Форматы чтения (Круговая диаграмма)
+                    Форматы чтения
                   </h3>
                   <span className="text-xs font-bold text-[#948477]">Всего {filteredReadBooksForStats.length} книг</span>
                 </div>
@@ -1506,7 +1664,7 @@ export default function App() {
           </div>
         )}
 
-        {/* ================= BBC 200 TAB ================= */}
+        {/* ================= BBC 200 ================= */}
         {activeTab === 'bbc200' && (
           <div className="animate-fade-in space-y-6">
             <div className="bg-[#F7F2E8] p-5 sm:p-8 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
@@ -1643,7 +1801,7 @@ export default function App() {
           </div>
         )}
 
-        {/* ================= LIBRARY TAB ================= */}
+        {/* ================= БИБЛИОТЕКА ================= */}
         {activeTab === 'library' && (
           <div className="animate-fade-in">
             <div className="flex flex-col gap-3.5 mb-5 bg-[#F7F2E8] p-4 md:p-5 rounded-3xl shadow-sm border border-[#EADFCF]">
@@ -1784,7 +1942,7 @@ export default function App() {
                 {bookshelfShelves.map((shelfBooks, shelfIdx) => (
                   <div key={shelfIdx} className="relative pt-4">
                     {/* Shelf Content */}
-                    <div className="flex flex-wrap items-end gap-3 sm:gap-6 px-4 pb-2 min-h-[210px] items-end">
+                    <div className="flex flex-wrap items-end gap-3 sm:gap-6 px-4 pb-2 min-h-[210px]">
                       {shelfIdx === 0 && (
                         <div onClick={openNewBookModal} className="w-20 sm:w-28 h-36 sm:h-48 border-2 border-dashed border-[#D5C6B4] bg-[#F7F2E8]/80 rounded-xl flex flex-col items-center justify-center text-[#9B8C80] hover:text-[#846851] hover:border-[#A68970] transition-all cursor-pointer shadow-sm mb-1">
                           <PlusIcon size={24} />
@@ -1854,7 +2012,7 @@ export default function App() {
           </div>
         )}
 
-        {/* ================= ROULETTE TAB ================= */}
+        {/* ================= РУЛЕТКА ================= */}
         {activeTab === 'roulette' && (
           <div className="max-w-xl mx-auto animate-fade-in text-center py-6">
             <div className="bg-[#F7F2E8] rounded-[2.5rem] p-6 sm:p-10 shadow-sm border border-[#EADFCF]">
@@ -1870,6 +2028,22 @@ export default function App() {
                  </div>
                ) : (
                  <div className="mb-8">
+                   {/* Жанровый фильтр для рулетки */}
+                   <div className="flex flex-wrap justify-center items-center gap-3 mb-6 bg-[#EFE7D8] p-3 rounded-2xl border border-[#E2D5C3] mx-auto w-fit">
+                     <span className="text-[10px] font-black text-[#847466] uppercase tracking-wider">Искать среди:</span>
+                     <select 
+                       value={rouletteGenre} 
+                       onChange={(e) => setRouletteGenre(e.target.value)}
+                       disabled={isSpinning}
+                       className="bg-[#FCF9F2] border border-[#EADFCF] text-[#564B41] px-4 py-2 rounded-xl font-bold text-xs outline-none cursor-pointer transition-colors focus:border-[#A68970] disabled:opacity-50"
+                     >
+                       <option value="all">🎲 Абсолютно всех жанров</option>
+                       {Array.from(new Set(wishlistBooks.map(b => b.genre).filter(Boolean))).sort().map(g => (
+                         <option key={g} value={g}>{g}</option>
+                       ))}
+                     </select>
+                   </div>
+
                    <div className="w-44 sm:w-52 aspect-[2/3] mx-auto bg-[#EFE7D8] rounded-3xl overflow-hidden shadow-xl border-4 border-[#EADFCF] mb-4 flex items-center justify-center relative">
                      {rouletteBook ? (
                        rouletteBook.coverUrl ? (
@@ -1906,7 +2080,7 @@ export default function App() {
           </div>
         )}
 
-        {/* ================= TOURNAMENT TAB ================= */}
+        {/* ================= ТУРНИР ================= */}
         {activeTab === 'tournament' && (
           <div className="max-w-4xl mx-auto animate-fade-in">
             {tournamentPhase === 'setup' && (
@@ -1928,7 +2102,7 @@ export default function App() {
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 mb-6">
-                  {readBooks.map(book => (
+                  {readBooksList.map(book => (
                     <div key={book.id} onClick={() => toggleTournamentSelection(book.id)} className={`cursor-pointer rounded-2xl border-2 p-2.5 transition-all flex flex-col aspect-[3/4] sm:aspect-auto sm:h-28 relative overflow-hidden group ${selectedForTournament.includes(book.id) ? 'border-[#A68970]' : 'border-[#EADFCF] hover:border-[#D5C6B4]'}`}>
                       {book.coverUrl ? (
                          <div className="absolute inset-0 z-0 opacity-40 group-hover:opacity-60 transition-opacity"><img src={book.coverUrl} className="w-full h-full object-cover blur-[2px] scale-110" alt=""/></div>
@@ -1944,7 +2118,7 @@ export default function App() {
                       </div>
                     </div>
                   ))}
-                  {readBooks.length === 0 && <div className="col-span-full py-8 text-center text-[#846851] font-bold text-sm">Добавьте прочитанные книги в библиотеку!</div>}
+                  {readBooksList.length === 0 && <div className="col-span-full py-8 text-center text-[#846851] font-bold text-sm">Добавьте прочитанные книги в библиотеку!</div>}
                 </div>
 
                 <div className="text-center">
@@ -2001,29 +2175,29 @@ export default function App() {
         )}
       </main>
 
-      {/* Mobile Bottom Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#F7F2E8]/95 backdrop-blur-md border-t border-[#EADFCF] py-2 px-3 z-30 flex justify-around items-center md:hidden shadow-lg">
-        <button onClick={() => setActiveTab('diary')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'diary' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
+      {}
+      <div className="fixed bottom-0 left-0 right-0 bg-[#F7F2E8]/95 backdrop-blur-md border-t border-[#EADFCF] py-2 px-3 z-30 flex justify-around items-center md:hidden shadow-lg overflow-x-auto gap-2">
+        <button onClick={() => setActiveTab('diary')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'diary' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <ClockIcon size={18} />
           <span className="text-[9px] font-bold">Дневник</span>
         </button>
-        <button onClick={() => setActiveTab('library')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'library' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
+        <button onClick={() => setActiveTab('library')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'library' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <BookOpenIcon size={18} />
           <span className="text-[9px] font-bold">Библиотека</span>
         </button>
-        <button onClick={() => setActiveTab('analytics')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'analytics' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
+        <button onClick={() => setActiveTab('analytics')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'analytics' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <PieChartIcon size={18} />
           <span className="text-[9px] font-bold">Аналитика</span>
         </button>
-        <button onClick={() => setActiveTab('bbc200')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'bbc200' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
+        <button onClick={() => setActiveTab('bbc200')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'bbc200' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <AwardIcon size={18} />
           <span className="text-[9px] font-bold">BBC 200</span>
         </button>
-        <button onClick={() => setActiveTab('roulette')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'roulette' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
+        <button onClick={() => setActiveTab('roulette')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'roulette' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <ShuffleIcon size={18} />
           <span className="text-[9px] font-bold">Рулетка</span>
         </button>
-        <button onClick={() => setActiveTab('tournament')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'tournament' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
+        <button onClick={() => setActiveTab('tournament')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'tournament' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <TrophyIcon size={18} />
           <span className="text-[9px] font-bold">Турнир</span>
         </button>
@@ -2138,7 +2312,7 @@ export default function App() {
 
             <form onSubmit={handleSaveBook} className="p-4 sm:p-6 space-y-5 sm:space-y-6">
               
-              {/* Панель быстрого поиска для свежих российских изданий по отсканированному ISBN */}
+              {/* Quick Search Panel for freshly scanned ISBNs */}
               {lastScannedISBN && (
                 <div className="bg-[#FAF3E8] border border-[#E2D5C3] p-3.5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs shadow-sm">
                   <div className="flex items-center gap-2">
@@ -2146,36 +2320,16 @@ export default function App() {
                     <span className="font-mono font-bold bg-white px-2 py-0.5 rounded-lg border border-[#EADFCF] text-[#4A4238]">{lastScannedISBN}</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5 w-full sm:w-auto">
-                    <a
-                      href={`https://search.rsl.ru/ru/search#q=${lastScannedISBN}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]"
-                    >
+                    <a href={`https://search.rsl.ru/ru/search#q=${lastScannedISBN}`} target="_blank" rel="noreferrer" className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]">
                       🏛️ РГБ (Ленинка)
                     </a>
-                    <a
-                      href={`https://www.chitai-gorod.ru/search?phrase=${lastScannedISBN}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]"
-                    >
+                    <a href={`https://www.chitai-gorod.ru/search?phrase=${lastScannedISBN}`} target="_blank" rel="noreferrer" className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]">
                       🔍 Читай-Город
                     </a>
-                    <a
-                      href={`https://www.labirint.ru/search/${lastScannedISBN}/`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]"
-                    >
+                    <a href={`https://www.labirint.ru/search/${lastScannedISBN}/`} target="_blank" rel="noreferrer" className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]">
                       🔍 Лабиринт
                     </a>
-                    <a
-                      href={`https://ya.ru/search/?text=${encodeURIComponent(`книга ISBN ${lastScannedISBN}`)}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="bg-[#A68970] hover:bg-[#92745C] text-white font-bold px-2.5 py-1.5 rounded-xl transition-colors flex items-center gap-1 shadow-sm text-[11px]"
-                    >
+                    <a href={`https://ya.ru/search/?text=${encodeURIComponent(`книга ISBN ${lastScannedISBN}`)}`} target="_blank" rel="noreferrer" className="bg-[#A68970] hover:bg-[#92745C] text-white font-bold px-2.5 py-1.5 rounded-xl transition-colors flex items-center gap-1 shadow-sm text-[11px]">
                       Яндекс
                     </a>
                   </div>
