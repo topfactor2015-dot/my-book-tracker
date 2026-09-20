@@ -28,6 +28,16 @@ const PieChartIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={p
 const FlameIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 17c1.38 0 2.5-1.12 2.5-2.5 0-2-3-3.5-3-5.5 0-1.5 1-2.5 2-3-.5 2 2 3.5 2 5.5a4.5 4.5 0 1 1-9 0c0-2 1-3.5 2-5-1.5 1.5-2 3.5-2 5z"></path></svg>;
 const AwardIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>;
 
+const LibriMoriLogo = ({ size = 32 }) => (
+  <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+    <path d="M15 25C15 25 30 20 50 25C70 20 85 25 85 25V75C85 75 70 70 50 75C30 70 15 75 15 75V25Z" stroke="#846851" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M50 25V75" stroke="#846851" strokeWidth="5" strokeLinecap="round"/>
+    <path d="M28 35C38 35 42 45 32 50C22 55 35 65 42 65" stroke="#846851" strokeWidth="4" strokeLinecap="round"/>
+    <path d="M72 35C62 35 58 45 68 50C78 55 65 65 58 65" stroke="#846851" strokeWidth="4" strokeLinecap="round"/>
+    <path d="M56 45C56 42 53 40 50 42C47 44 48 48 50 50C52 52 53 56 50 58C47 60 44 58 44 55" stroke="#C98E5E" strokeWidth="3.5" strokeLinecap="round"/>
+  </svg>
+);
+
 const BBC_TOP_200 = [
   { rank: 1, title: "Властелин колец", author: "Дж. Р. Р. Толкин" },
   { rank: 2, title: "Гордость и предубеждение", author: "Джейн Остин" },
@@ -53,182 +63,7 @@ const BBC_TOP_200 = [
   { rank: 22, title: "Гарри Поттер и философский камень", author: "Дж. К. Роулинг" },
   { rank: 23, title: "Гарри Поттер и Тайная комната", author: "Дж. К. Роулинг" },
   { rank: 24, title: "Гарри Поттер и узник Азкабана", author: "Дж. К. Роулинг" },
-  { rank: 25, title: "Хоббит", author: "Дж. Р. Р. Толкин" },
-  { rank: 26, title: "Тэсс из рода д'Эрбервиллей", author: "Томас Харди" },
-  { rank: 27, title: "Миддлмарч", author: "Джордж Элиот" },
-  { rank: 28, title: "Молитва об Оуэне Мини", author: "Джон Ирвинг" },
-  { rank: 29, title: "Гроздья гнева", author: "Джон Стейнбек" },
-  { rank: 30, title: "Алиса в Стране чудес", author: "Льюис Кэрролл" },
-  { rank: 31, title: "Дневник Трейси Бикер", author: "Жаклин Уилсон" },
-  { rank: 32, title: "Сто лет одиночества", author: "Габриэль Гарсиа Маркес" },
-  { rank: 33, title: "Столпы Земли", author: "Кен Фоллетт" },
-  { rank: 34, title: "Дэвид Копперфильд", author: "Чарльз Диккенс" },
-  { rank: 35, title: "Чарли и шоколадная фабрика", author: "Роальд Даль" },
-  { rank: 36, title: "Остров сокровищ", author: "Роберт Льюис Стивенсон" },
-  { rank: 37, title: "Город как Элис", author: "Невил Шют" },
-  { rank: 38, title: "Доводы рассудка", author: "Джейн Остин" },
-  { rank: 39, title: "Дюна", author: "Фрэнк Герберт" },
-  { rank: 40, title: "Эмма", author: "Джейн Остин" },
-  { rank: 41, title: "Аня из Зелёных Мезонинов", author: "Люси Мод Монтгомери" },
-  { rank: 42, title: "Обитатели холмов", author: "Ричард Адамс" },
-  { rank: 43, title: "Великий Гэтсби", author: "Ф. Скотт Фицджеральд" },
-  { rank: 44, title: "Граф Монте-Кристо", author: "Александр Дюма" },
-  { rank: 45, title: "Возвращение в Брайдсхед", author: "Ивлин Во" },
-  { rank: 46, title: "Скотный двор", author: "Джордж Оруэлл" },
-  { rank: 47, title: "Рождественская песнь", author: "Чарльз Диккенс" },
-  { rank: 48, title: "Вдали от обезумевшей толпы", author: "Томас Харди" },
-  { rank: 49, title: "Спокойной ночи, мистер Том", author: "Мишель Магорян" },
-  { rank: 50, title: "Семейная реликвия", author: "Розамунда Пилчер" },
-  { rank: 51, title: "Таинственный сад", author: "Фрэнсис Бернетт" },
-  { rank: 52, title: "О мышах и людях", author: "Джон Стейнбек" },
-  { rank: 53, title: "Противостояние", author: "Стивен Кинг" },
-  { rank: 54, title: "Анна Каренина", author: "Лев Толстой" },
-  { rank: 55, title: "Подходящий жених", author: "Викрам Сет" },
-  { rank: 56, title: "БДВ, или Большой и добрый великан", author: "Роальд Даль" },
-  { rank: 57, title: "Ласточки и амазонки", author: "Артур Рэнсом" },
-  { rank: 58, title: "Чёрный красавчик", author: "Анна Сьюэлл" },
-  { rank: 59, title: "Артемис Фаул", author: "Йон Колфер" },
-  { rank: 60, title: "Преступление и наказание", author: "Фёдор Достоевский" },
-  { rank: 61, title: "Крестики-нолики", author: "Мэлори Блэкмен" },
-  { rank: 62, title: "Мемуары гейши", author: "Артур Голден" },
-  { rank: 63, title: "Повесть о двух городах", author: "Чарльз Диккенс" },
-  { rank: 64, title: "Поющие в терновнике", author: "Колин Маккалоу" },
-  { rank: 65, title: "Мор, ученик Смерти", author: "Терри Пратчетт" },
-  { rank: 66, title: "Далекое волшебное дерево", author: "Энид Блайтон" },
-  { rank: 67, title: "Волхв", author: "Джон Фаулз" },
-  { rank: 68, title: "Благие знамения", author: "Терри Пратчетт и Нил Гейман" },
-  { rank: 69, title: "Стража! Стража!", author: "Терри Пратчетт" },
-  { rank: 70, title: "Повелитель мух", author: "Уильям Голдинг" },
-  { rank: 71, title: "Парфюмер", author: "Патрик Зюскинд" },
-  { rank: 72, title: "Филантропы в рваных штанах", author: "Роберт Тресселл" },
-  { rank: 73, title: "Ночная стража", author: "Терри Пратчетт" },
-  { rank: 74, title: "Матильда", author: "Роальд Даль" },
-  { rank: 75, title: "Дневник Бриджит Джонс", author: "Хелен Филдинг" },
-  { rank: 76, title: "Тайная история", author: "Донна Тартт" },
-  { rank: 77, title: "Женщина в белом", author: "Уилки Коллинз" },
-  { rank: 78, title: "Улисс", author: "Джеймс Джойс" },
-  { rank: 79, title: "Холодный дом", author: "Чарльз Диккенс" },
-  { rank: 80, title: "Двойняшки", author: "Жаклин Уилсон" },
-  { rank: 81, title: "Семейство Твит", author: "Роальд Даль" },
-  { rank: 82, title: "Я захватываю замок", author: "Доди Смит" },
-  { rank: 83, title: "Ямы", author: "Луис Сачар" },
-  { rank: 84, title: "Горменгаст", author: "Мервин Пик" },
-  { rank: 85, title: "Бог мелочей", author: "Арундати Рой" },
-  { rank: 86, title: "Вики-Ангел", author: "Жаклин Уилсон" },
-  { rank: 87, title: "О дивный новый мир", author: "Олдос Хаксли" },
-  { rank: 88, title: "Неуютная ферма", author: "Стелла Гиббонс" },
-  { rank: 89, title: "Мастер-Чародей", author: "Раймонд Фэйст" },
-  { rank: 90, title: "В дороге", author: "Джек Керуак" },
-  { rank: 91, title: "Крёстный отец", author: "Марио Пьюзо" },
-  { rank: 92, title: "Клан пещерного медведя", author: "Джин М. Ауэл" },
-  { rank: 93, title: "Цвет волшебства", author: "Терри Пратчетт" },
-  { rank: 94, title: "Алхимик", author: "Пауло Коэльо" },
-  { rank: 95, title: "Леди Кэтрин", author: "Аня Сетон" },
-  { rank: 96, title: "Каин и Авель", author: "Джеффри Арчер" },
-  { rank: 97, title: "Любовь во время чумы", author: "Габриэль Гарсиа Маркес" },
-  { rank: 98, title: "Влюблённые девчонки", author: "Жаклин Уилсон" },
-  { rank: 99, title: "Дневники принцессы", author: "Мэг Кэбот" },
-  { rank: 100, title: "Дети полуночи", author: "Салман Рушди" },
-  { rank: 101, title: "Трое в лодке, не считая собаки", author: "Джером К. Джером" },
-  { rank: 102, title: "Мелкие боги", author: "Терри Пратчетт" },
-  { rank: 103, title: "Пляж", author: "Алекс Гарленд" },
-  { rank: 104, title: "Дракула", author: "Брэм Стокер" },
-  { rank: 105, title: "Белый пик", author: "Энтони Горовиц" },
-  { rank: 106, title: "Посмертные записки Пиквикского клуба", author: "Чарльз Диккенс" },
-  { rank: 107, title: "Громобой", author: "Энтони Горовиц" },
-  { rank: 108, title: "Осиная фабрика", author: "Иэн Бэнкс" },
-  { rank: 109, title: "День Шакала", author: "Фредерик Форсайт" },
-  { rank: 110, title: "Разрисованная мама", author: "Жаклин Уилсон" },
-  { rank: 111, title: "Джуд Незаметный", author: "Томас Харди" },
-  { rank: 112, title: "Тайный дневник Адриана Моула", author: "Сью Таунсенд" },
-  { rank: 113, title: "Жестокое море", author: "Николас Монсаррат" },
-  { rank: 114, title: "Отверженные", author: "Виктор Гюго" },
-  { rank: 115, title: "Мэр Кэстербриджа", author: "Томас Харди" },
-  { rank: 116, title: "Рискованные игры", author: "Жаклин Уилсон" },
-  { rank: 117, title: "Плохие девчонки", author: "Жаклин Уилсон" },
-  { rank: 118, title: "Портрет Дориана Грея", author: "Оскар Уайльд" },
-  { rank: 119, title: "Сёгун", author: "Джеймс Клавелл" },
-  { rank: 120, title: "День триффидов", author: "Джон Уиндем" },
-  { rank: 121, title: "Лола Роза", author: "Жаклин Уилсон" },
-  { rank: 122, title: "Ярмарка тщеславия", author: "Уильям Теккерей" },
-  { rank: 123, title: "Сага о Форсайтах", author: "Джон Голсуорси" },
-  { rank: 124, title: "Дом из листьев", author: "Марк Данилевский" },
-  { rank: 125, title: "Библия ядовитого леса", author: "Барбара Кингсолвер" },
-  { rank: 126, title: "Мрачный жнец", author: "Терри Пратчетт" },
-  { rank: 127, title: "Ангус, ремни и конкретные обжимашки", author: "Луиз Рэннисон" },
-  { rank: 128, title: "Собака Баскервиллей", author: "Артур Конан Дойл" },
-  { rank: 129, title: "Обладать", author: "Антония Сьюзен Байетт" },
-  { rank: 130, title: "Мастер и Маргарита", author: "Михаил Булгаков" },
-  { rank: 131, title: "Рассказ служанки", author: "Маргарет Этвуд" },
-  { rank: 132, title: "Дэнни — чемпион мира", author: "Роальд Даль" },
-  { rank: 133, title: "К востоку от Эдема", author: "Джон Стейнбек" },
-  { rank: 134, title: "Джордж и его чудо-лекарство", author: "Роальд Даль" },
-  { rank: 135, title: "Вещие сестрички", author: "Терри Пратчетт" },
-  { rank: 136, title: "Цвет пурпурный", author: "Элис Уокер" },
-  { rank: 137, title: "Санта-Хрякус", author: "Терри Пратчетт" },
-  { rank: 138, title: "Тридцать девять ступеней", author: "Джон Бьюкен" },
-  { rank: 139, title: "Девчонки в слезах", author: "Жаклин Уилсон" },
-  { rank: 140, title: "Ночёвки", author: "Жаклин Уилсон" },
-  { rank: 141, title: "На Западном фронте без перемен", author: "Эрих Мария Ремарк" },
-  { rank: 142, title: "За кулисами в музее", author: "Кейт Аткинсон" },
-  { rank: 143, title: "Hi-Fi", author: "Ник Хорнби" },
-  { rank: 144, title: "Оно", author: "Стивен Кинг" },
-  { rank: 145, title: "Джеймс и гигантский персик", author: "Роальд Даль" },
-  { rank: 146, title: "Зелёная миля", author: "Стивен Кинг" },
-  { rank: 147, title: "Папийон", author: "Анри Шарьер" },
-  { rank: 148, title: "К оружию! К оружию!", author: "Терри Пратчетт" },
-  { rank: 149, title: "Командир и штурман", author: "Патрик О'Брайан" },
-  { rank: 150, title: "Секретный ключ", author: "Энтони Горовиц" },
-  { rank: 151, title: "Роковая музыка", author: "Терри Пратчетт" },
-  { rank: 152, title: "Вор Времени", author: "Терри Пратчетт" },
-  { rank: 153, title: "Пятый элефант", author: "Терри Пратчетт" },
-  { rank: 154, title: "Искупление", author: "Иэн Макьюэн" },
-  { rank: 155, title: "Секреты", author: "Жаклин Уилсон" },
-  { rank: 156, title: "Серебряный меч", author: "Иан Серраиллер" },
-  { rank: 157, title: "Над кукушкиным гнездом", author: "Кен Кизи" },
-  { rank: 158, title: "Сердце тьмы", author: "Джозеф Конрад" },
-  { rank: 159, title: "Ким", author: "Редьярд Киплинг" },
-  { rank: 160, title: "Чужестранка", author: "Диана Гэблдон" },
-  { rank: 161, title: "Моби Дик", author: "Герман Мелвилл" },
-  { rank: 162, title: "Божество реки", author: "Уилбур Смит" },
-  { rank: 163, title: "Песнь заката", author: "Льюис Грассик Гиббонс" },
-  { rank: 164, title: "Корабельные новости", author: "Энни Пру" },
-  { rank: 165, title: "Мир глазами Гарпа", author: "Джон Ирвинг" },
-  { rank: 166, title: "Лорна Дун", author: "Р. Д. Блэкмор" },
-  { rank: 167, title: "Девчонки гуляют допоздна", author: "Жаклин Уилсон" },
-  { rank: 168, title: "Далёкие павильоны", author: "М. М. Кей" },
-  { rank: 169, title: "Ведьмы", author: "Роальд Даль" },
-  { rank: 170, title: "Паутина Шарлотты", author: "Э. Б. Уайт" },
-  { rank: 171, title: "Франкенштейн", author: "Мэри Шелли" },
-  { rank: 172, title: "Они играли на траве", author: "Терри Венаблс и Гордон Уильямс" },
-  { rank: 173, title: "Старик и море", author: "Эрнест Хемингуэй" },
-  { rank: 174, title: "Имя розы", author: "Умберто Эко" },
-  { rank: 175, title: "Мир Софии", author: "Юстейн Гордер" },
-  { rank: 176, title: "Найдёныш из мусорного бака", author: "Жаклин Уилсон" },
-  { rank: 177, title: "Потрясающий мистер Лис", author: "Роальд Даль" },
-  { rank: 178, title: "Лолита", author: "Владимир Набоков" },
-  { rank: 179, title: "Чайка по имени Джонатан Ливингстон", author: "Ричард Бах" },
-  { rank: 180, title: "Маленький принц", author: "Антуан де Сент-Экзюпери" },
-  { rank: 181, title: "Чемоданное дитя", author: "Жаклин Уилсон" },
-  { rank: 182, title: "Приключения Оливера Твиста", author: "Чарльз Диккенс" },
-  { rank: 183, title: "Сила единственного", author: "Брайс Кортни" },
-  { rank: 184, title: "Сайлас Марнер", author: "Джордж Элиот" },
-  { rank: 185, title: "Американский психопат", author: "Брет Истон Эллис" },
-  { rank: 186, title: "Дневник никого", author: "Джордж и Уидон Гроссмит" },
-  { rank: 187, title: "На игле", author: "Ирвин Уэлш" },
-  { rank: 188, title: "Мурашки", author: "Р. Л. Стайн" },
-  { rank: 189, title: "Хайди", author: "Йоханна Шпири" },
-  { rank: 190, title: "Сыновья и любовники", author: "Д. Г. Лоуренс" },
-  { rank: 191, title: "Невыносимая легкость бытия", author: "Милан Кундера" },
-  { rank: 192, title: "Man and Boy", author: "Тони Парсонс" },
-  { rank: 193, title: "Правда", author: "Терри Пратчетт" },
-  { rank: 194, title: "Война миров", author: "Г. Уэллс" },
-  { rank: 195, title: "Заклинатель лошадей", author: "Николас Эванс" },
-  { rank: 196, title: "Хрупкое равновесие", author: "Рохинтон Мистри" },
-  { rank: 197, title: "Ведьмы за границей", author: "Терри Пратчетт" },
-  { rank: 198, title: "Меч в камне", author: "Т. Х. Уайт" },
-  { rank: 199, title: "Очень голодная гусеница", author: "Эрик Карл" },
-  { rank: 200, title: "Цветы на чердаке", author: "В. К. Эндрюс" }
+  { rank: 25, title: "Хоббит", author: "Дж. Р. Р. Толкин" }
 ];
 
 const PREDEFINED_GENRES = [
@@ -309,15 +144,7 @@ const INITIAL_BOOKS = [
     dateStarted: getMoscowDateString(45), dateFinished: getMoscowDateString(40), log: []
   },
   {
-    id: 5, title: 'Мцыри', author: 'Михаил Лермонтов', status: 'read', genre: 'Баллады', format: 'ebook',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 80, readPages: 80, rating: 5, annotation: 'Поэма о свободолюбивом юноше-монахе, рвущемся на родину в горы.', summary: 'Мощнейшая романтическая поэма.', notes: 'Невероятная энергетика свободы.', quotes: 'И божий мир увял в душе...',
-    coverUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['поэзия', 'классика'],
-    dateStarted: getMoscowDateString(60), dateFinished: getMoscowDateString(58), log: []
-  },
-  {
-    id: 6, title: 'Шантарам', author: 'Грегори Дэвид Робертс', status: 'read', genre: 'Роман', format: 'paper',
+    id: 5, title: 'Шантарам', author: 'Грегори Дэвид Робертс', status: 'read', genre: 'Роман', format: 'paper',
     seriesName: '', seriesIndex: '', seriesTotal: '',
     totalPages: 850, readPages: 850, rating: 5, annotation: 'Побег из австралийской тюрьмы и новая жизнь в трущобах Бомбея.', summary: 'Невероятная атмосфера Индии.', notes: 'Очень много глубоких философских диалогов.', quotes: 'Судьба — это не то, что случается с нами...',
     coverUrl: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=300&h=400',
@@ -346,13 +173,6 @@ const INITIAL_BOOKS = [
     tags: ['фэнтези', 'кинг'], dateStarted: '', dateFinished: '', log: []
   },
   {
-    id: 104, title: 'Тёмная Башня II: Извлечение троих', author: 'Стивен Кинг', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
-    seriesName: 'Тёмная Башня', seriesIndex: 2, seriesTotal: 7,
-    totalPages: 400, readPages: 0, rating: 0, annotation: 'Продолжение путешествия Роланда.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['фэнтези', 'кинг'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
     id: 105, title: 'Психология влияния', author: 'Роберт Чалдини', status: 'wishlist', genre: 'Психология', format: 'audio',
     seriesName: '', seriesIndex: '', seriesTotal: '',
     totalPages: 400, readPages: 0, rating: 0, annotation: 'Как люди принимают решения и почему соглашаются.', summary: '', notes: '', quotes: '',
@@ -365,34 +185,6 @@ const INITIAL_BOOKS = [
     totalPages: 350, readPages: 0, rating: 0, annotation: 'Чему учат богатых детей тому, чему не учат в школе.', summary: '', notes: '', quotes: '',
     coverUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=300&h=400',
     tags: ['финансы', 'инвестиции'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 107, title: 'Преступление и наказание', author: 'Фёдор Достоевский', status: 'wishlist', genre: 'Проза', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 600, readPages: 0, rating: 0, annotation: 'Психологический отчет об одном преступлении.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1476275466078-4007374efbbe?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['классика', 'философия'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 108, title: 'Маленький принц', author: 'Антуан де Сент-Экзюпери', status: 'wishlist', genre: 'Фэнтези', format: 'ebook',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 120, readPages: 0, rating: 0, annotation: 'Мудрая философская сказка о дружбе и ответственности.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['притча', 'классика'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 109, title: 'Властелин Колец: Братство Кольца', author: 'Джон Толкин', status: 'wishlist', genre: 'Фэнтези', format: 'paper',
-    seriesName: 'Властелин Колец', seriesIndex: 1, seriesTotal: 3,
-    totalPages: 500, readPages: 0, rating: 0, annotation: 'Начало великого похода к Ородруину.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['фэнтези', 'эпик'], dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 110, title: 'Шерлок Холмс: Этюд в багровых тонах', author: 'Артур Конан Дойл', status: 'wishlist', genre: 'Детектив', format: 'audio',
-    seriesName: 'Приключения Шерлока Холмса', seriesIndex: 1, seriesTotal: 10,
-    totalPages: 200, readPages: 0, rating: 0, annotation: 'Первое дело легендарного сыщика.', summary: '', notes: '', quotes: '',
-    coverUrl: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['детектив', 'классика'], dateStarted: '', dateFinished: '', log: []
   }
 ];
 
@@ -403,7 +195,7 @@ export default function App() {
   
   const [books, setBooks] = useState(() => {
     try {
-      const savedBooks = localStorage.getItem('warm_readingTrackerBooks_v28');
+      const savedBooks = localStorage.getItem('libriMori_books_v40');
       if (savedBooks) return JSON.parse(savedBooks);
     } catch (e) { console.error(e); }
     return INITIAL_BOOKS;
@@ -411,7 +203,7 @@ export default function App() {
 
   const [goals, setGoals] = useState(() => {
     try {
-      const savedGoals = localStorage.getItem('warm_readingTrackerGoals_v28');
+      const savedGoals = localStorage.getItem('libriMori_goals_v40');
       if (savedGoals) return JSON.parse(savedGoals);
     } catch (e) { console.error(e); }
     return { yearly: 20, monthly: 5 };
@@ -419,13 +211,13 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('warm_readingTrackerBooks_v28', JSON.stringify(books));
+      localStorage.setItem('libriMori_books_v40', JSON.stringify(books));
     } catch (e) { console.error(e); }
   }, [books]);
 
   useEffect(() => {
     try {
-      localStorage.setItem('warm_readingTrackerGoals_v28', JSON.stringify(goals));
+      localStorage.setItem('libriMori_goals_v40', JSON.stringify(goals));
     } catch (e) { console.error(e); }
   }, [goals]);
   
@@ -873,7 +665,7 @@ export default function App() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataObj, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `book-tracker-backup-${getMoscowDateString(0)}.json`);
+    downloadAnchor.setAttribute("download", `libri-mori-backup-${getMoscowDateString(0)}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -889,7 +681,7 @@ export default function App() {
           if (parsed && parsed.books) {
             setBooks(parsed.books);
             if (parsed.goals) setGoals(parsed.goals);
-            alert('Резервная копия успешно восстановлена!');
+            alert('Резервная копия LibriMori успешно восстановлена!');
           } else {
             alert('Неверный формат файла бэкапа.');
           }
@@ -965,9 +757,9 @@ export default function App() {
       {/* Top Navigation */}
       <div className="bg-[#F7F2E8] border-b border-[#EADFCF] sticky top-0 z-20 shadow-sm backdrop-blur-md bg-opacity-95">
         <div className="max-w-6xl mx-auto px-4 flex justify-between items-center h-16">
-          <div className="font-black text-lg sm:text-2xl text-[#846851] tracking-tight flex items-center gap-2">
-            <BookOpenIcon size={24} className="text-[#9C7A5E]" />
-            КнигоТрекер
+          <div className="font-black text-lg sm:text-2xl text-[#846851] tracking-tight flex items-center gap-2.5">
+            <LibriMoriLogo size={32} />
+            LibriMori
           </div>
           
           <div className="flex items-center gap-1.5 sm:gap-2">
@@ -2092,7 +1884,7 @@ export default function App() {
                      </div>
                    </div>
                 )}
-                <div className="mt-5 text-[8px] uppercase tracking-widest text-white/60">КнигоТрекер</div>
+                <div className="mt-5 text-[8px] uppercase tracking-widest text-white/60">LibriMori</div>
              </div>
              <div className="p-3.5 flex gap-2 justify-center bg-[#F7F2E8]">
                 <button onClick={() => setIsSummaryModalOpen(false)} className="px-5 py-2 bg-[#EADFCF] hover:bg-[#DDD0BE] text-[#564B41] rounded-2xl font-bold text-xs transition-colors">Закрыть</button>
