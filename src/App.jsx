@@ -26,43 +26,18 @@ const DownloadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={p
 const UploadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>;
 const BarChart2Icon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>;
 const PieChartIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>;
-const FlameIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>;
 const AwardIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><circle cx="12" cy="8" r="6"></circle><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path></svg>;
 const ScanIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="7" y="7" width="10" height="10" rx="1" ry="1"></rect></svg>;
-
-const LibriMoriLogo = (props) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" width={props.size || 24} height={props.size || 24} {...props}>
-    <path d="M20 80 V20 C20 20 40 10 50 20 C60 10 80 20 80 20 V80 C80 80 60 70 50 80 C40 70 20 80 20 80 Z" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M50 20 V80" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M30 40 H40 V60 H30 Z" stroke="#D67C6B" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M60 40 H70 V60 H60 Z" stroke="#D67C6B" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-
-const loadHtml5Qrcode = () => {
-  return new Promise((resolve, reject) => {
-    if (window.Html5Qrcode) {
-      resolve(window.Html5Qrcode);
-      return;
-    }
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/html5-qrcode';
-    script.onload = () => resolve(window.Html5Qrcode);
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-};
+const ImageRefIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>;
 
 const PREDEFINED_GENRES = [
-  "Антиутопия", "Бизнес и экономика", "Биография и мемуары", "Боевик", "Детектив", 
-  "Детская литература", "Драма", "Здоровье и спорт", "Искусство и культура", 
-  "Исторический роман", "История", "Киберпанк", "Классическая литература", 
-  "Комиксы и графические романы", "Кулинария", "Любовный роман", "Магический реализм", 
-  "Мемуары", "Мистика", "Наука и научпоп", "Научная фантастика", "Нон-фикшн", 
-  "Подростковая литература (YA)", "Поэзия", "Приключения", "Проза", "Психология", 
-  "Публицистика", "Путешествия", "Религия и духовность", "Роман", "Саморазвитие", 
-  "Сатира", "Сказка", "Современная проза", "Стихи", "Триллер", "Ужасы", 
-  "Фантастика", "Философия", "Фольклор", "Фэнтези", "Эротика", "Эссе", "Юмор"
+  "Фэнтези", "Научная фантастика", "Детектив", "Триллер", "Ужасы", "Любовный роман", 
+  "Исторический роман", "Современная проза", "Классическая литература", "Приключения", 
+  "Юмор", "Сатира", "Драма", "Поэзия", "Нон-фикшн", "Биография и мемуары", 
+  "Публицистика", "Саморазвитие", "Психология", "Философия", "История", 
+  "Наука и научпоп", "Бизнес и экономика", "Искусство и культура", "Религия и духовность", 
+  "Путешествия", "Кулинария", "Здоровье и спорт", "Детская литература", "Подростковая литература (YA)", 
+  "Антиутопия", "Киберпанк", "Магический реализм", "Эротика", "Комиксы и графические романы"
 ];
 
 const FORMATS = [
@@ -78,49 +53,6 @@ const STATUSES = [
   { id: 'rereading', label: 'Перечитываю' },
   { id: 'read', label: 'Прочитано' },
   { id: 'dropped', label: 'Брошено' }
-];
-
-const BBC_TOP_200 = [
-  { rank: 1, title: 'Властелин колец', author: 'Дж. Р. Р. Толкин' },
-  { rank: 2, title: 'Гордость и предубеждение', author: 'Джейн Остин' },
-  { rank: 3, title: 'Тёмные начала', author: 'Филип Пулман' },
-  { rank: 4, title: 'Автостопом по галактике', author: 'Дуглас Адамс' },
-  { rank: 5, title: 'Гарри Поттер и Кубок огня', author: 'Дж. К. Роулинг' },
-  { rank: 6, title: 'Убить пересмешника', author: 'Харпер Ли' },
-  { rank: 7, title: 'Винни-Пух', author: 'А. А. Милн' },
-  { rank: 8, title: '1984', author: 'Джордж Оруэлл' },
-  { rank: 9, title: 'Лев, колдунья и платяной шкаф', author: 'К. С. Льюис' },
-  { rank: 10, title: 'Джейн Эйр', author: 'Шарлотта Бронте' }
-];
-
-const getMoscowDate = () => {
-  const now = new Date();
-  const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-  const moscowTime = new Date(utc + (3 * 3600000));
-  moscowTime.setHours(0, 0, 0, 0);
-  return moscowTime;
-};
-
-const getMoscowDateString = (daysAgo = 0) => {
-  const d = getMoscowDate();
-  d.setDate(d.getDate() - daysAgo);
-  return d.toISOString().split('T')[0];
-};
-
-const INITIAL_BOOKS = [
-  {
-    id: 1, title: 'Задача трех тел', author: 'Лю Цысинь', status: 'reading', genre: 'Фантастика', format: 'paper',
-    seriesName: 'Воспоминания о прошлом Земли', seriesIndex: 1, seriesTotal: 3,
-    totalPages: 464, readPages: 180, rating: 0, annotation: 'Секретный военный проект «Красный берег» посылает сигналы внеземной цивилизации...', summary: '', quotes: '', 
-    coverUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=300&h=400',
-    tags: ['космос', 'научная фантастика'],
-    dateStarted: getMoscowDateString(5),
-    log: [
-      { date: getMoscowDateString(4), pages: 50, minutes: 75 }, 
-      { date: getMoscowDateString(2), pages: 60, minutes: 90 }, 
-      { date: getMoscowDateString(0), pages: 70, minutes: 105 }
-    ]
-  }
 ];
 
 const MOTIVATIONAL_STREAK = [
@@ -154,14 +86,73 @@ const MOTIVATIONAL_NO_STREAK = [
   '☕ Чашка чая и хорошая книга — идеальный план.'
 ];
 
+const BBC_TOP_200 = [
+  { rank: 1, title: 'Властелин колец', author: 'Дж. Р. Р. Толкин' },
+  { rank: 2, title: 'Гордость и предубеждение', author: 'Джейн Остин' },
+  { rank: 3, title: 'Тёмные начала', author: 'Филип Пулман' },
+  { rank: 4, title: 'Автостопом по галактике', author: 'Дуглас Адамс' },
+  { rank: 5, title: 'Гарри Поттер и Кубок огня', author: 'Дж. К. Роулинг' },
+  { rank: 6, title: 'Убить пересмешника', author: 'Харпер Ли' },
+  { rank: 7, title: 'Винни-Пух', author: 'А. А. Милн' },
+  { rank: 8, title: '1984', author: 'Джордж Оруэлл' },
+  { rank: 9, title: 'Лев, колдунья и платяной шкаф', author: 'К. С. Льюис' },
+  { rank: 10, title: 'Джейн Эйр', author: 'Шарлотта Бронте' }
+];
+
+const getMoscowDate = () => {
+  const now = new Date();
+  const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+  const moscowTime = new Date(utc + (3 * 3600000));
+  moscowTime.setHours(0, 0, 0, 0);
+  return moscowTime;
+};
+
+const getMoscowDateString = (daysAgo = 0) => {
+  const d = getMoscowDate();
+  d.setDate(d.getDate() - daysAgo);
+  return d.toISOString().split('T')[0];
+};
+
+const INITIAL_BOOKS = [
+  {
+    id: 1, title: 'Задача трех тел', author: 'Лю Цысинь', status: 'reading', genre: 'Научная фантастика', format: 'paper',
+    seriesName: 'Воспоминания о прошлом Земли', seriesIndex: 1, seriesTotal: 3,
+    totalPages: 464, readPages: 180, rating: 0, annotation: 'Секретный военный проект «Красный берег» посылает сигналы внеземной цивилизации...', summary: '', quotes: '', 
+    coverUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=300&h=400',
+    sketches: [],
+    tags: ['космос', 'научная фантастика'],
+    dateStarted: getMoscowDateString(5),
+    log: [
+      { date: getMoscowDateString(4), pages: 50, minutes: 75 }, 
+      { date: getMoscowDateString(2), pages: 60, minutes: 90 }, 
+      { date: getMoscowDateString(0), pages: 70, minutes: 105 }
+    ]
+  }
+];
+
+const loadHtml5Qrcode = () => {
+  return new Promise((resolve, reject) => {
+    if (window.Html5Qrcode) {
+      resolve(window.Html5Qrcode);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/html5-qrcode';
+    script.onload = () => resolve(window.Html5Qrcode);
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+};
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('diary'); 
   const [viewMode, setViewMode] = useState('grid'); 
   const [statPeriod, setStatPeriod] = useState('year');
+  const [statViewType, setStatViewType] = useState('genres');
   
   const [books, setBooks] = useState(() => {
     try {
-      const savedBooks = localStorage.getItem('libriMori_books_v55');
+      const savedBooks = localStorage.getItem('libriMori_books_v66');
       if (savedBooks) return JSON.parse(savedBooks);
     } catch (e) { console.error(e); }
     return INITIAL_BOOKS;
@@ -169,24 +160,25 @@ export default function App() {
 
   const [goals, setGoals] = useState(() => {
     try {
-      const savedGoals = localStorage.getItem('libriMori_goals_v55');
+      const savedGoals = localStorage.getItem('libriMori_goals_v66');
       if (savedGoals) return JSON.parse(savedGoals);
     } catch (e) { console.error(e); }
     return { yearly: 20, monthly: 5 };
   });
 
   useEffect(() => {
-    try { localStorage.setItem('libriMori_books_v55', JSON.stringify(books)); } catch (e) { console.error(e); }
+    try { localStorage.setItem('libriMori_books_v66', JSON.stringify(books)); } catch (e) { console.error(e); }
   }, [books]);
 
   useEffect(() => {
-    try { localStorage.setItem('libriMori_goals_v55', JSON.stringify(goals)); } catch (e) { console.error(e); }
+    try { localStorage.setItem('libriMori_goals_v66', JSON.stringify(goals)); } catch (e) { console.error(e); }
   }, [goals]);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
   const [currentBook, setCurrentBook] = useState(null);
   const [customModal, setCustomModal] = useState(null); 
+  const [fullImageModalUrl, setFullImageModalUrl] = useState(null);
   
   const [isScannerOpen, setIsScannerOpen] = useState(false);
   const [scannerError, setScannerError] = useState('');
@@ -199,7 +191,6 @@ export default function App() {
   const [genreFilter, setGenreFilter] = useState('all');
   const [authorFilter, setAuthorFilter] = useState('all');
   const [seriesFilter, setSeriesFilter] = useState('all');
-  const [tagFilter, setTagFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   const [bbcSearch, setBbcSearch] = useState('');
@@ -225,6 +216,7 @@ export default function App() {
   const [activeTimer, setActiveTimer] = useState(null);
   const [timerDisplay, setTimerDisplay] = useState(0);
   const fileInputRef = useRef(null);
+  const sketchInputRef = useRef(null);
 
   useEffect(() => { setRouletteBook(null); }, [rouletteGenre]);
 
@@ -285,7 +277,13 @@ export default function App() {
                 
                 if (!isBookISBN) return;
 
-                stopScanner();
+                if (scannerRef.current) {
+                  scannerRef.current.stop().then(() => {
+                    scannerRef.current.clear();
+                    scannerRef.current = null;
+                  }).catch(() => {});
+                }
+                setIsScannerOpen(false);
                 fetchBookByISBN(clean);
               },
               () => {} 
@@ -301,16 +299,6 @@ export default function App() {
           setScannerError('Не удалось загрузить библиотеку сканера.');
         });
     }
-
-    const stopScanner = () => {
-      if (scannerRef.current) {
-        scannerRef.current.stop().then(() => {
-          scannerRef.current.clear();
-          scannerRef.current = null;
-        }).catch(err => console.error("Error stopping scanner", err));
-      }
-      setIsScannerOpen(false);
-    };
 
     return () => {
       if (scannerRef.current) {
@@ -346,12 +334,6 @@ export default function App() {
         annotation: annotation || prev.annotation,
         coverUrl: coverUrl || prev.coverUrl
       }));
-
-      setCustomModal({
-        title: 'Книга найдена!',
-        message: `«${title}» (${author || 'автор не указан'}) успешно загружена из каталога.`,
-        type: 'alert'
-      });
       bookFound = true;
     };
 
@@ -396,25 +378,12 @@ export default function App() {
           }
         } catch (e) { console.warn(e); }
       }
-
-      if (!bookFound) {
-        setCurrentBook(prev => ({
-          ...prev,
-          annotation: prev.annotation ? `${prev.annotation}\nISBN: ${isbn}` : `ISBN: ${isbn}`
-        }));
-        setCustomModal({
-          title: 'Штрих-код распознан!',
-          message: `Номер ${isbn} считан. Книга свежая, воспользуйтесь кнопками быстрого поиска ниже, чтобы заполнить данные.`,
-          type: 'alert'
-        });
-      }
     } finally {
       setIsBookSearching(false);
     }
   };
 
   const uniqueAuthors = Array.from(new Set(books.map(b => b.author).filter(Boolean))).sort();
-  const uniqueGenres = Array.from(new Set(books.map(b => b.genre).filter(Boolean))).sort();
   const uniqueSeries = Array.from(new Set(books.map(b => b.seriesName).filter(Boolean))).sort();
 
   const readBooksList = books.filter(b => b.status === 'read');
@@ -582,13 +551,12 @@ export default function App() {
     const genreMatch = genreFilter === 'all' || book.genre === genreFilter;
     const authorMatch = authorFilter === 'all' || book.author === authorFilter;
     const seriesMatch = seriesFilter === 'all' || book.seriesName === seriesFilter;
-    const tagMatch = tagFilter === 'all' || (book.tags && book.tags.includes(tagFilter));
     const searchMatch = !searchQuery || 
       book.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
       book.author?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       book.seriesName?.toLowerCase().includes(searchQuery.toLowerCase());
       
-    return statusMatch && genreMatch && authorMatch && seriesMatch && tagMatch && searchMatch;
+    return statusMatch && genreMatch && authorMatch && seriesMatch && searchMatch;
   });
 
   const todayMoscow = getMoscowDate();
@@ -668,10 +636,10 @@ export default function App() {
   const openNewBookModal = () => {
     setCurrentBook({
       id: Date.now(),
-      title: '', author: '', genre: 'Фантастика', seriesName: '', seriesIndex: '', seriesTotal: '',
+      title: '', author: '', genre: PREDEFINED_GENRES[0], seriesName: '', seriesIndex: '', seriesTotal: '',
       status: 'wishlist', format: 'paper',
       totalPages: '', readPages: 0, rating: 0, annotation: '', summary: '', notes: '', quotes: '', coverUrl: '',
-      tags: [], dateStarted: '', dateFinished: '', log: []
+      sketches: [], tags: [], dateStarted: '', dateFinished: '', log: []
     });
     setIsModalOpen(true);
   };
@@ -893,6 +861,9 @@ export default function App() {
     return shelves;
   }, [filteredBooks]);
 
+  const motivationalText = MOTIVATIONAL_STREAK[todayMoscow.getDate() % MOTIVATIONAL_STREAK.length];
+  const noStreakText = MOTIVATIONAL_NO_STREAK[todayMoscow.getDate() % MOTIVATIONAL_NO_STREAK.length];
+
   return (
     <div className="min-h-screen bg-[#FCF9F2] text-[#4A4238] font-sans pb-24 md:pb-16 selection:bg-[#EEDFCC]">
       
@@ -900,7 +871,7 @@ export default function App() {
       <div className="bg-[#F7F2E8] border-b border-[#EADFCF] sticky top-0 z-20 shadow-sm backdrop-blur-md bg-opacity-95">
         <div className="max-w-6xl mx-auto px-4 flex justify-between items-center h-16">
           <div className="font-black text-lg sm:text-2xl text-[#846851] tracking-tight flex items-center gap-2.5">
-            <LibriMoriLogo size={32} />
+            <BookOpenIcon size={28} className="text-[#9C7A5E]" />
             LibriMori
           </div>
           
@@ -935,20 +906,18 @@ export default function App() {
             
             {/* Reading Streak Banner */}
             <div className="bg-gradient-to-r from-[#D67C6B] via-[#C98E5E] to-[#A68970] rounded-3xl p-4 sm:p-5 shadow-sm text-white relative overflow-hidden space-y-3.5">
-               <div className="absolute right-[-10px] bottom-[-20px] opacity-15"><FlameIcon size={140} /></div>
+               <div className="absolute right-[-10px] bottom-[-20px] opacity-15"><AwardIcon size={140} /></div>
                
                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10">
                  <div className="flex items-center gap-3.5 text-center sm:text-left">
-                    <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-sm shadow-inner shrink-0"><FlameIcon size={32} /></div>
+                    <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-sm shadow-inner shrink-0"><AwardIcon size={32} /></div>
                     <div>
                       <h3 className="font-black text-lg sm:text-xl leading-tight">Серия дней без пропуска: {streakData.currentStreak} дн.</h3>
                       <p className="text-white/90 text-xs mt-0.5">Личный рекорд: <span className="font-bold underline">{streakData.maxStreak} дн.</span> без перерыва!</p>
                     </div>
                  </div>
                  <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-2xl text-xs font-bold text-center border border-white/30 shrink-0">
-                    {streakData.currentStreak > 0 
-                      ? MOTIVATIONAL_STREAK[new Date().getDate() % MOTIVATIONAL_STREAK.length] 
-                      : MOTIVATIONAL_NO_STREAK[new Date().getDate() % MOTIVATIONAL_NO_STREAK.length]}
+                    {streakData.currentStreak > 0 ? motivationalText : noStreakText}
                  </div>
                </div>
 
@@ -1086,7 +1055,7 @@ export default function App() {
                       return (
                         <div key={book.id} className="bg-[#F7F2E8] rounded-3xl p-4 md:p-5 shadow-sm border border-[#EADFCF]">
                           <div className="flex gap-3.5 md:gap-4 items-stretch">
-                            {/* FIXED COVER STRETCHING BUG: added aspect-[3/4] and h-auto object-cover */}
+                            {/* FIXED COVER STRETCHING BUG: aspect-[3/4] and object-cover */}
                             <div className="w-24 sm:w-28 aspect-[3/4] bg-[#EFE7D8] rounded-2xl shrink-0 overflow-hidden shadow-sm border border-[#E2D5C3] relative flex items-center justify-center">
                                {book.coverUrl ? (
                                 <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover" />
@@ -1182,6 +1151,9 @@ export default function App() {
                             <span className="bg-[#EFE7D8] text-[#74675B] px-3 py-1.5 rounded-xl border border-[#E2D5C3] flex items-center gap-1">
                               За {selectedDate.toLocaleDateString()}: {pagesOnSelectedDate} стр. / {minsOnSelectedDate} мин.
                             </span>
+                            <button onClick={() => { setCurrentBook(book); setIsModalOpen(true); }} className="text-[#A68970] hover:underline ml-auto flex items-center gap-1">
+                              Открыть заметки и конспекты →
+                            </button>
                           </div>
                         </div>
                       );
@@ -1251,14 +1223,6 @@ export default function App() {
                         </button>
                       );
                     })}
-                  </div>
-                  
-                  <div className="mt-3 flex flex-wrap gap-1 text-[8px] font-bold text-[#74675B] justify-center items-center">
-                    <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#E8C2C2] rounded-sm"></div> 0</div>
-                    <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#D2E7DB] rounded-sm"></div> &lt;20</div>
-                    <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#98C4AB] rounded-sm"></div> 21-50</div>
-                    <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#6CA384] rounded-sm"></div> 51-100</div>
-                    <div className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-[#477C5E] rounded-sm"></div> 100+</div>
                   </div>
                 </div>
 
@@ -1582,7 +1546,7 @@ export default function App() {
                               readPages: 0,
                               rating: 0,
                               annotation: `Книга из списка BBC Топ-200 (позиция #${item.rank})`,
-                              summary: '', notes: '', quotes: '', coverUrl: '',
+                              summary: '', notes: '', quotes: '', coverUrl: '', sketches: [],
                               tags: ['BBC 200', 'классика'],
                               dateStarted: '', dateFinished: '', log: []
                             };
@@ -1711,11 +1675,9 @@ export default function App() {
                           </div>
                         )}
 
-                        {book.tags && book.tags.length > 0 && (
-                          <div className="absolute bottom-1.5 left-1.5 right-1.5 flex flex-wrap gap-1">
-                            {book.tags.slice(0, 1).map(t => (
-                              <span key={t} className="bg-black/60 text-white text-[7px] font-bold px-1 py-0.5 rounded backdrop-blur-sm truncate max-w-full">#{t}</span>
-                            ))}
+                        {book.sketches && book.sketches.length > 0 && (
+                          <div className="absolute bottom-7 left-1.5 bg-[#846851] text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow flex items-center gap-1">
+                            <ImageRefIcon size={10} /> {book.sketches.length}
                           </div>
                         )}
                       </div>
@@ -1792,8 +1754,9 @@ export default function App() {
                                 <p className="text-[9px] opacity-90 line-clamp-1 mt-1 font-medium">{book.author}</p>
                               </div>
 
-                              <div className="flex justify-center items-center gap-1 text-[9px] font-bold opacity-80">
-                                {book.status === 'read' ? '★ ' + (book.rating || '✓') : book.status === 'reading' ? '📖' : '📌'}
+                              <div className="flex justify-between items-center text-[9px] font-bold opacity-80">
+                                <span>{book.status === 'read' ? '★ ' + (book.rating || '✓') : book.status === 'reading' ? '📖' : '📌'}</span>
+                                {book.sketches && book.sketches.length > 0 && <span className="bg-white/30 px-1 rounded">🎨 {book.sketches.length}</span>}
                               </div>
                             </div>
                           </div>
@@ -2053,6 +2016,18 @@ export default function App() {
         </div>
       )}
 
+      {/* Fullscreen Sketch / Sketchnote Image Modal Viewer */}
+      {fullImageModalUrl && (
+        <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in" onClick={() => setFullImageModalUrl(null)}>
+          <div className="relative max-w-5xl max-h-[90vh] w-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <img src={fullImageModalUrl} alt="Визуальный конспект в полный размер" className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl border-4 border-[#EADFCF]" />
+            <button onClick={() => setFullImageModalUrl(null)} className="absolute top-3 right-3 bg-black/60 hover:bg-black text-white p-2.5 rounded-full transition-colors shadow-lg">
+              <XIcon size={24} />
+            </button>
+          </div>
+        </div>
+      )}
+
       {isScannerOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsScannerOpen(false)}></div>
@@ -2095,6 +2070,7 @@ export default function App() {
         </div>
       )}
 
+      {/* Book Edit Modal with Sketchnotes */}
       {isModalOpen && currentBook && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
           <div className="absolute inset-0 bg-[#4A4238]/50 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
@@ -2125,10 +2101,7 @@ export default function App() {
                     <a href={`https://www.chitai-gorod.ru/search?phrase=${lastScannedISBN}`} target="_blank" rel="noreferrer" className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]">
                       🔍 Читай-Город
                     </a>
-                    <a href={`https://www.labirint.ru/search/${lastScannedISBN}/`} target="_blank" rel="noreferrer" className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]">
-                      🔍 Лабиринт
-                    </a>
-                    <a href={`https://ya.ru/search/?text=${encodeURIComponent(`книга ISBN ${lastScannedISBN}`)}`} target="_blank" rel="noreferrer" className="bg-[#A68970] hover:bg-[#92745C] text-white font-bold px-2.5 py-1.5 rounded-xl transition-colors flex items-center gap-1 shadow-sm text-[11px]">
+                    <a href={`https://ya.ru/search/?text=${encodeURIComponent(`книга ISBN ${lastScannedISBN}`)}` } target="_blank" rel="noreferrer" className="bg-[#A68970] hover:bg-[#92745C] text-white font-bold px-2.5 py-1.5 rounded-xl transition-colors flex items-center gap-1 shadow-sm text-[11px]">
                       Яндекс
                     </a>
                   </div>
@@ -2172,15 +2145,13 @@ export default function App() {
                     </div>
                     <div className="space-y-1 flex-1">
                       <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider">Жанр</label>
-                      <div className="relative">
-                        <select 
-                          value={currentBook.genre || 'Фантастика'} 
-                          onChange={(e) => setCurrentBook({...currentBook, genre: e.target.value})}
-                          className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-bold text-xs sm:text-sm focus:border-[#A68970] outline-none bg-[#FCF9F2] text-[#4A4238] cursor-pointer appearance-none"
-                        >
-                          {PREDEFINED_GENRES.map(g => <option key={g} value={g}>{g}</option>)}
-                        </select>
-                      </div>
+                      <select 
+                        value={currentBook.genre || PREDEFINED_GENRES[0]} 
+                        onChange={(e) => setCurrentBook({...currentBook, genre: e.target.value})}
+                        className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-bold text-xs sm:text-sm focus:border-[#A68970] outline-none bg-[#FCF9F2] text-[#4A4238] cursor-pointer"
+                      >
+                        {PREDEFINED_GENRES.map(g => <option key={g} value={g}>{g}</option>)}
+                      </select>
                     </div>
                   </div>
 
@@ -2258,6 +2229,47 @@ export default function App() {
                     </div>
                   )}
                 </div>
+              </div>
+
+              {/* SKETCHNOTES / VISUAL CONSPECT SECTION */}
+              <div className="space-y-3 bg-[#EFE7D8] p-4 sm:p-5 rounded-3xl border border-[#EADFCF]">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xs font-black text-[#74675B] uppercase tracking-wider flex items-center gap-1.5">
+                    <ImageRefIcon size={16} /> Визуальные конспекты / Sketchnotes
+                  </h3>
+                  <button type="button" onClick={() => sketchInputRef.current.click()} className="bg-[#A68970] hover:bg-[#92745C] text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-sm">
+                    <PlusIcon size={14} /> Загрузить скетчноут
+                  </button>
+                  <input type="file" ref={sketchInputRef} accept="image/*" className="hidden" onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        const existingSketches = currentBook.sketches || [];
+                        setCurrentBook({ ...currentBook, sketches: [...existingSketches, reader.result] });
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }} />
+                </div>
+
+                {currentBook.sketches && currentBook.sketches.length > 0 ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+                    {currentBook.sketches.map((sketchStr, sIdx) => (
+                      <div key={sIdx} className="relative group aspect-[4/3] bg-white rounded-2xl overflow-hidden border border-[#EADFCF] shadow-sm flex items-center justify-center">
+                        <img src={sketchStr} alt={`Sketchnote ${sIdx + 1}`} className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform" onClick={() => setFullImageModalUrl(sketchStr)} />
+                        <button type="button" onClick={() => {
+                          const updated = currentBook.sketches.filter((_, idx) => idx !== sIdx);
+                          setCurrentBook({ ...currentBook, sketches: updated });
+                        }} className="absolute top-2 right-2 bg-red-600/80 hover:bg-red-600 text-white p-1 rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity">
+                          <TrashIcon size={12} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-xs text-[#948477] italic text-center py-2">Здесь пока нет загруженных визуальных конспектов. Добавьте карту персонажей или инфографику книги!</p>
+                )}
               </div>
 
               <div className="space-y-4 bg-[#F2ECE1] p-4 sm:p-5 rounded-3xl border border-[#E2D5C3]">
