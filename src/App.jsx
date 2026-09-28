@@ -389,6 +389,7 @@ export default function App() {
   const readBooksList = books.filter(b => b.status === 'read');
   const wishlistBooks = books.filter(b => b.status === 'wishlist');
   const activeBooks = books.filter(b => b.status === 'reading' || b.status === 'rereading');
+  const droppedBooks = books.filter(b => b.status === 'dropped');
 
   const streakData = useMemo(() => {
     const activeDatesSet = new Set();
@@ -861,8 +862,9 @@ export default function App() {
     return shelves;
   }, [filteredBooks]);
 
-  const motivationalText = MOTIVATIONAL_STREAK[todayMoscow.getDate() % MOTIVATIONAL_STREAK.length];
-  const noStreakText = MOTIVATIONAL_NO_STREAK[todayMoscow.getDate() % MOTIVATIONAL_NO_STREAK.length];
+  const streakDayIndex = todayMoscow.getDate() % MOTIVATIONAL_STREAK.length;
+  const motivationalText = MOTIVATIONAL_STREAK[streakDayIndex];
+  const noStreakText = MOTIVATIONAL_NO_STREAK[streakDayIndex % MOTIVATIONAL_NO_STREAK.length];
 
   return (
     <div className="min-h-screen bg-[#FCF9F2] text-[#4A4238] font-sans pb-24 md:pb-16 selection:bg-[#EEDFCC]">
@@ -1055,8 +1057,8 @@ export default function App() {
                       return (
                         <div key={book.id} className="bg-[#F7F2E8] rounded-3xl p-4 md:p-5 shadow-sm border border-[#EADFCF]">
                           <div className="flex gap-3.5 md:gap-4 items-stretch">
-                            {/* FIXED COVER STRETCHING BUG: aspect-[3/4] and object-cover */}
-                            <div className="w-24 sm:w-28 aspect-[3/4] bg-[#EFE7D8] rounded-2xl shrink-0 overflow-hidden shadow-sm border border-[#E2D5C3] relative flex items-center justify-center">
+                            {/* FIXED COVER STRETCHING BUG: w-28 sm:w-32 aspect-[3/4] and object-cover */}
+                            <div className="w-28 sm:w-32 aspect-[3/4] bg-[#EFE7D8] rounded-2xl shrink-0 overflow-hidden shadow-sm border border-[#E2D5C3] relative flex items-center justify-center">
                                {book.coverUrl ? (
                                 <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover" />
                                ) : (
@@ -1579,6 +1581,30 @@ export default function App() {
         {/* ================= БИБЛИОТЕКА ================= */}
         {activeTab === 'library' && (
           <div className="animate-fade-in">
+            {/* Library Counter Badges */}
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-4">
+              <div onClick={() => setFilter('all')} className={`bg-[#F7F2E8] p-3 rounded-2xl border cursor-pointer transition-all shadow-sm flex flex-col items-center justify-center text-center ${filter === 'all' ? 'border-[#A68970] ring-2 ring-[#A68970]/30' : 'border-[#EADFCF]'}`}>
+                <span className="text-xl font-black text-[#564B41]">{books.length}</span>
+                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">Всего книг</span>
+              </div>
+              <div onClick={() => setFilter('reading')} className={`bg-[#F7F2E8] p-3 rounded-2xl border cursor-pointer transition-all shadow-sm flex flex-col items-center justify-center text-center ${filter === 'reading' ? 'border-[#C98E5E] ring-2 ring-[#C98E5E]/30' : 'border-[#EADFCF]'}`}>
+                <span className="text-xl font-black text-[#C98E5E]">{activeBooks.length}</span>
+                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">В процессе</span>
+              </div>
+              <div onClick={() => setFilter('read')} className={`bg-[#F7F2E8] p-3 rounded-2xl border cursor-pointer transition-all shadow-sm flex flex-col items-center justify-center text-center ${filter === 'read' ? 'border-[#6F8E80] ring-2 ring-[#6F8E80]/30' : 'border-[#EADFCF]'}`}>
+                <span className="text-xl font-black text-[#6F8E80]">{readBooksList.length}</span>
+                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">Прочитано</span>
+              </div>
+              <div onClick={() => setFilter('wishlist')} className={`bg-[#F7F2E8] p-3 rounded-2xl border cursor-pointer transition-all shadow-sm flex flex-col items-center justify-center text-center ${filter === 'wishlist' ? 'border-[#9E82A8] ring-2 ring-[#9E82A8]/30' : 'border-[#EADFCF]'}`}>
+                <span className="text-xl font-black text-[#9E82A8]">{wishlistBooks.length}</span>
+                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">Виш-лист</span>
+              </div>
+              <div onClick={() => setFilter('dropped')} className={`bg-[#F7F2E8] p-3 rounded-2xl border cursor-pointer transition-all shadow-sm flex flex-col items-center justify-center text-center col-span-2 sm:col-span-1 ${filter === 'dropped' ? 'border-[#D67C6B] ring-2 ring-[#D67C6B]/30' : 'border-[#EADFCF]'}`}>
+                <span className="text-xl font-black text-[#D67C6B]">{droppedBooks.length}</span>
+                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">Брошено</span>
+              </div>
+            </div>
+
             <div className="flex flex-col gap-3.5 mb-5 bg-[#F7F2E8] p-4 md:p-5 rounded-3xl shadow-sm border border-[#EADFCF]">
               
               <div className="flex flex-wrap justify-between items-center gap-2">
