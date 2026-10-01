@@ -1,43 +1,44 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 
-const PlusIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125 cursor-pointer" {...props}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
-const SearchIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
-const XIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125 cursor-pointer" {...props}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
-const CheckIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><polyline points="20 6 9 17 4 12"></polyline></svg>;
-const ChevronRightIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125 cursor-pointer" {...props}><polyline points="9 18 15 12 9 6"></polyline></svg>;
-const ChevronLeftIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125 cursor-pointer" {...props}><polyline points="15 18 9 12 15 6"></polyline></svg>;
-const BookOpenIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>;
-const SmartphoneIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>;
-const HeadphonesIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>;
-const LayersIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 12 12 17 22 12"></polyline><polyline points="2 17 12 22 22 17"></polyline></svg>;
-const TrophyIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>;
-const TrashIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>;
-const TagIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>;
-const ClockIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>;
-const CameraIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>;
-const TargetIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>;
-const PlayIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>;
-const SquareIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>;
-const Edit3Icon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>;
-const ShuffleIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125 cursor-pointer" {...props}><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>;
-const GridIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>;
-const LayersBoxIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>;
-const DownloadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>;
-const UploadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>;
-const BarChart2Icon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>;
-const PieChartIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>;
-const AwardIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><circle cx="12" cy="8" r="6"></circle><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path></svg>;
-const ScanIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 24} height={props.size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="7" y="7" width="10" height="10" rx="1" ry="1"></rect></svg>;
-const ImageRefIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 hover:scale-125" {...props}><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>;
+const PlusIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
+const SearchIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
+const XIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
+const CheckIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="20 6 9 17 4 12"></polyline></svg>;
+const ChevronRightIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="9 18 15 12 9 6"></polyline></svg>;
+const ChevronLeftIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="15 18 9 12 15 6"></polyline></svg>;
+const BookOpenIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>;
+const SmartphoneIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>;
+const HeadphonesIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>;
+const LayersIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 12 12 17 22 12"></polyline><polyline points="2 17 12 22 22 17"></polyline></svg>;
+const TrophyIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 22} height={props.size || 22} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>;
+const TrashIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>;
+const TagIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 14} height={props.size || 14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>;
+const ClockIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>;
+const CameraIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>;
+const TargetIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>;
+const PlayIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>;
+const SquareIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>;
+const Edit3Icon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 15} height={props.size || 15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>;
+const ShuffleIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>;
+const GridIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>;
+const LayersBoxIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>;
+const DownloadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>;
+const UploadIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>;
+const BarChart2Icon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>;
+const EyeIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>;
+const FlameIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3z"></path></svg>;
 
 const PREDEFINED_GENRES = [
-  "Фэнтези", "Научная фантастика", "Детектив", "Триллер", "Ужасы", "Любовный роман", 
-  "Исторический роман", "Современная проза", "Классическая литература", "Приключения", 
-  "Юмор", "Сатира", "Драма", "Поэзия", "Нон-фикшн", "Биография и мемуары", 
-  "Публицистика", "Саморазвитие", "Психология", "Философия", "История", 
-  "Наука и научпоп", "Бизнес и экономика", "Искусство и культура", "Религия и духовность", 
-  "Путешествия", "Кулинария", "Здоровье и спорт", "Детская литература", "Подростковая литература (YA)", 
-  "Антиутопия", "Киберпанк", "Магический реализм", "Эротика", "Комиксы и графические романы"
+  "Антиутопия", "Баллады", "Бизнес и экономика", "Биография и мемуары",
+  "Детектив", "Детская литература", "Драма", "Здоровье и спорт",
+  "Искусство и культура", "Исторический роман", "История", "Киберпанк",
+  "Классическая литература", "Комиксы и графические романы", "Кулинария",
+  "Любовный роман", "Магический реализм", "Мистика", "Наука и научпоп",
+  "Научная фантастика", "Нон-фикшн", "Подростковая литература (YA)", "Поэма",
+  "Поэзия", "Приключения", "Проза", "Психология", "Публицистика",
+  "Путешествия", "Религия и духовность", "Роман", "Саморазвитие",
+  "Сатира", "Современная проза", "Стихи", "Триллер", "Ужасы",
+  "Фантастика", "Философия", "Фэнтези", "Эротика", "Эссе", "Юмор", "Другое"
 ];
 
 const FORMATS = [
@@ -56,48 +57,34 @@ const STATUSES = [
 ];
 
 const MOTIVATIONAL_STREAK = [
-  '🔥 Вы в ударе! Так держать!',
-  '📚 Отличный темп, не останавливайтесь!',
-  '🚀 Ваша начитанность растет с каждым днем!',
-  '✨ Каждая страница делает вас лучше.',
-  '📖 Еще один день, еще одна глава.',
-  '🧠 Ваш мозг скажет вам спасибо!',
-  '🌟 Замечательная привычка! Продолжайте!',
-  '💪 Чтение — лучшая тренировка для ума.',
-  '🏆 Вы на пути к новой книжной победе!',
-  '☕ Время налить чай и прочесть пару страниц.',
-  '💫 Книга за книгой, день за днем!',
-  '🎯 Цель всё ближе! Отличная серия.',
-  '🧩 Каждая строчка собирает пазл вашей эрудиции.',
-  '🧭 Книги указывают верный путь. Идем дальше!',
-  '🔥 Ни дня без строчки! Отличный настрой.'
+  "Каждая прочитанная страница меняет мышление. Вы на верном пути!",
+  "Отличный темп чтения! Дисциплина творит настоящие чудеса.",
+  "Чтение сегодня — это мудрость и сила завтра.",
+  "Вы держите серию без единого пропуска — великолепный результат!",
+  "Книги открывают нам миры, которые иначе невозможно увидеть.",
+  "Еще один шаг к вашей годовой цели! Так держать.",
+  "Привычка читать каждый день делает вас непобедимым."
 ];
 
 const MOTIVATIONAL_NO_STREAK = [
-  '📌 Прочитайте сегодня хотя бы 1 страницу!',
-  '🛋️ Самое время уютно устроиться с книгой.',
-  '📖 Книги скучают по вам. Начнем?',
-  '⚡ Всего 10 минут чтения изменят ваш день.',
-  '🌱 Начните новую серию уже сегодня!',
-  '🔔 Пора стряхнуть пыль с закладок!',
-  '✨ Откройте книгу — магия ждет.',
-  '👀 Ждем вашего возвращения в мир книг!',
-  '🚀 Самый сложный шаг — открыть первую страницу.',
-  '☕ Чашка чая и хорошая книга — идеальный план.'
+  "Сделайте паузу и прочитайте хотя бы 5 страниц сегодня!",
+  "Сегодня отличный день, чтобы открыть любимую книгу.",
+  "Даже одна глава в день меняет всё. Начните прямо сейчас!",
+  "Ваши книги ждут вас на полке!"
 ];
 
-const BBC_TOP_200 = [
-  { rank: 1, title: 'Властелин колец', author: 'Дж. Р. Р. Толкин' },
-  { rank: 2, title: 'Гордость и предубеждение', author: 'Джейн Остин' },
-  { rank: 3, title: 'Тёмные начала', author: 'Филип Пулман' },
-  { rank: 4, title: 'Автостопом по галактике', author: 'Дуглас Адамс' },
-  { rank: 5, title: 'Гарри Поттер и Кубок огня', author: 'Дж. К. Роулинг' },
-  { rank: 6, title: 'Убить пересмешника', author: 'Харпер Ли' },
-  { rank: 7, title: 'Винни-Пух', author: 'А. А. Милн' },
-  { rank: 8, title: '1984', author: 'Джордж Оруэлл' },
-  { rank: 9, title: 'Лев, колдунья и платяной шкаф', author: 'К. С. Льюис' },
-  { rank: 10, title: 'Джейн Эйр', author: 'Шарлотта Бронте' }
-];
+const formatDateKey = (dInput) => {
+  if (!dInput) return '';
+  if (typeof dInput === 'string' && /^\d{4}-\d{2}-\d{2}/.test(dInput)) {
+    return dInput.slice(0, 10);
+  }
+  const d = new Date(dInput);
+  if (isNaN(d.getTime())) return '';
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 const getMoscowDate = () => {
   const now = new Date();
@@ -110,7 +97,16 @@ const getMoscowDate = () => {
 const getMoscowDateString = (daysAgo = 0) => {
   const d = getMoscowDate();
   d.setDate(d.getDate() - daysAgo);
-  return d.toISOString().split('T')[0];
+  return formatDateKey(d);
+};
+
+const getPluralDays = (n) => {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod100 >= 11 && mod100 <= 19) return 'дней';
+  if (mod10 === 1) return 'день';
+  if (mod10 >= 2 && mod10 <= 4) return 'дня';
+  return 'дней';
 };
 
 const INITIAL_BOOKS = [
@@ -119,82 +115,111 @@ const INITIAL_BOOKS = [
     seriesName: 'Воспоминания о прошлом Земли', seriesIndex: 1, seriesTotal: 3,
     totalPages: 464, readPages: 180, rating: 0, annotation: 'Секретный военный проект «Красный берег» посылает сигналы внеземной цивилизации...', summary: '', quotes: '', 
     coverUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=300&h=400',
-    sketches: [],
-    tags: ['космос', 'научная фантастика'],
-    dateStarted: getMoscowDateString(5),
+    sketchnoteUrl: '', tags: ['космос', 'научная фантастика'],
+    dateStarted: getMoscowDateString(15),
+    // 15 days continuous streak in initial sample data
+    log: Array.from({ length: 15 }).map((_, idx) => ({
+      date: getMoscowDateString(14 - idx),
+      pages: 25 + (idx % 3) * 15,
+      minutes: 40 + (idx % 3) * 20
+    }))
+  },
+  {
+    id: 2, title: 'Темный лес', author: 'Лю Цысинь', status: 'wishlist', genre: 'Научная фантастика', format: 'paper',
+    seriesName: 'Воспоминания о прошлом Земли', seriesIndex: 2, seriesTotal: 3,
+    totalPages: 500, readPages: 0, rating: 0, annotation: 'Вторая книга трилогии Воспоминания о прошлом Земли.', summary: '', quotes: '', 
+    coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=300&h=400',
+    sketchnoteUrl: '', tags: ['космос'],
+    dateStarted: '', dateFinished: '', log: []
+  },
+  {
+    id: 3, title: 'Дюна', author: 'Фрэнк Герберт', status: 'read', genre: 'Научная фантастика', format: 'combo',
+    seriesName: 'Хроники Дюны', seriesIndex: 1, seriesTotal: 6,
+    totalPages: 700, readPages: 700, rating: 5, annotation: 'История Пола Атрейдеса на пустынной планете Арракис...', summary: 'Эпично и масштабно. Лучшая фантастика столетия.', quotes: 'Я не должен бояться. Страх — убийца разума.',
+    coverUrl: 'https://images.unsplash.com/photo-1546552356-372989cfa124?auto=format&fit=crop&q=80&w=300&h=400',
+    sketchnoteUrl: '', tags: ['любимое', 'классика'],
+    dateStarted: getMoscowDateString(35), dateFinished: getMoscowDateString(10), 
     log: [
-      { date: getMoscowDateString(4), pages: 50, minutes: 75 }, 
-      { date: getMoscowDateString(2), pages: 60, minutes: 90 }, 
-      { date: getMoscowDateString(0), pages: 70, minutes: 105 }
+      { date: getMoscowDateString(28), pages: 100, minutes: 150 },
+      { date: getMoscowDateString(20), pages: 200, minutes: 300 }
     ]
+  },
+  {
+    id: 4, title: 'Желчный Ангел', author: 'Катя Качур', status: 'read', genre: 'Современная проза', format: 'paper',
+    seriesName: '', seriesIndex: '', seriesTotal: '',
+    totalPages: 292, readPages: 292, rating: 5, annotation: 'Роман о желаниях, которые имеют цену. Бриллиант с фигуркой ангела внутри.', summary: 'Удивительная история о судьбах, прощении и исцелении.', quotes: 'Иногда самый страшный ангел — это тот, кто живет внутри нас.',
+    coverUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=300&h=400',
+    sketchnoteUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=800',
+    tags: ['роман', 'глубокое'],
+    dateStarted: getMoscowDateString(50), dateFinished: getMoscowDateString(25), log: []
+  },
+  {
+    id: 5, title: 'Евгений Онегин', author: 'Александр Пушкин', status: 'read', genre: 'Классическая литература', format: 'paper',
+    seriesName: '', seriesIndex: '', seriesTotal: '',
+    totalPages: 240, readPages: 240, rating: 5, annotation: 'Роман в стихах о русской интеллигенции первой трети XIX века.', summary: 'Великая классика стихотворной формы.', quotes: 'Любви все возрасты покорны...',
+    coverUrl: 'https://images.unsplash.com/photo-1476275466078-4007374efbbe?auto=format&fit=crop&q=80&w=300&h=400',
+    sketchnoteUrl: '', tags: ['классика', 'поэзия'],
+    dateStarted: getMoscowDateString(70), dateFinished: getMoscowDateString(62), log: []
   }
 ];
 
-const loadHtml5Qrcode = () => {
-  return new Promise((resolve, reject) => {
-    if (window.Html5Qrcode) {
-      resolve(window.Html5Qrcode);
-      return;
-    }
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/html5-qrcode';
-    script.onload = () => resolve(window.Html5Qrcode);
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-};
-
 export default function App() {
-  const [activeTab, setActiveTab] = useState('diary'); 
-  const [viewMode, setViewMode] = useState('grid'); 
-  const [statPeriod, setStatPeriod] = useState('year');
-  const [statViewType, setStatViewType] = useState('genres');
+  const [activeTab, setActiveTab] = useState('diary'); // 'diary' | 'library' | 'analytics' | 'roulette' | 'tournament'
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'shelf'
+  const [statViewType, setStatViewType] = useState('months'); // 'months' | 'genres' | 'formats' | 'activity'
   
   const [books, setBooks] = useState(() => {
     try {
-      const savedBooks = localStorage.getItem('libriMori_books_v66');
+      const savedBooks = localStorage.getItem('warm_readingTrackerBooks_v21');
       if (savedBooks) return JSON.parse(savedBooks);
     } catch (e) { console.error(e); }
     return INITIAL_BOOKS;
   });
 
+  const [manualStreakBonus, setManualStreakBonus] = useState(() => {
+    try {
+      return Number(localStorage.getItem('warm_readingTrackerStreakBonus_v21')) || 0;
+    } catch (e) { return 0; }
+  });
+
   const [goals, setGoals] = useState(() => {
     try {
-      const savedGoals = localStorage.getItem('libriMori_goals_v66');
+      const savedGoals = localStorage.getItem('warm_readingTrackerGoals_v21');
       if (savedGoals) return JSON.parse(savedGoals);
     } catch (e) { console.error(e); }
     return { yearly: 20, monthly: 5 };
   });
 
   useEffect(() => {
-    try { localStorage.setItem('libriMori_books_v66', JSON.stringify(books)); } catch (e) { console.error(e); }
+    try {
+      localStorage.setItem('warm_readingTrackerBooks_v21', JSON.stringify(books));
+    } catch (e) { console.error(e); }
   }, [books]);
 
   useEffect(() => {
-    try { localStorage.setItem('libriMori_goals_v66', JSON.stringify(goals)); } catch (e) { console.error(e); }
+    try {
+      localStorage.setItem('warm_readingTrackerStreakBonus_v21', String(manualStreakBonus));
+    } catch (e) { console.error(e); }
+  }, [manualStreakBonus]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('warm_readingTrackerGoals_v21', JSON.stringify(goals));
+    } catch (e) { console.error(e); }
   }, [goals]);
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
+  const [sketchnoteModalUrl, setSketchnoteModalUrl] = useState(null);
   const [currentBook, setCurrentBook] = useState(null);
   const [customModal, setCustomModal] = useState(null); 
-  const [fullImageModalUrl, setFullImageModalUrl] = useState(null);
   
-  const [isScannerOpen, setIsScannerOpen] = useState(false);
-  const [scannerError, setScannerError] = useState('');
-  const [isScannerLoading, setIsScannerLoading] = useState(false);
-  const scannerRef = useRef(null);
-  const [isBookSearching, setIsBookSearching] = useState(false);
-  const [lastScannedISBN, setLastScannedISBN] = useState('');
-
   const [filter, setFilter] = useState('all'); 
   const [genreFilter, setGenreFilter] = useState('all');
   const [authorFilter, setAuthorFilter] = useState('all');
   const [seriesFilter, setSeriesFilter] = useState('all');
+  const [tagFilter, setTagFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-
-  const [bbcSearch, setBbcSearch] = useState('');
-  const [bbcFilterStatus, setBbcFilterStatus] = useState('all');
 
   const [logPagesInput, setLogPagesInput] = useState({});
   const [logMinutesInput, setLogMinutesInput] = useState({});
@@ -209,16 +234,14 @@ export default function App() {
   const [currentMatchIndex, setCurrentMatchIndex] = useState(0);
   const [tournamentWinner, setTournamentWinner] = useState(null);
 
+  const [rouletteGenre, setRouletteGenre] = useState('all');
   const [rouletteBook, setRouletteBook] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [rouletteGenre, setRouletteGenre] = useState('all');
 
   const [activeTimer, setActiveTimer] = useState(null);
   const [timerDisplay, setTimerDisplay] = useState(0);
-  const fileInputRef = useRef(null);
-  const sketchInputRef = useRef(null);
 
-  useEffect(() => { setRouletteBook(null); }, [rouletteGenre]);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     let interval;
@@ -233,14 +256,14 @@ export default function App() {
   const toggleTimer = (bookId) => {
     if (activeTimer && activeTimer.bookId === bookId) {
       const mins = Math.ceil(timerDisplay / 60);
-      const currentInput = parseInt(logMinutesInput[bookId] || 0);
+      const currentInput = parseInt(logMinutesInput[bookId] || 0, 10);
       setLogMinutesInput(prev => ({ ...prev, [bookId]: currentInput + mins }));
       setActiveTimer(null);
       setTimerDisplay(0);
     } else {
       if (activeTimer) {
         const mins = Math.ceil(timerDisplay / 60);
-        const currentInput = parseInt(logMinutesInput[activeTimer.bookId] || 0);
+        const currentInput = parseInt(logMinutesInput[activeTimer.bookId] || 0, 10);
         setLogMinutesInput(prev => ({ ...prev, [activeTimer.bookId]: currentInput + mins }));
       }
       setActiveTimer({ bookId, start: Date.now(), elapsed: 0 });
@@ -254,254 +277,145 @@ export default function App() {
     return `${m}:${s}`;
   };
 
-  useEffect(() => {
-    if (isScannerOpen) {
-      setScannerError('');
-      setIsScannerLoading(true);
+  const readBooksList = useMemo(() => books.filter(b => b.status === 'read'), [books]);
+  const activeBooks = useMemo(() => books.filter(b => b.status === 'reading' || b.status === 'rereading'), [books]);
+  const wishlistBooks = useMemo(() => books.filter(b => b.status === 'wishlist'), [books]);
+  const droppedBooks = useMemo(() => books.filter(b => b.status === 'dropped'), [books]);
 
-      loadHtml5Qrcode()
-        .then((Html5Qrcode) => {
-          setIsScannerLoading(false);
-          setTimeout(() => {
-            const html5Qrcode = new Html5Qrcode("reader");
-            scannerRef.current = html5Qrcode;
+  const uniqueAuthors = useMemo(() => Array.from(new Set(books.map(b => b.author).filter(Boolean))).sort(), [books]);
+  const uniqueSeries = useMemo(() => Array.from(new Set(books.map(b => b.seriesName).filter(Boolean))).sort(), [books]);
 
-            const config = { fps: 15, qrbox: { width: 280, height: 160 }, aspectRatio: 1.0 };
-            
-            html5Qrcode.start(
-              { facingMode: "environment" },
-              config,
-              (decodedText) => {
-                const clean = decodedText.trim().replace(/[-\s]/g, '');
-                const isBookISBN = (clean.length === 13 && (clean.startsWith('978') || clean.startsWith('979'))) || (clean.length === 10);
-                
-                if (!isBookISBN) return;
-
-                if (scannerRef.current) {
-                  scannerRef.current.stop().then(() => {
-                    scannerRef.current.clear();
-                    scannerRef.current = null;
-                  }).catch(() => {});
-                }
-                setIsScannerOpen(false);
-                fetchBookByISBN(clean);
-              },
-              () => {} 
-            ).catch((err) => {
-              console.error("Scanner startup error:", err);
-              setScannerError('Не удалось запустить камеру. Убедитесь, что разрешили доступ к камере.');
-            });
-          }, 100);
-        })
-        .catch(err => {
-          console.error("Failed to load scanner:", err);
-          setIsScannerLoading(false);
-          setScannerError('Не удалось загрузить библиотеку сканера.');
-        });
-    }
-
-    return () => {
-      if (scannerRef.current) {
-        scannerRef.current.stop().then(() => scannerRef.current.clear()).catch(() => {});
-      }
-    };
-  }, [isScannerOpen]);
-
-  const fetchBookByISBN = async (isbn) => {
-    setIsBookSearching(true);
-    setLastScannedISBN(isbn);
-    let bookFound = false;
-
-    const fetchWithTimeout = async (url, options = {}, timeout = 4000) => {
-      const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), timeout);
-      try {
-        const response = await fetch(url, { ...options, signal: controller.signal });
-        clearTimeout(id);
-        return response;
-      } catch (err) {
-        clearTimeout(id);
-        return null;
-      }
-    };
-
-    const applyBookData = (title, author, totalPages, annotation, coverUrl) => {
-      setCurrentBook(prev => ({
-        ...prev,
-        title: title || prev.title,
-        author: author || prev.author,
-        totalPages: totalPages || prev.totalPages,
-        annotation: annotation || prev.annotation,
-        coverUrl: coverUrl || prev.coverUrl
-      }));
-      bookFound = true;
-    };
-
-    try {
-      try {
-        const gRes = await fetchWithTimeout(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
-        if (gRes && gRes.ok) {
-          const gData = await gRes.json();
-          if (gData.items && gData.items.length > 0) {
-            const info = gData.items[0].volumeInfo;
-            const cover = info.imageLinks ? (info.imageLinks.thumbnail || info.imageLinks.smallThumbnail || '').replace('http:', 'https:') : '';
-            applyBookData(info.title, info.authors?.join(', '), info.pageCount, info.description || `ISBN: ${isbn}`, cover);
-          }
-        }
-      } catch (e) { console.warn(e); }
-
-      if (!bookFound) {
-        try {
-          const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`)}`;
-          const pRes = await fetchWithTimeout(proxyUrl, {}, 5000);
-          if (pRes && pRes.ok) {
-            const pData = await pRes.json();
-            if (pData.items && pData.items.length > 0) {
-              const info = pData.items[0].volumeInfo;
-              const cover = info.imageLinks ? (info.imageLinks.thumbnail || info.imageLinks.smallThumbnail || '').replace('http:', 'https:') : '';
-              applyBookData(info.title, info.authors?.join(', '), info.pageCount, info.description || `ISBN: ${isbn}`, cover);
-            }
-          }
-        } catch (e) { console.warn(e); }
-      }
-
-      if (!bookFound) {
-        try {
-          const olRes = await fetchWithTimeout(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
-          if (olRes && olRes.ok) {
-            const data = await olRes.json();
-            const bData = data[`ISBN:${isbn}`];
-            if (bData && bData.title) {
-              const cover = bData.cover ? (bData.cover.large || bData.cover.medium || '') : '';
-              applyBookData(bData.title, bData.authors?.map(a => a.name).join(', '), bData.number_of_pages, `ISBN: ${isbn}`, cover);
-            }
-          }
-        } catch (e) { console.warn(e); }
-      }
-    } finally {
-      setIsBookSearching(false);
-    }
-  };
-
-  const uniqueAuthors = Array.from(new Set(books.map(b => b.author).filter(Boolean))).sort();
-  const uniqueSeries = Array.from(new Set(books.map(b => b.seriesName).filter(Boolean))).sort();
-
-  const readBooksList = books.filter(b => b.status === 'read');
-  const wishlistBooks = books.filter(b => b.status === 'wishlist');
-  const activeBooks = books.filter(b => b.status === 'reading' || b.status === 'rereading');
-  const droppedBooks = books.filter(b => b.status === 'dropped');
-
-  const streakData = useMemo(() => {
-    const activeDatesSet = new Set();
+  const readingDatesSet = useMemo(() => {
+    const set = new Set();
     books.forEach(b => {
-      if (b.log) {
+      if (b.log && Array.isArray(b.log)) {
         b.log.forEach(entry => {
-          if ((entry.pages || 0) > 0) {
-            const dStr = new Date(entry.date).toISOString().split('T')[0];
-            activeDatesSet.add(dStr);
+          if ((entry.pages > 0 || entry.minutes > 0) && entry.date) {
+            const key = formatDateKey(entry.date);
+            if (key) set.add(key);
           }
         });
       }
     });
-
-    let currentStreak = 0;
-    let maxStreak = 0;
-    let tempStreak = 0;
-    let pointerDate = new Date(getMoscowDate());
-    let pointerStr = pointerDate.toISOString().split('T')[0];
-    
-    if (!activeDatesSet.has(pointerStr)) {
-      pointerDate.setDate(pointerDate.getDate() - 1);
-      pointerStr = pointerDate.toISOString().split('T')[0];
-    }
-
-    while (activeDatesSet.has(pointerStr)) {
-      currentStreak++;
-      pointerDate.setDate(pointerDate.getDate() - 1);
-      pointerStr = pointerDate.toISOString().split('T')[0];
-    }
-
-    const sortedDates = Array.from(activeDatesSet).sort();
-    if (sortedDates.length > 0) {
-      tempStreak = 1;
-      maxStreak = 1;
-      for (let i = 1; i < sortedDates.length; i++) {
-        const prev = new Date(sortedDates[i - 1]);
-        const curr = new Date(sortedDates[i]);
-        const diffDays = Math.round((curr - prev) / (1000 * 60 * 60 * 24));
-        if (diffDays === 1) {
-          tempStreak++;
-        } else if (diffDays > 1) {
-          tempStreak = 1;
-        }
-        if (tempStreak > maxStreak) maxStreak = tempStreak;
-      }
-    }
-    if (currentStreak > maxStreak) maxStreak = currentStreak;
-
-    const timelineDays = [];
-    for (let i = 13; i >= 0; i--) {
-      const d = getMoscowDate();
-      d.setDate(d.getDate() - i);
-      const dStr = d.toISOString().split('T')[0];
-      const hasRead = activeDatesSet.has(dStr);
-      const dayName = d.toLocaleDateString('ru-RU', { weekday: 'short' });
-      const dayNum = d.getDate();
-      timelineDays.push({ dateStr: dStr, dayName, dayNum, hasRead, isToday: i === 0 });
-    }
-
-    return { currentStreak, maxStreak, timelineDays };
+    return set;
   }, [books]);
 
-  const filteredReadBooksForStats = useMemo(() => {
-    const now = getMoscowDate();
-    return readBooksList.filter(b => {
-      if (!b.dateFinished) return statPeriod === 'all';
-      const fDate = new Date(b.dateFinished);
-      if (statPeriod === 'year') {
-        return fDate.getFullYear() === now.getFullYear();
-      } else if (statPeriod === '3months') {
-        const threeMonthsAgo = new Date(now);
-        threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-        return fDate >= threeMonthsAgo;
-      } else if (statPeriod === 'month') {
-        return fDate.getMonth() === now.getMonth() && fDate.getFullYear() === now.getFullYear();
-      }
-      return true;
-    });
-  }, [readBooksList, statPeriod]);
+  const { calculatedStreak, maxStreak, hasReadToday, totalStreak } = useMemo(() => {
+    const today = getMoscowDate();
+    const todayStr = formatDateKey(today);
+    const isTodayRead = readingDatesSet.has(todayStr);
 
-  const genreStatsForPeriod = useMemo(() => {
+    let streak = 0;
+    const checkDate = new Date(today);
+
+    // If today hasn't been read yet, start checking from yesterday
+    if (!isTodayRead) {
+      checkDate.setDate(checkDate.getDate() - 1);
+    }
+
+    // Step day by day backwards regardless of month borders
+    while (true) {
+      const dStr = formatDateKey(checkDate);
+      if (readingDatesSet.has(dStr)) {
+        streak++;
+        checkDate.setDate(checkDate.getDate() - 1);
+      } else {
+        break;
+      }
+    }
+
+    // Calculating all-time maximum streak
+    const sortedDates = Array.from(readingDatesSet).sort();
+    let maxS = 0;
+    let currentRun = 0;
+    let prevDate = null;
+
+    sortedDates.forEach(dStr => {
+      const parts = dStr.split('-').map(Number);
+      const d = new Date(parts[0], parts[1] - 1, parts[2]);
+      if (!prevDate) {
+        currentRun = 1;
+      } else {
+        const diffDays = Math.round((d.getTime() - prevDate.getTime()) / (1000 * 3600 * 24));
+        if (diffDays === 1) {
+          currentRun++;
+        } else if (diffDays > 1) {
+          currentRun = 1;
+        }
+      }
+      prevDate = d;
+      if (currentRun > maxS) maxS = currentRun;
+    });
+
+    const finalStreak = Math.max(0, streak + manualStreakBonus);
+
+    return {
+      calculatedStreak: streak,
+      totalStreak: finalStreak,
+      currentStreak: finalStreak,
+      maxStreak: Math.max(maxS, finalStreak),
+      hasReadToday: isTodayRead
+    };
+  }, [readingDatesSet, manualStreakBonus]);
+
+  const filteredBooks = useMemo(() => {
+    return books.filter(book => {
+      const statusMatch = filter === 'all' || 
+        book.status === filter || 
+        (filter === 'reading' && (book.status === 'reading' || book.status === 'rereading'));
+      const genreMatch = genreFilter === 'all' || book.genre === genreFilter;
+      const authorMatch = authorFilter === 'all' || book.author === authorFilter;
+      const seriesMatch = seriesFilter === 'all' || book.seriesName === seriesFilter;
+      const tagMatch = tagFilter === 'all' || (book.tags && book.tags.includes(tagFilter));
+      const searchMatch = !searchQuery || 
+        book.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        book.author?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        book.seriesName?.toLowerCase().includes(searchQuery.toLowerCase());
+        
+      return statusMatch && genreMatch && authorMatch && seriesMatch && tagMatch && searchMatch;
+    });
+  }, [books, filter, genreFilter, authorFilter, seriesFilter, tagFilter, searchQuery]);
+
+  const todayMoscow = getMoscowDate();
+
+  const monthlyStats = useMemo(() => {
     const stats = {};
-    filteredReadBooksForStats.forEach(b => {
+    readBooksList.forEach(b => {
+      if (b.dateFinished) {
+        const d = new Date(b.dateFinished);
+        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        const label = d.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' });
+        if (!stats[key]) {
+          stats[key] = { key, label, books: [], pages: 0, sortKey: new Date(d.getFullYear(), d.getMonth(), 1).getTime() };
+        }
+        stats[key].books.push(b);
+        stats[key].pages += (b.totalPages || b.readPages || 0);
+      }
+    });
+    return Object.values(stats).sort((a, b) => b.sortKey - a.sortKey);
+  }, [readBooksList]);
+
+  const genreStats = useMemo(() => {
+    const stats = {};
+    readBooksList.forEach(b => {
       const g = b.genre || 'Другое';
       stats[g] = (stats[g] || 0) + 1;
     });
     return Object.entries(stats).sort((a, b) => b[1] - a[1]);
-  }, [filteredReadBooksForStats]);
+  }, [readBooksList]);
 
-  const formatStatsForPeriod = useMemo(() => {
+  const formatStats = useMemo(() => {
     const stats = { paper: 0, ebook: 0, audio: 0, combo: 0 };
-    filteredReadBooksForStats.forEach(b => {
+    readBooksList.forEach(b => {
       if (stats[b.format] !== undefined) stats[b.format]++;
       else stats.paper++;
     });
     return stats;
-  }, [filteredReadBooksForStats]);
-
-  const seriesStats = useMemo(() => {
-    const stats = {};
-    uniqueSeries.forEach(sName => {
-      const booksInSeries = books.filter(b => b.seriesName === sName);
-      const total = booksInSeries.length;
-      const read = booksInSeries.filter(b => b.status === 'read').length;
-      stats[sName] = { read, total };
-    });
-    return stats;
-  }, [books, uniqueSeries]);
+  }, [readBooksList]);
 
   const weekdayStats = useMemo(() => {
     const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+    const fullDays = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
     const sums = [0, 0, 0, 0, 0, 0, 0];
     books.forEach(b => {
       if (b.log) {
@@ -513,58 +427,12 @@ export default function App() {
         });
       }
     });
-    return days.map((day, idx) => ({ day, pages: sums[idx] }));
+    return days.map((day, idx) => ({ day, fullName: fullDays[idx], pages: sums[idx] }));
   }, [books]);
 
-  const renderDonutSlices = (dataItems, totalCount) => {
-    if (totalCount <= 0) return null;
-    let accumulatedAngle = 0;
-    const colors = ['#846851', '#6F8E80', '#9E82A8', '#C98E5E', '#62839F', '#BFA892', '#D67C6B'];
-    
-    return dataItems.map(([label, count], idx) => {
-      const percentage = count / totalCount;
-      const strokeDasharray = `${percentage * 100} 100`;
-      const strokeDashoffset = -accumulatedAngle * 100;
-      accumulatedAngle += percentage;
-      const color = colors[idx % colors.length];
-
-      return (
-        <circle
-          key={label}
-          cx="21"
-          cy="21"
-          r="15.9155"
-          fill="transparent"
-          stroke={color}
-          strokeWidth="6"
-          strokeDasharray={strokeDasharray}
-          strokeDashoffset={strokeDashoffset}
-          className="transition-all duration-500 hover:opacity-80 cursor-pointer"
-        />
-      );
-    });
-  };
-
-  const filteredBooks = books.filter(book => {
-    const statusMatch = filter === 'all' || 
-      book.status === filter || 
-      (filter === 'reading' && (book.status === 'reading' || book.status === 'rereading'));
-    const genreMatch = genreFilter === 'all' || book.genre === genreFilter;
-    const authorMatch = authorFilter === 'all' || book.author === authorFilter;
-    const seriesMatch = seriesFilter === 'all' || book.seriesName === seriesFilter;
-    const searchMatch = !searchQuery || 
-      book.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      book.author?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      book.seriesName?.toLowerCase().includes(searchQuery.toLowerCase());
-      
-    return statusMatch && genreMatch && authorMatch && seriesMatch && searchMatch;
-  });
-
-  const todayMoscow = getMoscowDate();
-  
   const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
   const getFirstDayOfMonth = (year, month) => {
-    let day = new Date(year, month, 1).getDay();
+    const day = new Date(year, month, 1).getDay();
     return day === 0 ? 6 : day - 1; 
   };
 
@@ -572,9 +440,9 @@ export default function App() {
   const firstDay = getFirstDayOfMonth(currentMonth.getFullYear(), currentMonth.getMonth());
   
   const calendarDays = [];
-  for(let i = 0; i < firstDay; i++) calendarDays.push(null);
+  for (let i = 0; i < firstDay; i++) calendarDays.push(null);
   
-  for(let i = 1; i <= daysInMonth; i++) {
+  for (let i = 1; i <= daysInMonth; i++) {
     const d = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i);
     d.setHours(0, 0, 0, 0);
     
@@ -584,7 +452,7 @@ export default function App() {
       if (b.log) {
         b.log.forEach(entry => {
           const entryDate = new Date(entry.date);
-          entryDate.setHours(0,0,0,0);
+          entryDate.setHours(0, 0, 0, 0);
           if (entryDate.getTime() === d.getTime()) {
             pagesOnDate += entry.pages || 0;
             minutesOnDate += entry.minutes || 0;
@@ -599,8 +467,6 @@ export default function App() {
   let avgDivisor = daysInMonth;
   if (currentMonth.getFullYear() === todayMoscow.getFullYear() && currentMonth.getMonth() === todayMoscow.getMonth()) {
     avgDivisor = todayMoscow.getDate() || 1;
-  } else if (currentMonth > todayMoscow) {
-    avgDivisor = 1; 
   }
   
   const totalPagesThisMonth = calendarDays.reduce((acc, day) => day ? acc + day.pages : acc, 0);
@@ -620,15 +486,30 @@ export default function App() {
   const targetYearNum = currentMonth.getFullYear();
   const readThisTargetMonth = readBooksList.filter(b => b.dateFinished && new Date(b.dateFinished).getMonth() === targetMonthNum && new Date(b.dateFinished).getFullYear() === targetYearNum);
 
-  const pagesOnSelectedDateAllBooks = books.reduce((sum, b) => {
-    if (!b.log) return sum;
-    return sum + b.log.reduce((acc, entry) => new Date(entry.date).toDateString() === selectedDate.toDateString() ? acc + (entry.pages || 0) : acc, 0);
-  }, 0);
+  const selectedDateKey = formatDateKey(selectedDate);
 
-  const minsOnSelectedDateAllBooks = books.reduce((sum, b) => {
-    if (!b.log) return sum;
-    return sum + b.log.reduce((acc, entry) => new Date(entry.date).toDateString() === selectedDate.toDateString() ? acc + (entry.minutes || 0) : acc, 0);
-  }, 0);
+  const pagesOnSelectedDateAllBooks = useMemo(() => {
+    return books.reduce((sum, b) => {
+      if (!b.log || !Array.isArray(b.log)) return sum;
+      return sum + b.log.reduce((acc, entry) => {
+        return formatDateKey(entry.date) === selectedDateKey ? acc + (Number(entry.pages) || 0) : acc;
+      }, 0);
+    }, 0);
+  }, [books, selectedDateKey]);
+
+  const minsOnSelectedDateAllBooks = useMemo(() => {
+    return books.reduce((sum, b) => {
+      if (!b.log || !Array.isArray(b.log)) return sum;
+      return sum + b.log.reduce((acc, entry) => {
+        return formatDateKey(entry.date) === selectedDateKey ? acc + (Number(entry.minutes) || 0) : acc;
+      }, 0);
+    }, 0);
+  }, [books, selectedDateKey]);
+
+  const todayDayNumber = todayMoscow.getDate();
+  const dailyMotivation = totalStreak > 0 
+    ? MOTIVATIONAL_STREAK[todayDayNumber % MOTIVATIONAL_STREAK.length]
+    : MOTIVATIONAL_NO_STREAK[todayDayNumber % MOTIVATIONAL_NO_STREAK.length];
 
   const handleDateClick = (date) => {
     if (date <= todayMoscow) setSelectedDate(date);
@@ -637,10 +518,11 @@ export default function App() {
   const openNewBookModal = () => {
     setCurrentBook({
       id: Date.now(),
-      title: '', author: '', genre: PREDEFINED_GENRES[0], seriesName: '', seriesIndex: '', seriesTotal: '',
+      title: '', author: '', genre: 'Проза', seriesName: '', seriesIndex: '', seriesTotal: '',
       status: 'wishlist', format: 'paper',
-      totalPages: '', readPages: 0, rating: 0, annotation: '', summary: '', notes: '', quotes: '', coverUrl: '',
-      sketches: [], tags: [], dateStarted: '', dateFinished: '', log: []
+      totalPages: '', readPages: 0, rating: 0, annotation: '', summary: '', quotes: '', 
+      coverUrl: '', sketchnoteUrl: '',
+      tags: [], dateStarted: '', dateFinished: '', log: []
     });
     setIsModalOpen(true);
   };
@@ -664,7 +546,7 @@ export default function App() {
       }
       if (existingBook.status !== 'read' && updatedBook.status === 'read' && !updatedBook.dateFinished) {
         updatedBook.dateFinished = todayStr;
-        if(updatedBook.totalPages) updatedBook.readPages = updatedBook.totalPages; 
+        if (updatedBook.totalPages) updatedBook.readPages = updatedBook.totalPages; 
       }
     }
 
@@ -681,9 +563,9 @@ export default function App() {
       title: 'Удалить эту книгу из библиотеки?',
       type: 'confirm',
       onSubmit: () => {
-         setBooks(books.filter(b => b.id !== id));
-         setIsModalOpen(false);
-         setCustomModal(null);
+        setBooks(books.filter(b => b.id !== id));
+        setIsModalOpen(false);
+        setCustomModal(null);
       }
     });
   };
@@ -697,10 +579,11 @@ export default function App() {
     
     if (pages <= 0 && minutes <= 0) return;
 
+    const logDateKey = formatDateKey(selectedDate);
+
     setBooks(books.map(b => {
       if (b.id === bookId) {
-        const dateStr = selectedDate.toISOString();
-        const newLog = [...(b.log || []), { date: dateStr, pages, minutes }];
+        const newLog = [...(b.log || []), { date: logDateKey, pages, minutes }];
         const newReadPages = (b.readPages || 0) + pages;
         
         let newStatus = b.status;
@@ -721,13 +604,13 @@ export default function App() {
   };
 
   const handleQuickFinish = (bookId) => {
+    const logDateKey = formatDateKey(selectedDate);
     setBooks(books.map(b => {
       if (b.id === bookId) {
         const remaining = (b.totalPages || 0) - (b.readPages || 0);
-        const dateStr = selectedDate.toISOString();
         const newLog = [...(b.log || [])];
         if (remaining > 0) {
-          newLog.push({ date: dateStr, pages: remaining, minutes: Math.round(remaining * 1.5) });
+          newLog.push({ date: logDateKey, pages: remaining, minutes: Math.round(remaining * 1.5) });
         }
         return { 
           ...b, readPages: b.totalPages, status: 'read', 
@@ -738,25 +621,25 @@ export default function App() {
     }));
   };
 
-  const spinRoulette = () => {
-    const eligibleBooks = rouletteGenre === 'all' 
-      ? wishlistBooks 
-      : wishlistBooks.filter(b => b.genre === rouletteGenre);
+  const roulettePool = useMemo(() => {
+    if (rouletteGenre === 'all') return wishlistBooks;
+    return wishlistBooks.filter(b => b.genre === rouletteGenre);
+  }, [wishlistBooks, rouletteGenre]);
 
-    if (eligibleBooks.length === 0) return;
-    
+  const spinRoulette = () => {
+    if (roulettePool.length === 0) return;
     setIsSpinning(true);
     setRouletteBook(null);
     let counter = 0;
     const interval = setInterval(() => {
-      const randomIndex = Math.floor(Math.random() * eligibleBooks.length);
-      setRouletteBook(eligibleBooks[randomIndex]);
+      const randomIndex = Math.floor(Math.random() * roulettePool.length);
+      setRouletteBook(roulettePool[randomIndex]);
       counter++;
-      if (counter > 15) {
+      if (counter > 14) {
         clearInterval(interval);
         setIsSpinning(false);
       }
-    }, 100);
+    }, 110);
   };
 
   const exportBackup = () => {
@@ -764,7 +647,7 @@ export default function App() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataObj, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `libri-mori-backup-${getMoscowDateString(0)}.json`);
+    downloadAnchor.setAttribute("download", `librimori-backup-${getMoscowDateString(0)}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -772,7 +655,7 @@ export default function App() {
 
   const importBackup = (e) => {
     const fileReader = new FileReader();
-    if (e.target.files[0]) {
+    if (e.target.files && e.target.files[0]) {
       fileReader.readAsText(e.target.files[0], "UTF-8");
       fileReader.onload = (event) => {
         try {
@@ -781,53 +664,43 @@ export default function App() {
             setBooks(parsed.books);
             if (parsed.goals) setGoals(parsed.goals);
             setCustomModal({
-              title: 'Успешно',
-              message: 'Резервная копия LibriMori успешно восстановлена!',
-              type: 'alert'
-            });
-          } else {
-            setCustomModal({
-              title: 'Ошибка',
-              message: 'Неверный формат файла бэкапа.',
-              type: 'alert'
+              title: 'Библиотека успешно восстановлена!',
+              type: 'info',
+              onSubmit: () => setCustomModal(null)
             });
           }
         } catch (err) {
           setCustomModal({
-            title: 'Ошибка',
-            message: 'Ошибка при чтении файла.',
-            type: 'alert'
+            title: 'Не удалось прочитать файл резервной копии.',
+            type: 'info',
+            onSubmit: () => setCustomModal(null)
           });
         }
       };
     }
   };
 
-  const calculateDaysToRead = (start, end) => {
-    if (!start || !end) return null;
-    const diffTime = Math.abs(new Date(end) - new Date(start));
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-    return diffDays === 0 ? 1 : diffDays; 
-  };
-
   const toggleTournamentSelection = (id) => {
     if (selectedForTournament.includes(id)) {
       setSelectedForTournament(selectedForTournament.filter(bookId => bookId !== id));
     } else {
-      if (selectedForTournament.length < bracketSize) setSelectedForTournament([...selectedForTournament, id]);
+      if (selectedForTournament.length < bracketSize) {
+        setSelectedForTournament([...selectedForTournament, id]);
+      }
     }
   };
 
   const startTournament = () => {
     if (selectedForTournament.length !== bracketSize) return;
-    const participants = selectedForTournament.map(id => books.find(b => b.id === id));
+    const participants = selectedForTournament.map(id => books.find(b => b.id === id)).filter(Boolean);
     for (let i = participants.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [participants[i], participants[j]] = [participants[j], participants[i]];
     }
     const firstRound = [];
-    for (let i = 0; i < participants.length; i += 2) firstRound.push([participants[i], participants[i+1]]);
-    
+    for (let i = 0; i < participants.length; i += 2) {
+      firstRound.push([participants[i], participants[i + 1]]);
+    }
     setCurrentRound(firstRound);
     setNextRound([]);
     setCurrentMatchIndex(0);
@@ -846,7 +719,9 @@ export default function App() {
         setTournamentPhase('winner');
       } else {
         const newRound = [];
-        for (let i = 0; i < updatedNextRound.length; i += 2) newRound.push([updatedNextRound[i], updatedNextRound[i+1]]);
+        for (let i = 0; i < updatedNextRound.length; i += 2) {
+          newRound.push([updatedNextRound[i], updatedNextRound[i + 1]]);
+        }
         setCurrentRound(newRound);
         setNextRound([]);
         setCurrentMatchIndex(0);
@@ -862,36 +737,31 @@ export default function App() {
     return shelves;
   }, [filteredBooks]);
 
-  const streakDayIndex = todayMoscow.getDate() % MOTIVATIONAL_STREAK.length;
-  const motivationalText = MOTIVATIONAL_STREAK[streakDayIndex];
-  const noStreakText = MOTIVATIONAL_NO_STREAK[streakDayIndex % MOTIVATIONAL_NO_STREAK.length];
-
   return (
     <div className="min-h-screen bg-[#FCF9F2] text-[#4A4238] font-sans pb-24 md:pb-16 selection:bg-[#EEDFCC]">
       
-      {/* Top Navigation */}
-      <div className="bg-[#F7F2E8] border-b border-[#EADFCF] sticky top-0 z-20 shadow-sm backdrop-blur-md bg-opacity-95">
+      {/* Top Header */}
+      <div className="bg-[#F7F2E8] border-b border-[#EADFCF] sticky top-0 z-30 shadow-sm backdrop-blur-md bg-opacity-95">
         <div className="max-w-6xl mx-auto px-4 flex justify-between items-center h-16">
-          <div className="font-black text-lg sm:text-2xl text-[#846851] tracking-tight flex items-center gap-2.5">
-            <BookOpenIcon size={28} className="text-[#9C7A5E]" />
+          <div className="font-black text-xl md:text-2xl text-[#846851] tracking-tight flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('diary')}>
+            <BookOpenIcon size={26} className="text-[#9C7A5E]" />
             LibriMori
           </div>
           
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="hidden md:flex bg-[#EFE7D8] rounded-2xl p-1 shadow-inner border border-[#E2D5C3] overflow-x-auto">
-              <button onClick={() => setActiveTab('diary')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'diary' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Дневник</button>
-              <button onClick={() => setActiveTab('library')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'library' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Библиотека</button>
-              <button onClick={() => setActiveTab('analytics')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'analytics' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Аналитика</button>
-              <button onClick={() => setActiveTab('bbc200')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'bbc200' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>BBC 200</button>
-              <button onClick={() => setActiveTab('roulette')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'roulette' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Рулетка</button>
-              <button onClick={() => setActiveTab('tournament')} className={`px-3 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${activeTab === 'tournament' ? 'bg-[#FFFFFF] text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Турнир</button>
+          <div className="flex items-center gap-2">
+            <div className="hidden sm:flex bg-[#EFE7D8] rounded-2xl p-1 shadow-inner border border-[#E2D5C3]">
+              <button onClick={() => setActiveTab('diary')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'diary' ? 'bg-white text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Дневник</button>
+              <button onClick={() => setActiveTab('library')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'library' ? 'bg-white text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Библиотека</button>
+              <button onClick={() => setActiveTab('analytics')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'analytics' ? 'bg-white text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Аналитика</button>
+              <button onClick={() => setActiveTab('roulette')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'roulette' ? 'bg-white text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Рулетка</button>
+              <button onClick={() => setActiveTab('tournament')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'tournament' ? 'bg-white text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Турнир</button>
             </div>
 
-            <div className="flex items-center gap-1.5 ml-2">
-              <button onClick={exportBackup} title="Скачать резервную копию библиотеки" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2 sm:p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
+            <div className="flex items-center gap-1.5">
+              <button onClick={exportBackup} title="Резервная копия библиотеки" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
                 <DownloadIcon size={16} /> <span className="hidden lg:inline">Бэкап</span>
               </button>
-              <button onClick={() => fileInputRef.current.click()} title="Восстановить библиотеку из файла" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2 sm:p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
+              <button onClick={() => fileInputRef.current && fileInputRef.current.click()} title="Восстановить из файла" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
                 <UploadIcon size={16} /> <span className="hidden lg:inline">Загрузить</span>
               </button>
               <input type="file" ref={fileInputRef} onChange={importBackup} accept=".json" className="hidden" />
@@ -902,54 +772,67 @@ export default function App() {
 
       <main className="pt-4 md:pt-8 max-w-6xl mx-auto px-4">
         
-        {/* ================= ДНЕВНИК ================= */}
+        {/* ================= DIARY TAB ================= */}
         {activeTab === 'diary' && (
-          <div className="animate-fade-in space-y-5 md:space-y-6">
+          <div className="space-y-5 md:space-y-6">
             
-            {/* Reading Streak Banner */}
-            <div className="bg-gradient-to-r from-[#D67C6B] via-[#C98E5E] to-[#A68970] rounded-3xl p-4 sm:p-5 shadow-sm text-white relative overflow-hidden space-y-3.5">
-               <div className="absolute right-[-10px] bottom-[-20px] opacity-15"><AwardIcon size={140} /></div>
-               
-               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10">
-                 <div className="flex items-center gap-3.5 text-center sm:text-left">
-                    <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-sm shadow-inner shrink-0"><AwardIcon size={32} /></div>
-                    <div>
-                      <h3 className="font-black text-lg sm:text-xl leading-tight">Серия дней без пропуска: {streakData.currentStreak} дн.</h3>
-                      <p className="text-white/90 text-xs mt-0.5">Личный рекорд: <span className="font-bold underline">{streakData.maxStreak} дн.</span> без перерыва!</p>
-                    </div>
-                 </div>
-                 <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-2xl text-xs font-bold text-center border border-white/30 shrink-0">
-                    {streakData.currentStreak > 0 ? motivationalText : noStreakText}
-                 </div>
-               </div>
+            {/* Reading Streak & Motivation Banner */}
+            <div className="bg-[#F7F2E8] border border-[#EADFCF] p-4 md:p-5 rounded-3xl shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3.5">
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm ${totalStreak > 0 ? 'bg-[#FBE8E4] text-[#D67C6B]' : 'bg-[#EFE7D8] text-[#9B8C80]'}`}>
+                  <FlameIcon size={26} className={totalStreak > 0 ? 'animate-pulse' : ''} />
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm md:text-base font-black text-[#564B41]">
+                      {totalStreak > 0 ? `Серия: ${totalStreak} ${getPluralDays(totalStreak)} без пропуска!` : 'Серия чтения ещё не начата'}
+                    </span>
+                    {maxStreak > 0 && (
+                      <span className="text-[10px] font-bold bg-[#EFE7D8] text-[#846851] px-2.5 py-0.5 rounded-full border border-[#E2D5C3]">
+                        Рекорд: {maxStreak} {getPluralDays(maxStreak)}
+                      </span>
+                    )}
+                    <button 
+                      onClick={() => {
+                        setCustomModal({
+                          title: 'Указать серию дней чтения (дней):',
+                          type: 'prompt',
+                          defaultValue: totalStreak,
+                          onSubmit: (val) => {
+                            if (val !== null && !isNaN(val)) {
+                              const diff = Number(val) - calculatedStreak;
+                              setManualStreakBonus(diff);
+                              setCustomModal(null);
+                            }
+                          }
+                        });
+                      }}
+                      title="Скорректировать счётчик серии"
+                      className="p-1 hover:bg-[#E2D5C3] rounded-lg text-[#846851] transition-colors"
+                    >
+                      <Edit3Icon size={14} />
+                    </button>
+                  </div>
+                  <p className="text-xs text-[#847466] italic mt-0.5">
+                    «{dailyMotivation}»
+                  </p>
+                </div>
+              </div>
 
-               <div className="pt-2 border-t border-white/20 relative z-10">
-                 <div className="flex justify-between items-center text-[10px] uppercase font-bold tracking-wider text-white/80 mb-2">
-                   <span>Последние 2 недели активности</span>
-                   <span>Прокрутите вправо →</span>
-                 </div>
-                 <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none items-center">
-                   {streakData.timelineDays.map((day, idx) => (
-                     <div key={idx} className="flex flex-col items-center gap-1 shrink-0">
-                       <span className="text-[10px] font-bold text-white/80">{day.dayName}</span>
-                       <div 
-                         title={`${day.dateStr}: ${day.hasRead ? 'Книга читалась ✓' : 'Пропущено ✗'}`}
-                         className={`w-9 h-9 rounded-2xl flex items-center justify-center text-xs font-bold transition-all shadow-sm ${
-                           day.hasRead 
-                             ? 'bg-white text-[#C98E5E] ring-2 ring-white/50 scale-105 shadow-md' 
-                             : 'bg-black/15 text-white/50 border border-white/20'
-                         } ${day.isToday ? 'ring-4 ring-yellow-200/60' : ''}`}
-                       >
-                         {day.hasRead ? <CheckIcon size={14} /> : day.dayNum}
-                       </div>
-                       <span className="text-[9px] text-white/70">{day.dayNum}</span>
-                     </div>
-                   ))}
-                 </div>
-               </div>
+              <div className="self-end sm:self-center">
+                {hasReadToday ? (
+                  <span className="inline-flex items-center gap-1.5 bg-[#DDEAE3] text-[#4F6F61] px-3.5 py-1.5 rounded-2xl text-xs font-black uppercase tracking-wider shadow-sm">
+                    <CheckIcon size={14} /> Сегодня прочитано!
+                  </span>
+                ) : (
+                  <span className="inline-block bg-[#F2E8DC] text-[#846851] px-3.5 py-1.5 rounded-2xl text-xs font-bold border border-[#E2D5C3] shadow-sm">
+                    Отметьте чтение за сегодня
+                  </span>
+                )}
+              </div>
             </div>
 
-            {/* Stats Row */}
+            {/* Quick Stats Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
               <div className="bg-[#F7F2E8] p-3.5 md:p-4 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col items-center justify-center text-center">
                 <span className="text-2xl md:text-3xl font-black text-[#9C7A5E] mb-1">{totalReadBooks}</span>
@@ -960,7 +843,9 @@ export default function App() {
                 <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">Всего страниц</span>
               </div>
               <div className="bg-[#F7F2E8] p-3.5 md:p-4 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col items-center justify-center text-center">
-                <span className="text-2xl md:text-3xl font-black text-[#9E82A8] mb-1">{Math.floor(totalMinutesAllTime/60)}<span className="text-sm md:text-lg">ч</span> {totalMinutesAllTime%60}<span className="text-sm md:text-lg">м</span></span>
+                <span className="text-2xl md:text-3xl font-black text-[#9E82A8] mb-1">
+                  {Math.floor(totalMinutesAllTime / 60)}<span className="text-sm">ч</span> {totalMinutesAllTime % 60}<span className="text-sm">м</span>
+                </span>
                 <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">Время за чтением</span>
               </div>
               <div className="bg-[#F7F2E8] p-3.5 md:p-4 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col items-center justify-center text-center">
@@ -973,54 +858,54 @@ export default function App() {
               </div>
             </div>
 
-            {/* Goals Row */}
             <div className="grid md:grid-cols-2 gap-3.5 md:gap-4">
-               <div className="bg-[#BFA892] rounded-3xl p-4 md:p-5 shadow-sm text-white flex items-center gap-4 relative overflow-hidden">
-                 <div className="absolute right-[-20px] opacity-15"><TargetIcon size={120} /></div>
-                 <div className="flex-1 relative z-10">
-                   <div className="flex justify-between items-end mb-2">
-                     <span className="text-[11px] md:text-xs font-bold uppercase tracking-wider text-[#F9F4EC]">Цель на {currentYear} год</span>
-                     <button onClick={() => {
-                       setCustomModal({
-                         title: 'Изменить годовую цель:', type: 'prompt', defaultValue: goals.yearly,
-                         onSubmit: (val) => { if (val && !isNaN(val)) { setGoals({...goals, yearly: Number(val)}); setCustomModal(null); } }
-                       });
-                     }} className="flex items-center gap-2 text-xl md:text-2xl font-black hover:text-[#FAF0E6] transition-colors group cursor-pointer bg-white/20 px-3 py-1 rounded-2xl shadow-sm">
-                       {readThisYear} / {goals.yearly}
-                       <Edit3Icon size={14} className="text-white" />
-                     </button>
-                   </div>
-                   <div className="w-full bg-[#9A8470]/50 rounded-full h-2.5">
-                      <div className="bg-[#FAF0E6] h-2.5 rounded-full transition-all" style={{width: `${Math.min(100, (readThisYear/goals.yearly)*100)}%`}}></div>
-                   </div>
-                 </div>
-               </div>
+              <div className="bg-[#BFA892] rounded-3xl p-4 md:p-5 shadow-sm text-white flex items-center gap-4 relative overflow-hidden">
+                <div className="absolute right-[-20px] opacity-15"><TargetIcon size={120} /></div>
+                <div className="flex-1 relative z-10">
+                  <div className="flex justify-between items-end mb-2">
+                    <span className="text-[11px] md:text-xs font-bold uppercase tracking-wider text-[#F9F4EC]">Цель на {currentYear} год</span>
+                    <button onClick={() => {
+                      setCustomModal({
+                        title: 'Изменить годовую цель (книг):', type: 'prompt', defaultValue: goals.yearly,
+                        onSubmit: (val) => { if (val && !isNaN(val)) { setGoals({...goals, yearly: Number(val)}); setCustomModal(null); } }
+                      });
+                    }} className="flex items-center gap-2 text-xl md:text-2xl font-black hover:text-[#FAF0E6] transition-colors bg-white/20 px-3 py-1 rounded-2xl shadow-sm">
+                      {readThisYear} / {goals.yearly}
+                      <Edit3Icon size={14} className="text-white" />
+                    </button>
+                  </div>
+                  <div className="w-full bg-[#9A8470]/50 rounded-full h-2.5">
+                    <div className="bg-[#FAF0E6] h-2.5 rounded-full transition-all" style={{ width: `${Math.min(100, (readThisYear / goals.yearly) * 100)}%` }}></div>
+                  </div>
+                </div>
+              </div>
 
-               <div className="bg-[#A896B5] rounded-3xl p-4 md:p-5 shadow-sm text-white flex items-center gap-4 relative overflow-hidden">
-                 <div className="absolute right-[-20px] opacity-15"><BookOpenIcon size={120} /></div>
-                 <div className="flex-1 relative z-10">
-                   <div className="flex justify-between items-end mb-2">
-                     <span className="text-[11px] md:text-xs font-bold uppercase tracking-wider text-[#F9F4EC]">Цель на {currentMonth.toLocaleDateString('ru-RU', {month:'long'})}</span>
-                     <button onClick={() => {
-                       setCustomModal({
-                         title: 'Изменить месячную цель:', type: 'prompt', defaultValue: goals.monthly,
-                         onSubmit: (val) => { if (val && !isNaN(val)) { setGoals({...goals, monthly: Number(val)}); setCustomModal(null); } }
-                       });
-                     }} className="flex items-center gap-2 text-xl md:text-2xl font-black hover:text-[#FAF0E6] transition-colors group cursor-pointer bg-white/20 px-3 py-1 rounded-2xl shadow-sm">
-                       {readThisTargetMonth.length} / {goals.monthly}
-                       <Edit3Icon size={14} className="text-white" />
-                     </button>
-                   </div>
-                   <div className="w-full bg-[#83738F]/50 rounded-full h-2.5">
-                      <div className="bg-[#FAF0E6] h-2.5 rounded-full transition-all" style={{width: `${Math.min(100, (readThisTargetMonth.length/goals.monthly)*100)}%`}}></div>
-                   </div>
-                 </div>
-               </div>
+              <div className="bg-[#A896B5] rounded-3xl p-4 md:p-5 shadow-sm text-white flex items-center gap-4 relative overflow-hidden">
+                <div className="absolute right-[-20px] opacity-15"><BookOpenIcon size={120} /></div>
+                <div className="flex-1 relative z-10">
+                  <div className="flex justify-between items-end mb-2">
+                    <span className="text-[11px] md:text-xs font-bold uppercase tracking-wider text-[#F9F4EC]">Цель на {currentMonth.toLocaleDateString('ru-RU', {month:'long'})}</span>
+                    <button onClick={() => {
+                      setCustomModal({
+                        title: 'Изменить месячную цель (книг):', type: 'prompt', defaultValue: goals.monthly,
+                        onSubmit: (val) => { if (val && !isNaN(val)) { setGoals({...goals, monthly: Number(val)}); setCustomModal(null); } }
+                      });
+                    }} className="flex items-center gap-2 text-xl md:text-2xl font-black hover:text-[#FAF0E6] transition-colors bg-white/20 px-3 py-1 rounded-2xl shadow-sm">
+                      {readThisTargetMonth.length} / {goals.monthly}
+                      <Edit3Icon size={14} className="text-white" />
+                    </button>
+                  </div>
+                  <div className="w-full bg-[#83738F]/50 rounded-full h-2.5">
+                    <div className="bg-[#FAF0E6] h-2.5 rounded-full transition-all" style={{ width: `${Math.min(100, (readThisTargetMonth.length / goals.monthly) * 100)}%` }}></div>
+                  </div>
+                </div>
+              </div>
             </div>
 
+            {/* Main Diary & Calendar Section */}
             <div className="grid lg:grid-cols-3 gap-5 md:gap-6 items-start">
               
-              {/* Tracker / Log column */}
+              {/* Tracker / Log Column */}
               <div className="lg:col-span-2 space-y-4 md:space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#F7F2E8] p-4 md:p-5 rounded-3xl border border-[#EADFCF] shadow-sm gap-3">
                   <div>
@@ -1046,38 +931,54 @@ export default function App() {
                   <div className="bg-[#F7F2E8] border-2 border-dashed border-[#DDD0BE] rounded-3xl p-8 text-center">
                     <div className="text-[#BAACA0] mb-3 flex justify-center"><BookOpenIcon size={42} /></div>
                     <h3 className="text-base font-bold text-[#675B50] mb-1">Вы сейчас ничего не читаете</h3>
-                    <p className="text-[#948477] text-xs mb-4">Нажмите кнопку добавления, чтобы начать.</p>
+                    <p className="text-[#948477] text-xs mb-4">Нажмите кнопку добавления книги, чтобы начать трекать чтение.</p>
                   </div>
                 ) : (
                   <div className="space-y-3.5 md:space-y-4">
                     {activeBooks.map(book => {
-                      const pagesOnSelectedDate = book.log?.reduce((acc, entry) => new Date(entry.date).toDateString() === selectedDate.toDateString() ? acc + (entry.pages||0) : acc, 0) || 0;
-                      const minsOnSelectedDate = book.log?.reduce((acc, entry) => new Date(entry.date).toDateString() === selectedDate.toDateString() ? acc + (entry.minutes||0) : acc, 0) || 0;
+                      const pagesOnSelectedDate = book.log?.reduce((acc, entry) => formatDateKey(entry.date) === selectedDateKey ? acc + (Number(entry.pages) || 0) : acc, 0) || 0;
+                      const minsOnSelectedDate = book.log?.reduce((acc, entry) => formatDateKey(entry.date) === selectedDateKey ? acc + (Number(entry.minutes) || 0) : acc, 0) || 0;
 
                       return (
                         <div key={book.id} className="bg-[#F7F2E8] rounded-3xl p-4 md:p-5 shadow-sm border border-[#EADFCF]">
-                          <div className="flex gap-3.5 md:gap-4 items-stretch">
-                            {/* FIXED COVER STRETCHING BUG: w-28 sm:w-32 aspect-[3/4] and object-cover */}
-                            <div className="w-28 sm:w-32 aspect-[3/4] bg-[#EFE7D8] rounded-2xl shrink-0 overflow-hidden shadow-sm border border-[#E2D5C3] relative flex items-center justify-center">
-                               {book.coverUrl ? (
-                                <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover" />
-                               ) : (
+                          <div className="flex gap-3.5 md:gap-4 items-start">
+                            
+                            {/* Unstretched Cover */}
+                            <div 
+                              onClick={() => { setCurrentBook(book); setIsModalOpen(true); }}
+                              className="w-20 sm:w-24 aspect-[2/3] bg-[#EFE7D8] rounded-2xl shrink-0 overflow-hidden shadow-sm border border-[#E2D5C3] relative cursor-pointer group"
+                            >
+                              {book.coverUrl ? (
+                                <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                              ) : (
                                 <div className="w-full h-full flex items-center justify-center bg-[#EAE2D2] text-[#846851] p-1.5 text-center text-[10px] font-bold leading-tight">
                                   {book.title}
                                 </div>
-                               )}
+                              )}
+                              {book.sketchnoteUrl && (
+                                <button 
+                                  onClick={(e) => { e.stopPropagation(); setSketchnoteModalUrl(book.sketchnoteUrl); }} 
+                                  title="Открыть конспект / скетч"
+                                  className="absolute bottom-1 right-1 bg-white/90 text-[#846851] p-1 rounded-lg shadow-sm backdrop-blur-sm"
+                                >
+                                  <EyeIcon size={12} />
+                                </button>
+                              )}
                             </div>
+
                             <div className="flex-1 min-w-0 flex flex-col justify-between">
                               <div>
                                 <div className="flex justify-between items-start gap-1">
-                                   <h3 className="font-bold text-sm sm:text-base md:text-lg text-[#4A4238] line-clamp-1">{book.title}</h3>
-                                   {book.status === 'rereading' && <span className="text-[9px] bg-[#EFE4D3] text-[#9E7749] px-2 py-0.5 rounded-full font-bold shrink-0">Перечитываю</span>}
+                                  <h3 onClick={() => { setCurrentBook(book); setIsModalOpen(true); }} className="font-bold text-sm sm:text-base md:text-lg text-[#4A4238] line-clamp-1 cursor-pointer hover:underline">
+                                    {book.title}
+                                  </h3>
+                                  {book.status === 'rereading' && <span className="text-[9px] bg-[#EFE4D3] text-[#9E7749] px-2 py-0.5 rounded-full font-bold shrink-0">Перечитываю</span>}
                                 </div>
                                 <div className="flex flex-wrap items-center gap-2 mb-1">
                                   <p className="text-xs text-[#847466]">{book.author}</p>
                                   {book.seriesName && (
                                     <span className="text-[9px] bg-[#E2D5C3] text-[#6A5443] px-2 py-0.5 rounded-full font-bold">
-                                      📚 {book.seriesName} {book.seriesIndex ? `(книга ${book.seriesIndex})` : ''}
+                                      📚 {book.seriesName} {book.seriesIndex ? `(№${book.seriesIndex})` : ''}
                                     </span>
                                   )}
                                 </div>
@@ -1091,22 +992,23 @@ export default function App() {
                                 </div>
                               </div>
                               
+                              {/* Quick increment buttons */}
                               <div className="mt-2.5 flex flex-wrap items-center gap-1.5 overflow-x-auto pb-1">
                                 <span className="text-[9px] font-bold text-[#948477] uppercase shrink-0">Быстро:</span>
                                 {[10, 25, 50].map(p => (
                                   <button key={p} onClick={() => {
                                     const currentPages = parseInt(logPagesInput[book.id] || 0, 10);
                                     const newPages = currentPages + p;
-                                    setLogPagesInput(prev => ({...prev, [book.id]: newPages}));
-                                    setLogMinutesInput(prev => ({...prev, [book.id]: Math.round(newPages * 1.5)}));
+                                    setLogPagesInput(prev => ({ ...prev, [book.id]: newPages }));
+                                    setLogMinutesInput(prev => ({ ...prev, [book.id]: Math.round(newPages * 1.5) }));
                                   }} className="bg-[#EFE7D8] hover:bg-[#EADFCF] active:scale-95 text-[#74675B] text-[10px] font-bold px-2.5 py-1 rounded-xl shrink-0 transition-all shadow-sm border border-[#E2D5C3]">
                                     +{p} стр
                                   </button>
                                 ))}
                                 {logPagesInput[book.id] ? (
                                   <button onClick={() => {
-                                    setLogPagesInput(prev => ({...prev, [book.id]: ''}));
-                                    setLogMinutesInput(prev => ({...prev, [book.id]: ''}));
+                                    setLogPagesInput(prev => ({ ...prev, [book.id]: '' }));
+                                    setLogMinutesInput(prev => ({ ...prev, [book.id]: '' }));
                                   }} className="text-[9px] text-[#C56B5D] font-bold hover:underline ml-auto">сбросить</button>
                                 ) : null}
                               </div>
@@ -1124,17 +1026,17 @@ export default function App() {
                                   value={logPagesInput[book.id] || ''} 
                                   onChange={(e) => {
                                     const val = e.target.value;
-                                    setLogPagesInput({...logPagesInput, [book.id]: val});
+                                    setLogPagesInput({ ...logPagesInput, [book.id]: val });
                                     if (val && !isNaN(val)) {
-                                      setLogMinutesInput(prev => ({...prev, [book.id]: Math.round(Number(val) * 1.5)}));
+                                      setLogMinutesInput(prev => ({ ...prev, [book.id]: Math.round(Number(val) * 1.5) }));
                                     } else {
-                                      setLogMinutesInput(prev => ({...prev, [book.id]: ''}));
+                                      setLogMinutesInput(prev => ({ ...prev, [book.id]: '' }));
                                     }
                                   }}
                                   className="w-16 bg-[#FCF9F2] border border-[#EADFCF] rounded-xl px-2 py-2 text-xs font-bold outline-none focus:border-[#A68970] text-center"
                                 />
                                 <input 
-                                  type="number" placeholder="+ мин" value={logMinutesInput[book.id] || ''} onChange={(e) => setLogMinutesInput({...logMinutesInput, [book.id]: e.target.value})}
+                                  type="number" placeholder="+ мин" value={logMinutesInput[book.id] || ''} onChange={(e) => setLogMinutesInput({ ...logMinutesInput, [book.id]: e.target.value })}
                                   className="w-16 bg-[#FCF9F2] border border-[#EADFCF] rounded-xl px-2 py-2 text-xs font-bold outline-none focus:border-[#A68970] text-center"
                                 />
                                 <button onClick={() => handleLogProgress(book.id)} className="bg-[#A68970] hover:bg-[#92745C] text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-colors shadow-sm">
@@ -1153,9 +1055,11 @@ export default function App() {
                             <span className="bg-[#EFE7D8] text-[#74675B] px-3 py-1.5 rounded-xl border border-[#E2D5C3] flex items-center gap-1">
                               За {selectedDate.toLocaleDateString()}: {pagesOnSelectedDate} стр. / {minsOnSelectedDate} мин.
                             </span>
-                            <button onClick={() => { setCurrentBook(book); setIsModalOpen(true); }} className="text-[#A68970] hover:underline ml-auto flex items-center gap-1">
-                              Открыть заметки и конспекты →
-                            </button>
+                            {book.sketchnoteUrl && (
+                              <button onClick={() => setSketchnoteModalUrl(book.sketchnoteUrl)} className="bg-[#F2E8DC] hover:bg-[#EADFCF] text-[#846851] px-3 py-1.5 rounded-xl border border-[#E2D5C3] flex items-center gap-1 transition-colors">
+                                🎨 Визуальный конспект
+                              </button>
+                            )}
                           </div>
                         </div>
                       );
@@ -1177,8 +1081,8 @@ export default function App() {
                   </div>
                   
                   <div className="flex justify-between mb-2">
-                     <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="p-1 hover:bg-[#EADFCF] rounded-lg text-[#74675B]"><ChevronLeftIcon size={16}/></button>
-                     <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="p-1 hover:bg-[#EADFCF] rounded-lg text-[#74675B]"><ChevronRightIcon size={16}/></button>
+                    <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="p-1 hover:bg-[#EADFCF] rounded-lg text-[#74675B]"><ChevronLeftIcon size={16}/></button>
+                    <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="p-1 hover:bg-[#EADFCF] rounded-lg text-[#74675B]"><ChevronRightIcon size={16}/></button>
                   </div>
 
                   <div className="grid grid-cols-7 gap-1 text-center mb-1">
@@ -1199,19 +1103,19 @@ export default function App() {
                       let bgClass = 'bg-[#EFE7D8] hover:bg-[#E2D5C3] text-[#74675B]';
                       
                       if (day.pages > 0) {
-                         if (day.pages <= 20) {
-                           bgClass = 'bg-[#D2E7DB] hover:bg-[#C0DEC9] text-[#3E5C4E] shadow-sm'; 
-                         } else if (day.pages <= 50) {
-                           bgClass = 'bg-[#98C4AB] hover:bg-[#83B398] text-white shadow-sm'; 
-                         } else if (day.pages <= 100) {
-                           bgClass = 'bg-[#6CA384] hover:bg-[#5B9273] text-white shadow-sm'; 
-                         } else {
-                           bgClass = 'bg-[#477C5E] hover:bg-[#3D6B51] text-white shadow-sm'; 
-                         }
+                        if (day.pages <= 20) {
+                          bgClass = 'bg-[#D2E7DB] hover:bg-[#C0DEC9] text-[#3E5C4E] shadow-sm'; 
+                        } else if (day.pages <= 50) {
+                          bgClass = 'bg-[#98C4AB] hover:bg-[#83B398] text-white shadow-sm'; 
+                        } else if (day.pages <= 100) {
+                          bgClass = 'bg-[#6CA384] hover:bg-[#5B9273] text-white shadow-sm'; 
+                        } else {
+                          bgClass = 'bg-[#477C5E] hover:bg-[#3D6B51] text-white shadow-sm'; 
+                        }
                       } else if (isPastOrToday) {
-                         bgClass = 'bg-[#E8C2C2] hover:bg-[#DFB3B3] text-[#7A3E3E] shadow-sm'; 
+                        bgClass = 'bg-[#E8C2C2] hover:bg-[#DFB3B3] text-[#7A3E3E] shadow-sm'; 
                       } else if (isFuture) {
-                         bgClass = 'bg-transparent opacity-30 cursor-not-allowed text-[#9B8C80]';
+                        bgClass = 'bg-transparent opacity-30 cursor-not-allowed text-[#9B8C80]';
                       }
 
                       return (
@@ -1226,9 +1130,19 @@ export default function App() {
                       );
                     })}
                   </div>
+
+                  {/* Calendar Page-Count Legend */}
+                  <div className="mt-3.5 pt-2.5 border-t border-[#EADFCF] flex flex-wrap gap-1.5 sm:gap-2 text-[8px] sm:text-[9px] font-bold text-[#74675B] justify-center items-center">
+                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[#E8C2C2] rounded-sm shadow-xs"></div> 0 стр</div>
+                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[#D2E7DB] rounded-sm shadow-xs"></div> 1–20</div>
+                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[#98C4AB] rounded-sm shadow-xs"></div> 21–50</div>
+                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[#6CA384] rounded-sm shadow-xs"></div> 51–100</div>
+                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[#477C5E] rounded-sm shadow-xs"></div> 100+</div>
+                  </div>
                 </div>
 
-                <div className="bg-[#F7F2E8] rounded-2xl p-4 shadow-sm border border-[#EADFCF] flex justify-between items-center animate-fade-in">
+                {/* Day Summary Card below calendar for mobile quick-view */}
+                <div className="bg-[#F7F2E8] rounded-2xl p-4 shadow-sm border border-[#EADFCF] flex justify-between items-center">
                   <div className="flex flex-col">
                     <span className="font-bold text-[#564B41] text-sm">
                       {selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}
@@ -1245,452 +1159,150 @@ export default function App() {
               </div>
 
             </div>
+
           </div>
         )}
 
-        {/* ================= АНАЛИТИКА ================= */}
-        {activeTab === 'analytics' && (
-          <div className="animate-fade-in space-y-6">
-            <div className="bg-[#F7F2E8] p-5 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div>
-                <h2 className="text-xl font-black text-[#564B41] flex items-center gap-2">
-                  <span className="bg-[#EFE7D8] text-[#846851] p-2 rounded-2xl"><PieChartIcon size={20}/></span>
-                  Глубокая аналитика и круговые диаграммы
-                </h2>
-                <p className="text-xs text-[#847466] mt-0.5">Сравнивайте статистику по периодам, жанрам, форматам с помощью круговых диаграмм.</p>
-              </div>
-
-              <div className="flex flex-wrap bg-[#EFE7D8] rounded-2xl p-1 border border-[#E2D5C3] w-full md:w-auto">
-                {[
-                  { id: 'month', label: 'Этот месяц' },
-                  { id: '3months', label: '3 месяца' },
-                  { id: 'year', label: 'Этот год' },
-                  { id: 'all', label: 'За всё время' }
-                ].map(p => (
-                  <button
-                    key={p.id}
-                    onClick={() => setStatPeriod(p.id)}
-                    className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex-1 md:flex-none text-center ${statPeriod === p.id ? 'bg-white text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}
-                  >
-                    {p.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-[#F7F2E8] p-5 rounded-3xl border border-[#EADFCF] shadow-sm">
-                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider block mb-1">Прочитано книг</span>
-                <span className="text-3xl font-black text-[#846851]">{filteredReadBooksForStats.length}</span>
-                <span className="text-[11px] text-[#74675B] block mt-2">за выбранный период</span>
-              </div>
-              <div className="bg-[#F7F2E8] p-5 rounded-3xl border border-[#EADFCF] shadow-sm">
-                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider block mb-1">Прочитано страниц</span>
-                <span className="text-3xl font-black text-[#6F8E80]">
-                  {filteredReadBooksForStats.reduce((sum, b) => sum + (b.totalPages || 0), 0)}
-                </span>
-                <span className="text-[11px] text-[#74675B] block mt-2">суммарный объем книг</span>
-              </div>
-              <div className="bg-[#F7F2E8] p-5 rounded-3xl border border-[#EADFCF] shadow-sm">
-                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider block mb-1">Средняя оценка</span>
-                <span className="text-3xl font-black text-[#C98E5E]">
-                  {filteredReadBooksForStats.filter(b => b.rating > 0).length > 0 ? (
-                    (filteredReadBooksForStats.reduce((sum, b) => sum + (b.rating || 0), 0) / filteredReadBooksForStats.filter(b => b.rating > 0).length).toFixed(1)
-                  ) : '—'} <span className="text-sm font-bold">★</span>
-                </span>
-                <span className="text-[11px] text-[#74675B] block mt-2">по вашим оценкам</span>
-              </div>
-              <div className="bg-[#F7F2E8] p-5 rounded-3xl border border-[#EADFCF] shadow-sm">
-                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider block mb-1">Средняя скорость</span>
-                <span className="text-3xl font-black text-[#62839F]">
-                  {filteredReadBooksForStats.length > 0 ? (
-                    Math.round(filteredReadBooksForStats.reduce((sum, b) => sum + (b.totalPages || 0), 0) / filteredReadBooksForStats.length)
-                  ) : 0} <span className="text-sm font-bold">стр/книга</span>
-                </span>
-                <span className="text-[11px] text-[#74675B] block mt-2">средний объем</span>
-              </div>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-6">
-              
-              <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="font-black text-base text-[#564B41] flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#846851]"></span>
-                    Жанровая структура
-                  </h3>
-                  <span className="text-xs font-bold text-[#948477]">{genreStatsForPeriod.length} жанров</span>
-                </div>
-
-                {genreStatsForPeriod.length === 0 ? (
-                  <p className="text-xs text-[#948477] py-8 text-center">За выбранный период нет завершенных книг.</p>
-                ) : (
-                  <div className="flex flex-col sm:flex-row items-center gap-6">
-                    <div className="relative w-44 h-44 shrink-0">
-                      <svg viewBox="0 0 42 42" className="w-full h-full transform -rotate-90">
-                        <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#EADFCF" strokeWidth="6" />
-                        {renderDonutSlices(genreStatsForPeriod, filteredReadBooksForStats.length)}
-                      </svg>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                        <span className="text-2xl font-black text-[#4A4238]">{filteredReadBooksForStats.length}</span>
-                        <span className="text-[9px] font-bold text-[#948477] uppercase tracking-wider">Книг</span>
-                      </div>
-                    </div>
-
-                    <div className="flex-1 space-y-2 w-full">
-                      {genreStatsForPeriod.map(([genre, count], idx) => {
-                        const total = filteredReadBooksForStats.length;
-                        const percent = total > 0 ? Math.round((count / total) * 100) : 0;
-                        const colors = ['bg-[#846851]', 'bg-[#6F8E80]', 'bg-[#9E82A8]', 'bg-[#C98E5E]', 'bg-[#62839F]', 'bg-[#BFA892]'];
-                        const dotColor = colors[idx % colors.length];
-
-                        return (
-                          <div key={genre} className="flex items-center justify-between text-xs font-bold text-[#564B41]">
-                            <span className="flex items-center gap-2 truncate">
-                              <span className={`w-3 h-3 rounded-full shrink-0 ${dotColor}`}></span>
-                              <span className="truncate">{genre}</span>
-                            </span>
-                            <span className="shrink-0 text-[#74675B]">{count} ({percent}%)</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-6">
-                <div className="flex justify-between items-center">
-                  <h3 className="font-black text-base text-[#564B41] flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#6F8E80]"></span>
-                    Форматы чтения
-                  </h3>
-                  <span className="text-xs font-bold text-[#948477]">Всего {filteredReadBooksForStats.length} книг</span>
-                </div>
-
-                {filteredReadBooksForStats.length === 0 ? (
-                  <p className="text-xs text-[#948477] py-8 text-center">За выбранный период нет завершенных книг.</p>
-                ) : (
-                  <div className="flex flex-col sm:flex-row items-center gap-6">
-                    <div className="relative w-44 h-44 shrink-0">
-                      <svg viewBox="0 0 42 42" className="w-full h-full transform -rotate-90">
-                        <circle cx="21" cy="21" r="15.9155" fill="transparent" stroke="#EADFCF" strokeWidth="6" />
-                        {renderDonutSlices([
-                          ['Бумажные', formatStatsForPeriod.paper],
-                          ['Электронные', formatStatsForPeriod.ebook],
-                          ['Аудио', formatStatsForPeriod.audio],
-                          ['Комбо', formatStatsForPeriod.combo]
-                        ].filter(item => item[1] > 0), filteredReadBooksForStats.length)}
-                      </svg>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                        <span className="text-2xl font-black text-[#4A4238]">{filteredReadBooksForStats.length}</span>
-                        <span className="text-[9px] font-bold text-[#948477] uppercase tracking-wider">Книг</span>
-                      </div>
-                    </div>
-
-                    <div className="flex-1 space-y-2.5 w-full">
-                      {[
-                        { id: 'paper', label: 'Бумажные', count: formatStatsForPeriod.paper, bg: 'bg-[#846851]' },
-                        { id: 'ebook', label: 'Электронные', count: formatStatsForPeriod.ebook, bg: 'bg-[#62839F]' },
-                        { id: 'audio', label: 'Аудиокниги', count: formatStatsForPeriod.audio, bg: 'bg-[#9E82A8]' },
-                        { id: 'combo', label: 'Комбо', count: formatStatsForPeriod.combo, bg: 'bg-[#6F8E80]' }
-                      ].map(f => {
-                        const total = filteredReadBooksForStats.length;
-                        const percent = total > 0 ? Math.round((f.count / total) * 100) : 0;
-                        return (
-                          <div key={f.id} className="flex items-center justify-between text-xs font-bold text-[#564B41]">
-                            <span className="flex items-center gap-2">
-                              <span className={`w-3 h-3 rounded-full shrink-0 ${f.bg}`}></span>
-                              <span>{f.label}</span>
-                            </span>
-                            <span className="text-[#74675B]">{f.count} ({percent}%)</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-4 lg:col-span-2">
-                <div className="flex justify-between items-center">
-                  <h3 className="font-black text-base text-[#564B41] flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#C98E5E]"></span>
-                    Активность по дням недели (Сумма прочитанных страниц)
-                  </h3>
-                  <span className="text-xs font-bold text-[#948477]">За всё время</span>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-7 gap-3 pt-2">
-                  {weekdayStats.map(w => {
-                    const maxPages = Math.max(...weekdayStats.map(item => item.pages), 1);
-                    const heightPercent = Math.max(15, Math.round((w.pages / maxPages) * 100));
-
-                    return (
-                      <div key={w.day} className="bg-[#FCF9F2] p-4 rounded-2xl border border-[#EADFCF] flex flex-col items-center justify-between h-44 shadow-sm">
-                        <span className="text-xs font-black text-[#564B41]">{w.pages} стр.</span>
-                        <div className="w-10 bg-[#EADFCF] rounded-xl h-24 flex items-end overflow-hidden p-1">
-                          <div className="w-full bg-[#A68970] rounded-lg transition-all duration-700" style={{ height: `${heightPercent}%` }}></div>
-                        </div>
-                        <span className="text-xs font-bold text-[#847466] text-center">{w.day}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-            </div>
-          </div>
-        )}
-
-        {/* ================= BBC 200 ================= */}
-        {activeTab === 'bbc200' && (
-          <div className="animate-fade-in space-y-6">
-            <div className="bg-[#F7F2E8] p-5 sm:p-8 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
-               <div className="absolute right-[-10px] bottom-[-10px] opacity-10"><AwardIcon size={160} /></div>
-               <div className="relative z-10">
-                 <h2 className="text-xl sm:text-2xl font-black text-[#564B41] flex items-center gap-2.5">
-                   <AwardIcon size={26} className="text-[#A68970]" />
-                   Рейтинг BBC «The Big Read» (Топ-200)
-                 </h2>
-                 <p className="text-xs sm:text-sm text-[#847466] mt-1 max-w-2xl">
-                   Легендарный список лучших книг по версии BBC. Отмечайте прочитанные книги или добавляйте их в свою библиотеку в один клик!
-                 </p>
-               </div>
-               
-               <div className="bg-white/80 backdrop-blur-sm px-5 py-3 rounded-2xl border border-[#EADFCF] shadow-sm text-center shrink-0 relative z-10">
-                 <div className="text-2xl font-black text-[#846851]">
-                   {BBC_TOP_200.filter(item => books.some(b => b.title.toLowerCase() === item.title.toLowerCase() && b.status === 'read')).length} / 200
-                 </div>
-                 <div className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">Прочитано из списка</div>
-               </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3 bg-[#F7F2E8] p-4 rounded-3xl border border-[#EADFCF] shadow-sm">
-              <div className="relative flex-1">
-                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9B8C80]"><SearchIcon size={16}/></div>
-                <input 
-                  type="text" 
-                  placeholder="Поиск по названию книги или автору..." 
-                  value={bbcSearch} 
-                  onChange={(e) => setBbcSearch(e.target.value)}
-                  className="w-full bg-[#FCF9F2] border border-[#EADFCF] text-[#4A4238] pl-10 pr-4 py-2.5 rounded-2xl font-bold text-xs md:text-sm outline-none focus:border-[#A68970]"
-                />
-                {bbcSearch && <button onClick={() => setBbcSearch('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9B8C80]"><XIcon size={14} /></button>}
-              </div>
-
-              <div className="flex gap-2">
-                {[
-                  { id: 'all', label: 'Все' },
-                  { id: 'read', label: 'Прочитанные' },
-                  { id: 'unread', label: 'Непрочитанные' }
-                ].map(f => (
-                  <button
-                    key={f.id}
-                    onClick={() => setBbcFilterStatus(f.id)}
-                    className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition-all ${bbcFilterStatus === f.id ? 'bg-[#A68970] text-white shadow-sm' : 'bg-[#EFE7D8] text-[#74675B] hover:bg-[#EADFCF]'}`}
-                  >
-                    {f.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {BBC_TOP_200.filter(item => {
-                const matchesSearch = !bbcSearch || 
-                  item.title.toLowerCase().includes(bbcSearch.toLowerCase()) || 
-                  item.author.toLowerCase().includes(bbcSearch.toLowerCase());
-                
-                const isRead = books.some(b => b.title.toLowerCase() === item.title.toLowerCase() && b.status === 'read');
-                
-                if (bbcFilterStatus === 'read') return matchesSearch && isRead;
-                if (bbcFilterStatus === 'unread') return matchesSearch && !isRead;
-                return matchesSearch;
-              }).map(item => {
-                const existingBook = books.find(b => b.title.toLowerCase() === item.title.toLowerCase());
-                const isRead = existingBook?.status === 'read';
-
-                return (
-                  <div key={item.rank} className="bg-[#F7F2E8] border border-[#EADFCF] p-4 rounded-2xl shadow-sm flex flex-col justify-between gap-3 relative group hover:shadow-md transition-all">
-                    <div className="absolute top-3 right-3 bg-[#EFE7D8] text-[#846851] text-[10px] font-black px-2 py-0.5 rounded-lg border border-[#E2D5C3]">
-                      #{item.rank}
-                    </div>
-
-                    <div>
-                      <h4 className="font-bold text-sm text-[#4A4238] line-clamp-2 leading-snug pr-8">{item.title}</h4>
-                      <p className="text-xs text-[#847466] mt-1 font-medium">{item.author}</p>
-                    </div>
-
-                    <div className="pt-2 border-t border-[#EADFCF] flex items-center justify-between">
-                      {isRead ? (
-                        <span className="inline-flex items-center gap-1 text-xs font-bold text-[#4F6F61] bg-[#DDEAE3] px-2.5 py-1 rounded-xl">
-                          <CheckIcon size={14} /> Прочитано
-                        </span>
-                      ) : existingBook ? (
-                        <span className="inline-flex items-center gap-1 text-xs font-bold text-[#C98E5E] bg-[#F7EFE8] px-2.5 py-1 rounded-xl">
-                          📖 В библиотеке
-                        </span>
-                      ) : (
-                        <span className="text-xs text-[#948477] font-medium">Ещё не читали</span>
-                      )}
-
-                      {!existingBook ? (
-                        <button 
-                          onClick={() => {
-                            const newBook = {
-                              id: Date.now() + item.rank,
-                              title: item.title,
-                              author: item.author,
-                              status: 'wishlist',
-                              format: 'paper',
-                              totalPages: 300,
-                              readPages: 0,
-                              rating: 0,
-                              annotation: `Книга из списка BBC Топ-200 (позиция #${item.rank})`,
-                              summary: '', notes: '', quotes: '', coverUrl: '', sketches: [],
-                              tags: ['BBC 200', 'классика'],
-                              dateStarted: '', dateFinished: '', log: []
-                            };
-                            setBooks([...books, newBook]);
-                          }}
-                          className="bg-[#A68970] hover:bg-[#92745C] text-white p-2 rounded-xl transition-colors shadow-sm"
-                          title="Добавить в виш-лист"
-                        >
-                          <PlusIcon size={16} />
-                        </button>
-                      ) : !isRead ? (
-                        <button 
-                          onClick={() => {
-                            setBooks(books.map(b => b.id === existingBook.id ? {...b, status: 'read', readPages: b.totalPages || 300, dateFinished: getMoscowDateString(0)} : b));
-                          }}
-                          className="bg-[#DDEAE3] hover:bg-[#C9DEC2] text-[#4F6F61] p-2 rounded-xl transition-colors shadow-sm"
-                          title="Отметить прочитанной"
-                        >
-                          <CheckIcon size={16} />
-                        </button>
-                      ) : null}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* ================= БИБЛИОТЕКА ================= */}
         {activeTab === 'library' && (
-          <div className="animate-fade-in">
-            {/* Library Counter Badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-4">
-              <div onClick={() => setFilter('all')} className={`bg-[#F7F2E8] p-3 rounded-2xl border cursor-pointer transition-all shadow-sm flex flex-col items-center justify-center text-center ${filter === 'all' ? 'border-[#A68970] ring-2 ring-[#A68970]/30' : 'border-[#EADFCF]'}`}>
-                <span className="text-xl font-black text-[#564B41]">{books.length}</span>
-                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">Всего книг</span>
-              </div>
-              <div onClick={() => setFilter('reading')} className={`bg-[#F7F2E8] p-3 rounded-2xl border cursor-pointer transition-all shadow-sm flex flex-col items-center justify-center text-center ${filter === 'reading' ? 'border-[#C98E5E] ring-2 ring-[#C98E5E]/30' : 'border-[#EADFCF]'}`}>
-                <span className="text-xl font-black text-[#C98E5E]">{activeBooks.length}</span>
-                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">В процессе</span>
-              </div>
-              <div onClick={() => setFilter('read')} className={`bg-[#F7F2E8] p-3 rounded-2xl border cursor-pointer transition-all shadow-sm flex flex-col items-center justify-center text-center ${filter === 'read' ? 'border-[#6F8E80] ring-2 ring-[#6F8E80]/30' : 'border-[#EADFCF]'}`}>
-                <span className="text-xl font-black text-[#6F8E80]">{readBooksList.length}</span>
-                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">Прочитано</span>
-              </div>
-              <div onClick={() => setFilter('wishlist')} className={`bg-[#F7F2E8] p-3 rounded-2xl border cursor-pointer transition-all shadow-sm flex flex-col items-center justify-center text-center ${filter === 'wishlist' ? 'border-[#9E82A8] ring-2 ring-[#9E82A8]/30' : 'border-[#EADFCF]'}`}>
-                <span className="text-xl font-black text-[#9E82A8]">{wishlistBooks.length}</span>
-                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">Виш-лист</span>
-              </div>
-              <div onClick={() => setFilter('dropped')} className={`bg-[#F7F2E8] p-3 rounded-2xl border cursor-pointer transition-all shadow-sm flex flex-col items-center justify-center text-center col-span-2 sm:col-span-1 ${filter === 'dropped' ? 'border-[#D67C6B] ring-2 ring-[#D67C6B]/30' : 'border-[#EADFCF]'}`}>
-                <span className="text-xl font-black text-[#D67C6B]">{droppedBooks.length}</span>
-                <span className="text-[10px] font-bold text-[#948477] uppercase tracking-wider">Брошено</span>
-              </div>
+          <div className="space-y-4">
+            
+            {/* Library Status Badges with Book Counts */}
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+              {[
+                { id: 'all', label: 'Все книги', count: books.length, color: 'text-[#846851]' },
+                { id: 'reading', label: 'В процессе', count: activeBooks.length, color: 'text-[#C98E5E]' },
+                { id: 'read', label: 'Прочитано', count: readBooksList.length, color: 'text-[#6F8E80]' },
+                { id: 'wishlist', label: 'Виш-лист', count: wishlistBooks.length, color: 'text-[#62839F]' },
+                { id: 'dropped', label: 'Брошено', count: droppedBooks.length, color: 'text-[#D67C6B]' }
+              ].map(badge => (
+                <button
+                  key={badge.id}
+                  onClick={() => setFilter(badge.id)}
+                  className={`p-3 rounded-2xl border transition-all text-left flex flex-col justify-between ${
+                    filter === badge.id 
+                      ? 'bg-white border-[#A68970] shadow-sm' 
+                      : 'bg-[#F7F2E8] border-[#EADFCF] hover:bg-[#EFE7D8]'
+                  }`}
+                >
+                  <span className="text-[10px] font-bold text-[#948477] uppercase">{badge.label}</span>
+                  <span className={`text-xl font-black ${badge.color}`}>{badge.count}</span>
+                </button>
+              ))}
             </div>
 
-            <div className="flex flex-col gap-3.5 mb-5 bg-[#F7F2E8] p-4 md:p-5 rounded-3xl shadow-sm border border-[#EADFCF]">
-              
+            {/* Filter and Search Bar */}
+            <div className="flex flex-col gap-3.5 bg-[#F7F2E8] p-4 md:p-5 rounded-3xl shadow-sm border border-[#EADFCF]">
               <div className="flex flex-wrap justify-between items-center gap-2">
-                <div className="flex flex-wrap gap-1.5 flex-1">
-                  {[
-                    { id: 'all', label: 'Все' },
-                    { id: 'reading', label: 'В процессе' },
-                    { id: 'read', label: 'Прочитано' },
-                    { id: 'wishlist', label: 'Виш-лист' },
-                    { id: 'dropped', label: 'Брошено' }
-                  ].map(f => (
-                    <button
-                      key={f.id} onClick={() => setFilter(f.id)}
-                      className={`px-3.5 py-2 rounded-2xl font-bold text-xs transition-all text-center ${
-                        filter === f.id ? 'bg-[#A68970] text-white shadow-sm' : 'bg-[#EFE7D8] text-[#74675B] hover:bg-[#EADFCF]'
-                      }`}
-                    >
-                      {f.label}
+                <div className="flex-1 relative min-w-[200px]">
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9B8C80]"><SearchIcon size={16}/></div>
+                  <input 
+                    type="text" 
+                    placeholder="Поиск по названию, автору или серии..." 
+                    value={searchQuery} 
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-[#FCF9F2] border border-[#EADFCF] text-[#4A4238] pl-10 pr-4 py-2.5 rounded-2xl font-bold text-xs md:text-sm outline-none focus:border-[#A68970] transition-colors"
+                  />
+                  {searchQuery && (
+                    <button onClick={() => setSearchQuery('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9B8C80] hover:text-[#564B41]">
+                      <XIcon size={14} />
                     </button>
-                  ))}
+                  )}
                 </div>
 
                 <div className="flex bg-[#EFE7D8] rounded-2xl p-1 border border-[#E2D5C3]">
                   <button onClick={() => setViewMode('grid')} title="Сетка обложек" className={`p-2 rounded-xl transition-all ${viewMode === 'grid' ? 'bg-white text-[#846851] shadow-sm' : 'text-[#74675B]'}`}>
                     <GridIcon size={16} />
                   </button>
-                  <button onClick={() => setViewMode('shelf')} title="Деревянная книжная полка" className={`p-2 rounded-xl transition-all ${viewMode === 'shelf' ? 'bg-white text-[#846851] shadow-sm' : 'text-[#74675B]'}`}>
+                  <button onClick={() => setViewMode('shelf')} title="Книжная полка" className={`p-2 rounded-xl transition-all ${viewMode === 'shelf' ? 'bg-white text-[#846851] shadow-sm' : 'text-[#74675B]'}`}>
                     <LayersBoxIcon size={16} />
                   </button>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-2.5 w-full items-center">
-                <div className="relative w-full sm:flex-1">
-                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9B8C80]"><SearchIcon size={16}/></div>
-                  <input type="text" placeholder="Поиск по названию, автору или серии..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-[#FCF9F2] border border-[#EADFCF] text-[#4A4238] pl-10 pr-4 py-2.5 rounded-2xl font-bold text-xs md:text-sm outline-none focus:border-[#A68970] transition-colors"
-                  />
-                  {searchQuery && <button onClick={() => setSearchQuery('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9B8C80] hover:text-[#564B41]"><XIcon size={14} /></button>}
-                </div>
+              {/* Genre and Author Dropdowns */}
+              <div className="flex flex-wrap gap-2 items-center">
+                <select 
+                  value={genreFilter} 
+                  onChange={(e) => setGenreFilter(e.target.value)} 
+                  className="bg-[#FCF9F2] border border-[#EADFCF] text-[#564B41] px-3 py-2 rounded-2xl font-bold text-xs outline-none cursor-pointer"
+                >
+                  <option value="all">Все жанры</option>
+                  {PREDEFINED_GENRES.map(g => (
+                    <option key={g} value={g}>{g}</option>
+                  ))}
+                </select>
 
-                <div className="flex gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
-                  <select value={seriesFilter} onChange={(e) => setSeriesFilter(e.target.value)} className="appearance-none bg-[#FCF9F2] border border-[#EADFCF] text-[#564B41] px-3 py-2.5 rounded-2xl font-bold text-xs outline-none cursor-pointer min-w-[110px]">
+                <select 
+                  value={authorFilter} 
+                  onChange={(e) => setAuthorFilter(e.target.value)} 
+                  className="bg-[#FCF9F2] border border-[#EADFCF] text-[#564B41] px-3 py-2 rounded-2xl font-bold text-xs outline-none cursor-pointer"
+                >
+                  <option value="all">Все авторы</option>
+                  {uniqueAuthors.map(a => <option key={a} value={a}>{a}</option>)}
+                </select>
+
+                {uniqueSeries.length > 0 && (
+                  <select 
+                    value={seriesFilter} 
+                    onChange={(e) => setSeriesFilter(e.target.value)} 
+                    className="bg-[#FCF9F2] border border-[#EADFCF] text-[#564B41] px-3 py-2 rounded-2xl font-bold text-xs outline-none cursor-pointer"
+                  >
                     <option value="all">Все серии</option>
-                    {uniqueSeries.map(s => (
-                      <option key={s} value={s}>{s} ({seriesStats[s]?.read || 0}/{seriesStats[s]?.total || 0})</option>
-                    ))}
+                    {uniqueSeries.map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
-                  <select value={authorFilter} onChange={(e) => setAuthorFilter(e.target.value)} className="appearance-none bg-[#FCF9F2] border border-[#EADFCF] text-[#564B41] px-3 py-2.5 rounded-2xl font-bold text-xs outline-none cursor-pointer min-w-[110px]">
-                    <option value="all">Все авторы</option>
-                    {uniqueAuthors.map(a => <option key={a} value={a}>{a}</option>)}
-                  </select>
-                  <select value={genreFilter} onChange={(e) => setGenreFilter(e.target.value)} className="appearance-none bg-[#FCF9F2] border border-[#EADFCF] text-[#564B41] px-3 py-2.5 rounded-2xl font-bold text-xs outline-none cursor-pointer min-w-[110px]">
-                    <option value="all">Все жанры</option>
-                    {PREDEFINED_GENRES.map(g => <option key={g} value={g}>{g}</option>)}
-                  </select>
-                </div>
+                )}
+
+                {(genreFilter !== 'all' || authorFilter !== 'all' || seriesFilter !== 'all') && (
+                  <button 
+                    onClick={() => { setGenreFilter('all'); setAuthorFilter('all'); setSeriesFilter('all'); }} 
+                    className="text-xs font-bold text-[#C56B5D] hover:underline px-2"
+                  >
+                    Сбросить
+                  </button>
+                )}
               </div>
             </div>
 
+            {/* Grid View */}
             {viewMode === 'grid' && (
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3.5">
                 <button onClick={openNewBookModal} className="bg-[#F7F2E8] border-2 border-dashed border-[#D5C6B4] rounded-2xl flex flex-col items-center justify-center text-[#9B8C80] hover:text-[#846851] hover:border-[#A68970] hover:bg-[#EFE7D8] transition-all aspect-[2/3] group shadow-sm">
                   <div className="bg-[#EFE7D8] group-hover:bg-[#EADFCF] p-2.5 rounded-2xl mb-1.5 transition-colors"><PlusIcon size={20} /></div>
-                  <span className="font-bold text-xs">Добавить</span>
+                  <span className="font-bold text-xs">Добавить книгу</span>
                 </button>
 
                 {filteredBooks.map(book => {
                   const FormatIcon = FORMATS.find(f => f.id === book.format)?.icon || BookOpenIcon;
                   
                   return (
-                    <div key={book.id} onClick={() => { setCurrentBook(book); setIsModalOpen(true); }} className="bg-[#F7F2E8] border border-[#EADFCF] rounded-2xl overflow-hidden hover:shadow-md transition-all cursor-pointer group flex flex-col aspect-[2/3] relative">
+                    <div 
+                      key={book.id} 
+                      onClick={() => { setCurrentBook(book); setIsModalOpen(true); }} 
+                      className="bg-[#F7F2E8] border border-[#EADFCF] rounded-2xl overflow-hidden hover:shadow-md transition-all cursor-pointer group flex flex-col aspect-[2/3] relative"
+                    >
                       <div className="absolute top-1.5 right-1.5 z-10 flex flex-col gap-1">
                         <div className={`p-1 rounded-lg shadow-sm backdrop-blur-md bg-white/90 ${book.status === 'read' ? 'text-[#6F8E80]' : book.status === 'reading' || book.status === 'rereading' ? 'text-[#C98E5E]' : book.status === 'dropped' ? 'text-[#D67C6B]' : 'text-[#9B8C80]'}`}>
-                           <CheckIcon size={10} />
+                          <CheckIcon size={10} />
                         </div>
                         <div className="p-1 rounded-lg shadow-sm backdrop-blur-md bg-white/90 text-[#74675B]">
                           <FormatIcon size={10} />
                         </div>
+                        {book.sketchnoteUrl && (
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); setSketchnoteModalUrl(book.sketchnoteUrl); }}
+                            title="Посмотреть визуальный конспект"
+                            className="p-1 rounded-lg shadow-sm backdrop-blur-md bg-white/90 text-[#846851] hover:scale-110 transition-transform"
+                          >
+                            <EyeIcon size={10} />
+                          </button>
+                        )}
                       </div>
 
                       <div className="flex-1 bg-[#EFE7D8] relative overflow-hidden">
                         {book.coverUrl ? (
                           <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-[#EAE2D2] text-[#846851] font-black p-1 text-center text-[10px]">
+                          <div className="w-full h-full flex items-center justify-center bg-[#EAE2D2] text-[#846851] font-black p-2 text-center text-xs">
                             {book.title}
                           </div>
                         )}
@@ -1700,46 +1312,33 @@ export default function App() {
                             {book.seriesName} {book.seriesIndex ? `#${book.seriesIndex}` : ''}
                           </div>
                         )}
-
-                        {book.sketches && book.sketches.length > 0 && (
-                          <div className="absolute bottom-7 left-1.5 bg-[#846851] text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow flex items-center gap-1">
-                            <ImageRefIcon size={10} /> {book.sketches.length}
-                          </div>
-                        )}
                       </div>
                       
-                      <div className="p-2 bg-[#F7F2E8] h-[58px] flex flex-col justify-between shrink-0 border-t border-[#EFE7D8]">
+                      <div className="p-2.5 bg-[#F7F2E8] h-[64px] flex flex-col justify-between shrink-0 border-t border-[#EFE7D8]">
                         <div>
-                           <h3 className="font-bold text-[11px] text-[#4A4238] line-clamp-1 leading-tight">{book.title}</h3>
-                           <p className="text-[9px] text-[#948477] line-clamp-1 mt-0.5">{book.author}</p>
+                          <h3 className="font-bold text-xs text-[#4A4238] line-clamp-1 leading-tight">{book.title}</h3>
+                          <p className="text-[10px] text-[#948477] line-clamp-1 mt-0.5">{book.author}</p>
                         </div>
                         
-                        <div className="mt-0.5">
-                          {(book.status === 'reading' || book.status === 'rereading') && book.totalPages > 0 && (
-                            <div className="w-full bg-[#EADFCF] rounded-full h-1 mb-0.5">
-                              <div className="bg-[#9ABAA9] h-1 rounded-full" style={{ width: `${Math.min(100, Math.round(((book.readPages || 0) / book.totalPages) * 100))}%` }}></div>
-                            </div>
-                          )}
-                          {book.status === 'read' && book.dateStarted && book.dateFinished && (
-                            <div className="text-[8px] font-bold text-[#6F8E80] bg-[#DDEAE3] px-1 py-0.5 rounded inline-block">
-                              За {calculateDaysToRead(book.dateStarted, book.dateFinished)} дн.
-                            </div>
-                          )}
+                        <div className="mt-0.5 flex justify-between items-center text-[9px] font-bold text-[#846851]">
+                          <span className="truncate max-w-[65%]">{book.genre}</span>
+                          {book.status === 'read' && book.rating > 0 && <span>★ {book.rating}</span>}
                         </div>
                       </div>
                     </div>
-                  )
+                  );
                 })}
               </div>
             )}
 
+            {/* Virtual Wooden Bookshelf View */}
             {viewMode === 'shelf' && (
               <div className="space-y-6 pt-2">
                 {bookshelfShelves.map((shelfBooks, shelfIdx) => (
                   <div key={shelfIdx} className="relative pt-4">
                     <div className="flex flex-wrap items-end gap-3 sm:gap-6 px-4 pb-2 min-h-[210px]">
                       {shelfIdx === 0 && (
-                        <div onClick={openNewBookModal} className="w-20 sm:w-28 h-36 sm:h-48 border-2 border-dashed border-[#D5C6B4] bg-[#F7F2E8]/80 rounded-xl flex flex-col items-center justify-center text-[#9B8C80] hover:text-[#846851] hover:border-[#A68970] transition-all cursor-pointer shadow-sm mb-1">
+                        <div onClick={openNewBookModal} className="w-20 sm:w-24 h-40 sm:h-52 border-2 border-dashed border-[#D5C6B4] bg-[#F7F2E8]/80 rounded-xl flex flex-col items-center justify-center text-[#9B8C80] hover:text-[#846851] hover:border-[#A68970] transition-all cursor-pointer shadow-sm mb-1">
                           <PlusIcon size={24} />
                           <span className="text-[10px] font-bold mt-1">Добавить</span>
                         </div>
@@ -1767,7 +1366,7 @@ export default function App() {
                               <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-white/10 pointer-events-none"></div>
                               
                               <div>
-                                <div className="text-[8px] font-bold opacity-80 uppercase tracking-widest truncate">{book.genre || 'Книга'}</div>
+                                <div className="text-[8px] font-bold opacity-80 uppercase tracking-widest truncate">{book.genre}</div>
                                 {book.seriesName && (
                                   <div className="text-[7px] font-bold text-[#E2D5C3] truncate mt-0.5">
                                     {book.seriesName} {book.seriesIndex ? `#${book.seriesIndex}` : ''}
@@ -1780,9 +1379,8 @@ export default function App() {
                                 <p className="text-[9px] opacity-90 line-clamp-1 mt-1 font-medium">{book.author}</p>
                               </div>
 
-                              <div className="flex justify-between items-center text-[9px] font-bold opacity-80">
-                                <span>{book.status === 'read' ? '★ ' + (book.rating || '✓') : book.status === 'reading' ? '📖' : '📌'}</span>
-                                {book.sketches && book.sketches.length > 0 && <span className="bg-white/30 px-1 rounded">🎨 {book.sketches.length}</span>}
+                              <div className="flex justify-center items-center gap-1 text-[9px] font-bold opacity-80">
+                                {book.status === 'read' ? '★ ' + (book.rating || '✓') : book.status === 'reading' ? '📖' : '📌'}
                               </div>
                             </div>
                           </div>
@@ -1799,7 +1397,7 @@ export default function App() {
 
                 {filteredBooks.length === 0 && (
                   <div className="text-center py-12 text-[#9B8C80] font-bold text-sm">
-                    На этой полке пока пусто. Добавьте книги в библиотеку!
+                    Книги не найдены. Измените параметры фильтрации или добавьте новую книгу.
                   </div>
                 )}
               </div>
@@ -1807,82 +1405,283 @@ export default function App() {
           </div>
         )}
 
-        {/* ================= ROULETTE ================= */}
+        {activeTab === 'analytics' && (
+          <div className="space-y-5 md:space-y-6">
+            
+            {/* Analytics Header Card */}
+            <div className="bg-[#F7F2E8] rounded-3xl p-5 md:p-6 shadow-sm border border-[#EADFCF] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <h2 className="text-xl md:text-2xl font-black text-[#564B41] flex items-center gap-2.5">
+                  <span className="bg-[#EFE7D8] text-[#846851] p-2 rounded-2xl"><BarChart2Icon size={22}/></span>
+                  Аналитика и прочитанное
+                </h2>
+                <p className="text-xs md:text-sm text-[#847466] mt-1">
+                  Подробная статистика вашего прогресса чтения, разбивка по месяцам, жанрам и форматам.
+                </p>
+              </div>
+
+              {/* Subtabs Switcher */}
+              <div className="flex flex-wrap bg-[#EFE7D8] rounded-2xl p-1 border border-[#E2D5C3]">
+                {[
+                  { id: 'months', label: 'По месяцам' },
+                  { id: 'genres', label: 'По жанрам' },
+                  { id: 'formats', label: 'По форматам' },
+                  { id: 'activity', label: 'По дням недели' }
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setStatViewType(tab.id)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${statViewType === tab.id ? 'bg-white text-[#846851] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Metrics Bar in Analytics */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="bg-[#F7F2E8] p-4 rounded-2xl border border-[#EADFCF] shadow-sm">
+                <span className="text-[10px] font-bold text-[#948477] uppercase">Всего прочитано</span>
+                <p className="text-2xl font-black text-[#846851] mt-1">{totalReadBooks} книг</p>
+              </div>
+              <div className="bg-[#F7F2E8] p-4 rounded-2xl border border-[#EADFCF] shadow-sm">
+                <span className="text-[10px] font-bold text-[#948477] uppercase">Прочитано страниц</span>
+                <p className="text-2xl font-black text-[#6F8E80] mt-1">{totalReadPages}</p>
+              </div>
+              <div className="bg-[#F7F2E8] p-4 rounded-2xl border border-[#EADFCF] shadow-sm">
+                <span className="text-[10px] font-bold text-[#948477] uppercase">Время за чтением</span>
+                <p className="text-2xl font-black text-[#9E82A8] mt-1">{Math.floor(totalMinutesAllTime / 60)}ч {totalMinutesAllTime % 60}м</p>
+              </div>
+              <div className="bg-[#F7F2E8] p-4 rounded-2xl border border-[#EADFCF] shadow-sm">
+                <span className="text-[10px] font-bold text-[#948477] uppercase">Дней без пропуска</span>
+                <p className="text-2xl font-black text-[#D67C6B] mt-1">{totalStreak} {getPluralDays(totalStreak)}</p>
+              </div>
+            </div>
+
+            {/* Monthly Breakdown View */}
+            {statViewType === 'months' && (
+              <div className="bg-[#F7F2E8] p-5 md:p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-4">
+                <div className="flex justify-between items-center">
+                  <h4 className="text-xs md:text-sm font-black text-[#846851] uppercase tracking-wider">История прочитанного по месяцам</h4>
+                  <span className="text-[11px] font-bold text-[#948477]">Нажмите на обложку для просмотра деталей</span>
+                </div>
+
+                {monthlyStats.length === 0 ? (
+                  <p className="text-xs text-[#948477] py-10 text-center">Вы пока не завершили ни одной книги с указанием даты.</p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {monthlyStats.map(month => (
+                      <div key={month.key} className="bg-[#FCF9F2] p-4 rounded-2xl border border-[#EADFCF] shadow-sm flex flex-col gap-3">
+                        <div className="flex justify-between items-center border-b border-[#EADFCF] pb-2">
+                          <h5 className="font-bold text-[#564B41] capitalize">{month.label}</h5>
+                          <div className="text-right">
+                            <span className="block font-black text-[#846851] text-sm">{month.books.length} книг</span>
+                            <span className="block text-[10px] font-bold text-[#948477]">{month.pages} стр.</span>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-2.5 overflow-y-auto max-h-48 pr-1">
+                          {month.books.map(b => (
+                            <div 
+                              key={b.id} 
+                              title={`${b.title} — ${b.author}`} 
+                              onClick={() => { setCurrentBook(b); setIsModalOpen(true); }} 
+                              className="w-14 sm:w-16 aspect-[2/3] bg-[#EFE7D8] rounded-xl overflow-hidden shadow-sm border border-[#E2D5C3] cursor-pointer hover:scale-105 transition-transform shrink-0 relative group"
+                            >
+                              {b.coverUrl ? (
+                                <img src={b.coverUrl} className="w-full h-full object-cover" alt="" />
+                              ) : (
+                                <div className="text-[8px] p-1 text-center font-bold text-[#846851] leading-tight flex items-center justify-center h-full bg-[#EAE2D2]">{b.title}</div>
+                              )}
+                              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <SearchIcon size={14} className="text-white" />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {statViewType === 'genres' && (
+              <div className="bg-[#F7F2E8] p-5 md:p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-4">
+                <div className="flex justify-between items-center">
+                  <h4 className="text-xs md:text-sm font-black text-[#846851] uppercase tracking-wider">Распределение по жанрам</h4>
+                  <span className="text-[11px] font-bold text-[#948477]">Всего прочитано: {totalReadBooks}</span>
+                </div>
+                {genreStats.length === 0 ? (
+                  <p className="text-xs text-[#948477] py-10 text-center">Прочитайте книги, чтобы увидеть статистику жанров.</p>
+                ) : (
+                  <div className="space-y-3.5 bg-[#FCF9F2] p-5 rounded-2xl border border-[#EADFCF]">
+                    {genreStats.map(([genre, count], i) => {
+                      const percent = totalReadBooks > 0 ? Math.round((count / totalReadBooks) * 100) : 0;
+                      const colors = ['bg-[#846851]', 'bg-[#6F8E80]', 'bg-[#9E82A8]', 'bg-[#C98E5E]', 'bg-[#62839F]', 'bg-[#BFA892]'];
+                      const barColor = colors[i % colors.length];
+
+                      return (
+                        <div key={genre} className="space-y-1.5">
+                          <div className="flex justify-between text-xs font-bold text-[#564B41]">
+                            <span className="flex items-center gap-2">
+                              <span className={`w-2.5 h-2.5 rounded-full ${barColor}`}></span>
+                              {genre}
+                            </span>
+                            <span>{count} книг ({percent}%)</span>
+                          </div>
+                          <div className="w-full bg-[#EADFCF] rounded-full h-2.5 overflow-hidden shadow-inner">
+                            <div className={`${barColor} h-2.5 rounded-full transition-all duration-700`} style={{ width: `${percent}%` }}></div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {statViewType === 'formats' && (
+              <div className="bg-[#F7F2E8] p-5 md:p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-4">
+                <h4 className="text-xs md:text-sm font-black text-[#846851] uppercase tracking-wider">Форматы прочитанных книг</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {[
+                    { id: 'paper', label: 'Бумажные', count: formatStats.paper, color: 'border-[#846851] text-[#846851]', bg: 'bg-[#846851]' },
+                    { id: 'ebook', label: 'Электронные', count: formatStats.ebook, color: 'border-[#62839F] text-[#62839F]', bg: 'bg-[#62839F]' },
+                    { id: 'audio', label: 'Аудиокниги', count: formatStats.audio, color: 'border-[#9E82A8] text-[#9E82A8]', bg: 'bg-[#9E82A8]' },
+                    { id: 'combo', label: 'Комбо', count: formatStats.combo, color: 'border-[#6F8E80] text-[#6F8E80]', bg: 'bg-[#6F8E80]' }
+                  ].map(f => {
+                    const percent = totalReadBooks > 0 ? Math.round((f.count / totalReadBooks) * 100) : 0;
+                    return (
+                      <div key={f.id} className="bg-[#FCF9F2] p-4 rounded-2xl border border-[#EADFCF] flex flex-col justify-between shadow-sm">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-xs font-bold text-[#74675B]">{f.label}</span>
+                          <span className={`text-[10px] font-black px-2 py-0.5 rounded-full bg-white border ${f.color}`}>{percent}%</span>
+                        </div>
+                        <div className="text-2xl font-black text-[#4A4238] mb-2">{f.count} <span className="text-xs font-bold text-[#948477]">книг</span></div>
+                        <div className="w-full bg-[#EADFCF] rounded-full h-1.5 overflow-hidden">
+                          <div className={`${f.bg} h-1.5 rounded-full transition-all duration-500`} style={{ width: `${percent}%` }}></div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {statViewType === 'activity' && (
+              <div className="bg-[#F7F2E8] p-5 md:p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-4">
+                <div className="flex justify-between items-center">
+                  <h4 className="text-xs md:text-sm font-black text-[#846851] uppercase tracking-wider">Активность чтения по дням недели</h4>
+                  <span className="text-[11px] font-bold text-[#948477]">Сумма прочитанных страниц</span>
+                </div>
+                <div className="bg-[#FCF9F2] p-5 rounded-2xl border border-[#EADFCF]">
+                  <div className="grid grid-cols-2 sm:grid-cols-7 gap-2.5">
+                    {weekdayStats.map(w => {
+                      const maxPages = Math.max(...weekdayStats.map(item => item.pages), 1);
+                      const heightPercent = Math.max(15, Math.round((w.pages / maxPages) * 100));
+
+                      return (
+                        <div key={w.day} className="bg-[#F7F2E8] p-3 rounded-2xl border border-[#EADFCF] flex flex-col items-center justify-between h-40">
+                          <span className="text-[10px] font-black text-[#564B41]">{w.pages} стр.</span>
+                          <div className="w-8 bg-[#EADFCF] rounded-xl h-24 flex items-end overflow-hidden p-1">
+                            <div className="w-full bg-[#A68970] rounded-lg transition-all duration-700" style={{ height: `${heightPercent}%` }}></div>
+                          </div>
+                          <div className="text-center">
+                            <span className="block text-[11px] font-bold text-[#847466]">{w.day}</span>
+                            <span className="hidden sm:block text-[8px] text-[#948477]">{w.fullName.slice(0, 3)}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
+        )}
+
+        {/* ================= ROULETTE TAB ================= */}
         {activeTab === 'roulette' && (
-          <div className="max-w-xl mx-auto animate-fade-in text-center py-6">
+          <div className="max-w-xl mx-auto text-center py-6">
             <div className="bg-[#F7F2E8] rounded-[2.5rem] p-6 sm:p-10 shadow-sm border border-[#EADFCF]">
-               <div className="inline-flex items-center justify-center w-16 h-16 bg-[#EFE7D8] text-[#846851] rounded-3xl mb-4 shadow-sm">
-                 <ShuffleIcon size={32} />
-               </div>
-               <h2 className="text-2xl sm:text-3xl font-black text-[#564B41] mb-2">Книжная рулетка</h2>
-               <p className="text-[#847466] text-xs sm:text-sm mb-6">Не знаете, какую книгу из виш-листа почитать следующей? Доверьтесь случайности!</p>
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-[#EFE7D8] text-[#846851] rounded-3xl mb-4 shadow-sm">
+                <ShuffleIcon size={32} />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#564B41] mb-2">Книжная рулетка</h2>
+              <p className="text-[#847466] text-xs sm:text-sm mb-6">Случайный выбор следующей книги из вашего списка желаний.</p>
 
-               {wishlistBooks.length === 0 ? (
-                 <div className="p-6 bg-[#EFE7D8] rounded-2xl text-xs font-bold text-[#948477] mb-6">
-                   В вашем виш-листе пока нет книг. Добавьте книги со статусом «Виш-лист», чтобы запустить рулетку!
-                 </div>
-               ) : (
-                 <div className="mb-8">
-                   <div className="flex flex-wrap justify-center items-center gap-3 mb-6 bg-[#EFE7D8] p-3 rounded-2xl border border-[#E2D5C3] mx-auto w-fit">
-                     <span className="text-[10px] font-black text-[#847466] uppercase tracking-wider">Искать среди:</span>
-                     <select 
-                       value={rouletteGenre} 
-                       onChange={(e) => setRouletteGenre(e.target.value)}
-                       disabled={isSpinning}
-                       className="bg-[#FCF9F2] border border-[#EADFCF] text-[#564B41] px-4 py-2 rounded-xl font-bold text-xs outline-none cursor-pointer transition-colors focus:border-[#A68970] disabled:opacity-50"
-                     >
-                       <option value="all">🎲 Абсолютно всех жанров</option>
-                       {Array.from(new Set(wishlistBooks.map(b => b.genre).filter(Boolean))).sort().map(g => (
-                         <option key={g} value={g}>{g}</option>
-                       ))}
-                     </select>
-                   </div>
+              {/* Genre selector for Roulette */}
+              <div className="mb-6 flex justify-center items-center gap-2">
+                <span className="text-xs font-bold text-[#74675B]">Жанр:</span>
+                <select 
+                  value={rouletteGenre} 
+                  onChange={(e) => setRouletteGenre(e.target.value)}
+                  className="bg-[#FCF9F2] border border-[#EADFCF] rounded-2xl px-3 py-2 text-xs font-bold text-[#564B41] outline-none"
+                >
+                  <option value="all">Любой жанр ({wishlistBooks.length})</option>
+                  {PREDEFINED_GENRES.map(g => {
+                    const countInWishlist = wishlistBooks.filter(b => b.genre === g).length;
+                    if (countInWishlist === 0) return null;
+                    return <option key={g} value={g}>{g} ({countInWishlist})</option>;
+                  })}
+                </select>
+              </div>
 
-                   <div className="w-44 sm:w-52 aspect-[2/3] mx-auto bg-[#EFE7D8] rounded-3xl overflow-hidden shadow-xl border-4 border-[#EADFCF] mb-4 flex items-center justify-center relative">
-                     {rouletteBook ? (
-                       rouletteBook.coverUrl ? (
-                         <img src={rouletteBook.coverUrl} className={`w-full h-full object-cover transition-all ${isSpinning ? 'blur-sm scale-105' : 'scale-100'}`} alt="" />
-                       ) : (
-                         <div className="p-4 text-center text-xs font-bold text-[#846851]">{rouletteBook.title}</div>
-                       )
-                     ) : (
-                       <div className="text-[#948477] font-bold text-xs p-4 text-center">Нажмите кнопку ниже</div>
-                     )}
-                   </div>
+              {roulettePool.length === 0 ? (
+                <div className="p-6 bg-[#EFE7D8] rounded-2xl text-xs font-bold text-[#948477] mb-6">
+                  {wishlistBooks.length === 0 
+                    ? 'В вашем виш-листе пока нет книг. Добавьте книги со статусом «Виш-лист», чтобы запустить рулетку!'
+                    : 'В выбранном жанре нет книг в виш-листе. Выберите другой жанр или сбросьте фильтр.'}
+                </div>
+              ) : (
+                <div className="mb-8">
+                  <div className="w-44 sm:w-52 aspect-[2/3] mx-auto bg-[#EFE7D8] rounded-3xl overflow-hidden shadow-xl border-4 border-[#EADFCF] mb-4 flex items-center justify-center relative">
+                    {rouletteBook ? (
+                      rouletteBook.coverUrl ? (
+                        <img src={rouletteBook.coverUrl} className={`w-full h-full object-cover transition-all ${isSpinning ? 'blur-sm scale-105' : 'scale-100'}`} alt="" />
+                      ) : (
+                        <div className="p-4 text-center text-xs font-bold text-[#846851]">{rouletteBook.title}</div>
+                      )
+                    ) : (
+                      <div className="text-[#948477] font-bold text-xs p-4 text-center">Нажмите кнопку ниже, чтобы выбрать книгу</div>
+                    )}
+                  </div>
 
-                   {rouletteBook && !isSpinning && (
-                     <div className="animate-fade-in">
-                       <h3 className="font-black text-lg sm:text-xl text-[#4A4238] mb-1">{rouletteBook.title}</h3>
-                       <p className="text-xs sm:text-sm text-[#847466] mb-4">{rouletteBook.author}</p>
-                       <button onClick={() => {
-                         setBooks(books.map(b => b.id === rouletteBook.id ? {...b, status: 'reading', dateStarted: getMoscowDateString(0)} : b));
-                         setActiveTab('diary');
-                       }} className="bg-[#6F8E80] hover:bg-[#5C796C] text-white px-6 py-2.5 rounded-2xl font-bold text-xs sm:text-sm transition-colors shadow-sm">
-                         Начать читать эту книгу!
-                       </button>
-                     </div>
-                   )}
-                 </div>
-               )}
+                  {rouletteBook && !isSpinning && (
+                    <div className="space-y-2">
+                      <h3 className="font-black text-lg sm:text-xl text-[#4A4238]">{rouletteBook.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#847466]">{rouletteBook.author} • {rouletteBook.genre}</p>
+                      <button onClick={() => {
+                        setBooks(books.map(b => b.id === rouletteBook.id ? { ...b, status: 'reading', dateStarted: getMoscowDateString(0) } : b));
+                        setActiveTab('diary');
+                      }} className="bg-[#6F8E80] hover:bg-[#5C796C] text-white px-6 py-2.5 rounded-2xl font-bold text-xs sm:text-sm transition-colors shadow-sm mt-3">
+                        Начать читать эту книгу!
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
 
-               {wishlistBooks.length > 0 && (
-                 <button onClick={spinRoulette} disabled={isSpinning} className="bg-[#A68970] hover:bg-[#92745C] disabled:bg-[#D5C6B4] text-white px-8 py-3.5 rounded-2xl font-black text-sm sm:text-base transition-all shadow-md flex items-center gap-2 mx-auto">
-                   <ShuffleIcon size={18} /> {isSpinning ? 'Выбираем...' : 'Испытать удачу'}
-                 </button>
-               )}
+              {roulettePool.length > 0 && (
+                <button onClick={spinRoulette} disabled={isSpinning} className="bg-[#A68970] hover:bg-[#92745C] disabled:bg-[#D5C6B4] text-white px-8 py-3.5 rounded-2xl font-black text-sm sm:text-base transition-all shadow-md flex items-center gap-2 mx-auto">
+                  <ShuffleIcon size={18} /> {isSpinning ? 'Крутим рулетку...' : 'Испытать удачу'}
+                </button>
+              )}
             </div>
           </div>
         )}
 
-        {/* ================= TOURNAMENT ================= */}
+        {/* ================= TOURNAMENT TAB ================= */}
         {activeTab === 'tournament' && (
-          <div className="max-w-4xl mx-auto animate-fade-in">
+          <div className="max-w-4xl mx-auto">
             {tournamentPhase === 'setup' && (
               <div className="bg-[#F7F2E8] rounded-3xl p-5 sm:p-10 shadow-sm border border-[#EADFCF]">
                 <div className="text-center mb-6">
                   <div className="inline-flex items-center justify-center w-14 h-14 bg-[#EFE7D8] text-[#846851] rounded-3xl mb-3 shadow-sm"><TrophyIcon size={28} /></div>
                   <h2 className="text-2xl sm:text-3xl font-black text-[#564B41] mb-1.5">Книжный Турнир</h2>
-                  <p className="text-[#847466] text-xs sm:text-base">Выберите лучшие прочитанные книги и столкните их в поединках за звание чемпиона.</p>
+                  <p className="text-[#847466] text-xs sm:text-base">Столкните прочитанные книги в раундах на вылет и определите главного победителя!</p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row justify-center gap-3 mb-6">
@@ -1899,20 +1698,20 @@ export default function App() {
                   {readBooksList.map(book => (
                     <div key={book.id} onClick={() => toggleTournamentSelection(book.id)} className={`cursor-pointer rounded-2xl border-2 p-2.5 transition-all flex flex-col aspect-[3/4] sm:aspect-auto sm:h-28 relative overflow-hidden group ${selectedForTournament.includes(book.id) ? 'border-[#A68970]' : 'border-[#EADFCF] hover:border-[#D5C6B4]'}`}>
                       {book.coverUrl ? (
-                         <div className="absolute inset-0 z-0 opacity-40 group-hover:opacity-60 transition-opacity"><img src={book.coverUrl} className="w-full h-full object-cover blur-[2px] scale-110" alt=""/></div>
+                        <div className="absolute inset-0 z-0 opacity-40 group-hover:opacity-60 transition-opacity"><img src={book.coverUrl} className="w-full h-full object-cover blur-[2px] scale-110" alt=""/></div>
                       ) : <div className="absolute inset-0 bg-[#EFE7D8] z-0"></div>}
                       
                       <div className="relative z-10 flex flex-col h-full justify-between">
-                         <div className="bg-white/90 backdrop-blur rounded-xl p-1.5 shadow-sm">
-                            <h4 className="font-bold text-[10px] sm:text-xs text-[#4A4238] line-clamp-2 leading-tight">{book.title}</h4>
-                         </div>
-                         <div className="self-end mt-auto">
-                           <div className={`inline-flex rounded-full p-1 shadow-sm ${selectedForTournament.includes(book.id) ? 'bg-[#A68970] text-white' : 'bg-white text-[#9B8C80]'}`}><CheckIcon size={12} /></div>
-                         </div>
+                        <div className="bg-white/90 backdrop-blur rounded-xl p-1.5 shadow-sm">
+                          <h4 className="font-bold text-[10px] sm:text-xs text-[#4A4238] line-clamp-2 leading-tight">{book.title}</h4>
+                        </div>
+                        <div className="self-end mt-auto">
+                          <div className={`inline-flex rounded-full p-1 shadow-sm ${selectedForTournament.includes(book.id) ? 'bg-[#A68970] text-white' : 'bg-white text-[#9B8C80]'}`}><CheckIcon size={12} /></div>
+                        </div>
                       </div>
                     </div>
                   ))}
-                  {readBooksList.length === 0 && <div className="col-span-full py-8 text-center text-[#846851] font-bold text-sm">Добавьте прочитанные книги в библиотеку!</div>}
+                  {readBooksList.length === 0 && <div className="col-span-full py-8 text-center text-[#846851] font-bold text-sm">Добавьте книги со статусом «Прочитано», чтобы начать турнир!</div>}
                 </div>
 
                 <div className="text-center">
@@ -1924,20 +1723,20 @@ export default function App() {
             {tournamentPhase === 'bracket' && (
               <div className="bg-[#564B41] rounded-3xl p-5 sm:p-10 shadow-xl text-center relative overflow-hidden text-[#F7F2E8]">
                 <h3 className="text-[#BAACA0] font-bold tracking-widest uppercase text-xs sm:text-sm mb-6">
-                  {currentRound.length === 4 ? 'Четвертьфинал' : currentRound.length === 2 ? 'Полуфинал' : 'Финал'} &nbsp;• Бой {currentMatchIndex + 1} из {currentRound.length}
+                  {currentRound.length === 4 ? 'Четвертьфинал' : currentRound.length === 2 ? 'Полуфинал' : 'Финал'} &nbsp;• Дуэль {currentMatchIndex + 1} из {currentRound.length}
                 </h3>
                 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-16">
                   {currentRound[currentMatchIndex].map((book, idx) => (
                     <div key={idx} className="relative group w-full sm:w-auto">
                       <button onClick={() => selectWinner(book)} className="bg-white/5 hover:bg-white/10 border-2 border-white/10 hover:border-[#BFA892] transition-all rounded-3xl p-4 w-full sm:w-64 flex flex-row sm:flex-col items-center gap-4 text-left group-hover:scale-105">
-                         <div className="w-16 sm:w-32 aspect-[2/3] bg-[#4A4238] rounded-2xl overflow-hidden shadow-2xl shrink-0">
-                           {book.coverUrl ? <img src={book.coverUrl} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center text-[#BAACA0] text-[10px] text-center p-2">{book.title}</div>}
-                         </div>
-                         <div className="text-left sm:text-center flex-1">
-                           <h4 className="font-black text-white text-sm sm:text-lg line-clamp-2">{book.title}</h4>
-                           <p className="text-[#BAACA0] text-xs sm:text-sm mt-1">{book.author}</p>
-                         </div>
+                        <div className="w-16 sm:w-32 aspect-[2/3] bg-[#4A4238] rounded-2xl overflow-hidden shadow-2xl shrink-0">
+                          {book.coverUrl ? <img src={book.coverUrl} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center text-[#BAACA0] text-[10px] text-center p-2">{book.title}</div>}
+                        </div>
+                        <div className="text-left sm:text-center flex-1">
+                          <h4 className="font-black text-white text-sm sm:text-lg line-clamp-2">{book.title}</h4>
+                          <p className="text-[#BAACA0] text-xs sm:text-sm mt-1">{book.author}</p>
+                        </div>
                       </button>
                     </div>
                   ))}
@@ -1950,13 +1749,13 @@ export default function App() {
             )}
 
             {tournamentPhase === 'winner' && (
-              <div className="bg-gradient-to-br from-[#BFA892] to-[#8C745E] rounded-3xl p-6 sm:p-12 text-center text-white shadow-2xl animate-fade-in relative overflow-hidden">
+              <div className="bg-gradient-to-br from-[#BFA892] to-[#8C745E] rounded-3xl p-6 sm:p-12 text-center text-white shadow-2xl relative overflow-hidden">
                 <TrophyIcon size={56} className="mx-auto mb-3 text-[#FDFBF7] drop-shadow-lg" />
                 <h2 className="text-2xl sm:text-4xl font-black mb-1.5 tracking-tight">Абсолютный Чемпион!</h2>
-                <p className="text-[#F9F4EC] mb-6 font-bold text-xs sm:text-base">Победитель вашего личного турнира</p>
+                <p className="text-[#F9F4EC] mb-6 font-bold text-xs sm:text-base">Победитель вашего книжного турнира</p>
                 
                 <div className="w-28 sm:w-44 aspect-[2/3] mx-auto bg-[#4A4238] rounded-2xl overflow-hidden shadow-2xl ring-4 ring-[#FDFBF7] ring-offset-4 ring-offset-[#BFA892] mb-5 transform hover:scale-105 transition-transform">
-                   {tournamentWinner?.coverUrl ? <img src={tournamentWinner.coverUrl} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center text-[#BAACA0] p-3 text-center font-bold text-xs">{tournamentWinner?.title}</div>}
+                  {tournamentWinner?.coverUrl ? <img src={tournamentWinner.coverUrl} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center text-[#BAACA0] p-3 text-center font-bold text-xs">{tournamentWinner?.title}</div>}
                 </div>
                 
                 <h3 className="text-xl sm:text-3xl font-black mb-1 px-4">{tournamentWinner?.title}</h3>
@@ -1969,171 +1768,104 @@ export default function App() {
         )}
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-[#F7F2E8]/95 backdrop-blur-md border-t border-[#EADFCF] py-2 px-3 z-30 flex justify-around items-center md:hidden shadow-lg overflow-x-auto gap-2">
-        <button onClick={() => setActiveTab('diary')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'diary' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
+      <div className="fixed bottom-0 left-0 right-0 bg-[#F7F2E8]/95 backdrop-blur-md border-t border-[#EADFCF] py-2 px-3 z-30 flex justify-around items-center md:hidden shadow-lg">
+        <button onClick={() => setActiveTab('diary')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'diary' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <ClockIcon size={18} />
           <span className="text-[9px] font-bold">Дневник</span>
         </button>
-        <button onClick={() => setActiveTab('library')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'library' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
+        <button onClick={() => setActiveTab('library')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'library' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <BookOpenIcon size={18} />
           <span className="text-[9px] font-bold">Библиотека</span>
         </button>
-        <button onClick={() => setActiveTab('analytics')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'analytics' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
-          <PieChartIcon size={18} />
+        <button onClick={() => setActiveTab('analytics')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'analytics' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
+          <BarChart2Icon size={18} />
           <span className="text-[9px] font-bold">Аналитика</span>
         </button>
-        <button onClick={() => setActiveTab('bbc200')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'bbc200' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
-          <AwardIcon size={18} />
-          <span className="text-[9px] font-bold">BBC 200</span>
-        </button>
-        <button onClick={() => setActiveTab('roulette')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'roulette' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
+        <button onClick={() => setActiveTab('roulette')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'roulette' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <ShuffleIcon size={18} />
           <span className="text-[9px] font-bold">Рулетка</span>
         </button>
-        <button onClick={() => setActiveTab('tournament')} className={`flex flex-col items-center shrink-0 gap-0.5 px-2 ${activeTab === 'tournament' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
+        <button onClick={() => setActiveTab('tournament')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'tournament' ? 'text-[#846851]' : 'text-[#9B8C80]'}`}>
           <TrophyIcon size={18} />
           <span className="text-[9px] font-bold">Турнир</span>
         </button>
       </div>
 
-      {isSummaryModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-[#4A4238]/60 backdrop-blur-sm" onClick={() => setIsSummaryModalOpen(false)}></div>
-          <div className="bg-[#F7F2E8] rounded-[2.5rem] shadow-2xl relative z-10 w-full max-w-[340px] overflow-hidden flex flex-col animate-fade-in border border-[#EADFCF]">
-             <div className="bg-gradient-to-br from-[#BFA892] via-[#A896B5] to-[#D67C6B] p-5 text-white text-center flex flex-col items-center">
-                <h2 className="text-2xl font-black mb-1 uppercase tracking-wider drop-shadow-sm">Итоги</h2>
-                <p className="text-white/90 font-bold mb-5 bg-white/20 px-3.5 py-1 rounded-full uppercase text-xs tracking-widest backdrop-blur-sm">
-                  {currentMonth.toLocaleDateString('ru-RU', {month: 'long', year: 'numeric'})}
-                </p>
-                
-                <div className="grid grid-cols-2 gap-2.5 w-full mb-5">
-                   <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-3.5 border border-white/30 shadow-inner">
-                      <div className="text-3xl font-black drop-shadow-sm">{readThisTargetMonth.length}</div>
-                      <div className="text-[9px] font-bold text-white/90 uppercase mt-1 tracking-wider">Книг</div>
-                   </div>
-                   <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-3.5 border border-white/30 shadow-inner">
-                      <div className="text-3xl font-black drop-shadow-sm">{totalPagesThisMonth}</div>
-                      <div className="text-[9px] font-bold text-white/90 uppercase mt-1 tracking-wider">Страниц</div>
-                   </div>
-                   <div className="col-span-2 bg-white/20 backdrop-blur-sm rounded-3xl p-3.5 border border-white/30 shadow-inner flex flex-col justify-center">
-                      <div className="text-2xl font-black drop-shadow-sm">{Math.floor(totalMinutesThisMonth/60)}ч {totalMinutesThisMonth%60}м</div>
-                      <div className="text-[9px] font-bold text-white/90 uppercase mt-1 tracking-wider">Время за чтением</div>
-                   </div>
-                </div>
-                
-                {readThisTargetMonth.length > 0 && (
-                   <div className="w-full">
-                     <p className="text-[9px] uppercase font-bold text-white/80 mb-2">Прочитано в этом месяце:</p>
-                     <div className="flex flex-wrap justify-center gap-1.5">
-                        {readThisTargetMonth.map(b => (
-                           <div key={b.id} className="w-10 aspect-[2/3] bg-[#4A4238] rounded-xl shadow-md overflow-hidden border border-white/30">
-                              {b.coverUrl ? <img src={b.coverUrl} className="w-full h-full object-cover" alt="" /> : <div className="text-[5px] p-0.5 text-center font-bold">{b.title}</div>}
-                           </div>
-                        ))}
-                     </div>
-                   </div>
-                )}
-                <div className="mt-5 text-[8px] uppercase tracking-widest text-white/60">LibriMori</div>
-             </div>
-             <div className="p-3.5 flex gap-2 justify-center bg-[#F7F2E8]">
-                <button onClick={() => setIsSummaryModalOpen(false)} className="px-5 py-2 bg-[#EADFCF] hover:bg-[#DDD0BE] text-[#564B41] rounded-2xl font-bold text-xs transition-colors">Закрыть</button>
-             </div>
-          </div>
-        </div>
-      )}
-
-      {/* Fullscreen Sketch / Sketchnote Image Modal Viewer */}
-      {fullImageModalUrl && (
-        <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in" onClick={() => setFullImageModalUrl(null)}>
-          <div className="relative max-w-5xl max-h-[90vh] w-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-            <img src={fullImageModalUrl} alt="Визуальный конспект в полный размер" className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl border-4 border-[#EADFCF]" />
-            <button onClick={() => setFullImageModalUrl(null)} className="absolute top-3 right-3 bg-black/60 hover:bg-black text-white p-2.5 rounded-full transition-colors shadow-lg">
-              <XIcon size={24} />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {isScannerOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsScannerOpen(false)}></div>
-          <div className="bg-[#F7F2E8] rounded-3xl p-5 relative z-10 w-full max-w-md text-center space-y-4 shadow-2xl animate-fade-in border border-[#EADFCF]">
-            <h3 className="font-black text-lg text-[#564B41]">Сканирование ISBN</h3>
-            <p className="text-xs text-[#847466] mb-2">Наведите камеру на штрих-код книги</p>
-            
-            <div className="relative w-full aspect-square bg-[#EFE7D8] rounded-2xl overflow-hidden shadow-inner border-2 border-dashed border-[#D5C6B4] flex items-center justify-center">
-              {isScannerLoading ? (
-                <div className="text-sm font-bold text-[#846851] animate-pulse">Запуск камеры...</div>
-              ) : (
-                <div id="reader" className="w-full h-full"></div>
-              )}
+      {/* Fullscreen Sketchnote Modal Viewer */}
+      {sketchnoteModalUrl && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/80 backdrop-blur-md" onClick={() => setSketchnoteModalUrl(null)}>
+          <div className="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl bg-[#FCF9F2] shadow-2xl p-2 flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center px-3 py-2 border-b border-[#EADFCF]">
+              <span className="text-xs font-bold text-[#846851]">Визуальный конспект / Скетч</span>
+              <button onClick={() => setSketchnoteModalUrl(null)} className="text-[#74675B] hover:text-[#4A4238] p-1"><XIcon size={20}/></button>
             </div>
-            
-            {scannerError && <p className="text-xs text-[#C56B5D] font-bold bg-[#FCEAE8] p-2 rounded-xl">{scannerError}</p>}
-            
-            <button onClick={() => setIsScannerOpen(false)} className="w-full bg-[#EADFCF] hover:bg-[#DDD0BE] text-[#564B41] px-6 py-3 rounded-2xl text-sm font-bold transition-colors mt-2">
-              Отмена
-            </button>
-            <style>{`
-              #reader img { display: none !important; }
-              #reader__dashboard_section_csr span { color: #564B41 !important; font-family: inherit !important; font-size: 12px; font-weight: bold;}
-              #reader__dashboard_section_swaplink { text-decoration: none !important; color: #846851 !important; font-weight: bold; }
-              #reader button { background-color: #EFE7D8 !important; color: #564B41 !important; border: 1px solid #D5C6B4 !important; border-radius: 8px !important; padding: 4px 10px !important; font-weight: bold !important; cursor: pointer; }
-              #reader__scan_region { background: black; }
-              #reader video { object-fit: cover !important; }
-            `}</style>
+            <div className="overflow-auto flex-1 p-2 flex justify-center items-center">
+              <img src={sketchnoteModalUrl} alt="Sketchnote" className="max-w-full max-h-[80vh] object-contain rounded-lg" />
+            </div>
           </div>
         </div>
       )}
 
-      {isBookSearching && (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#F7F2E8] p-6 rounded-3xl border border-[#EADFCF] shadow-2xl flex flex-col items-center gap-3 animate-fade-in max-w-xs text-center">
-            <div className="w-9 h-9 border-4 border-[#A68970] border-t-transparent rounded-full animate-spin"></div>
-            <h4 className="font-black text-sm text-[#564B41]">Поиск в каталогах...</h4>
-            <p className="text-[11px] text-[#847466]">Ищем название, автора и обложку по отсканированному штрих-коду</p>
+      {/* Monthly Summary Share Card Modal */}
+      {isSummaryModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-[#4A4238]/60 backdrop-blur-sm" onClick={() => setIsSummaryModalOpen(false)}></div>
+          <div className="bg-[#F7F2E8] rounded-[2.5rem] shadow-2xl relative z-10 w-full max-w-[340px] overflow-hidden flex flex-col border border-[#EADFCF]">
+            <div className="bg-gradient-to-br from-[#BFA892] via-[#A896B5] to-[#D67C6B] p-5 text-white text-center flex flex-col items-center">
+              <h2 className="text-2xl font-black mb-1 uppercase tracking-wider">Итоги месяца</h2>
+              <p className="text-white/90 font-bold mb-5 bg-white/20 px-3.5 py-1 rounded-full uppercase text-xs tracking-widest backdrop-blur-sm">
+                {currentMonth.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}
+              </p>
+              
+              <div className="grid grid-cols-2 gap-2.5 w-full mb-5">
+                <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-3.5 border border-white/30 shadow-inner">
+                  <div className="text-3xl font-black">{readThisTargetMonth.length}</div>
+                  <div className="text-[9px] font-bold text-white/90 uppercase mt-1">Книг</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-3.5 border border-white/30 shadow-inner">
+                  <div className="text-3xl font-black">{totalPagesThisMonth}</div>
+                  <div className="text-[9px] font-bold text-white/90 uppercase mt-1">Страниц</div>
+                </div>
+                <div className="col-span-2 bg-white/20 backdrop-blur-sm rounded-3xl p-3.5 border border-white/30 shadow-inner">
+                  <div className="text-2xl font-black">{Math.floor(totalMinutesThisMonth / 60)}ч {totalMinutesThisMonth % 60}м</div>
+                  <div className="text-[9px] font-bold text-white/90 uppercase mt-1">Время за чтением</div>
+                </div>
+              </div>
+              
+              {readThisTargetMonth.length > 0 && (
+                <div className="w-full">
+                  <p className="text-[9px] uppercase font-bold text-white/80 mb-2">Прочитано в этом месяце:</p>
+                  <div className="flex flex-wrap justify-center gap-1.5">
+                    {readThisTargetMonth.map(b => (
+                      <div key={b.id} className="w-10 aspect-[2/3] bg-[#4A4238] rounded-xl shadow-md overflow-hidden border border-white/30">
+                        {b.coverUrl ? <img src={b.coverUrl} className="w-full h-full object-cover" alt="" /> : <div className="text-[5px] p-0.5 text-center font-bold">{b.title}</div>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div className="mt-5 text-[8px] uppercase tracking-widest text-white/60">LibriMori Tracker</div>
+            </div>
+            <div className="p-3.5 flex gap-2 justify-center bg-[#F7F2E8]">
+              <button onClick={() => setIsSummaryModalOpen(false)} className="px-5 py-2 bg-[#EADFCF] hover:bg-[#DDD0BE] text-[#564B41] rounded-2xl font-bold text-xs transition-colors">Закрыть</button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Book Edit Modal with Sketchnotes */}
+      {/* Book Edit / Add Modal */}
       {isModalOpen && currentBook && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
           <div className="absolute inset-0 bg-[#4A4238]/50 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-          <div className="bg-[#F7F2E8] rounded-[2.5rem] shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative z-10 animate-fade-in flex flex-col border border-[#EADFCF]">
+          <div className="bg-[#F7F2E8] rounded-[2.5rem] shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative z-10 flex flex-col border border-[#EADFCF]">
             
             <div className="flex justify-between items-center p-4 sm:p-5 border-b border-[#EADFCF] sticky top-0 bg-[#F7F2E8]/95 backdrop-blur-md z-20">
-              <div className="flex items-center gap-3">
-                <h2 className="text-lg sm:text-xl font-black text-[#564B41]">{currentBook.id.toString().length > 10 ? 'Новая книга' : 'Редактирование'}</h2>
-                <button type="button" onClick={() => setIsScannerOpen(true)} className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#846851] px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 border border-[#E2D5C3] shadow-sm">
-                  <ScanIcon size={14} /> Сканировать ISBN
-                </button>
-              </div>
+              <h2 className="text-lg sm:text-xl font-black text-[#564B41]">{currentBook.id.toString().length > 10 ? 'Новая книга' : 'Редактирование'}</h2>
               <button onClick={() => setIsModalOpen(false)} className="bg-[#EADFCF] hover:bg-[#DDD0BE] p-2 rounded-full text-[#74675B] transition-colors"><XIcon size={18}/></button>
             </div>
 
             <form onSubmit={handleSaveBook} className="p-4 sm:p-6 space-y-5 sm:space-y-6">
               
-              {lastScannedISBN && (
-                <div className="bg-[#FAF3E8] border border-[#E2D5C3] p-3.5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs shadow-sm">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-[#846851]">Код:</span>
-                    <span className="font-mono font-bold bg-white px-2 py-0.5 rounded-lg border border-[#EADFCF] text-[#4A4238]">{lastScannedISBN}</span>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 w-full sm:w-auto">
-                    <a href={`https://search.rsl.ru/ru/search#q=${lastScannedISBN}`} target="_blank" rel="noreferrer" className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]">
-                      🏛️ РГБ (Ленинка)
-                    </a>
-                    <a href={`https://www.chitai-gorod.ru/search?phrase=${lastScannedISBN}`} target="_blank" rel="noreferrer" className="bg-white hover:bg-[#F2ECE1] text-[#74675B] font-bold px-2.5 py-1.5 rounded-xl border border-[#E2D5C3] transition-colors flex items-center gap-1 shadow-sm text-[11px]">
-                      🔍 Читай-Город
-                    </a>
-                    <a href={`https://ya.ru/search/?text=${encodeURIComponent(`книга ISBN ${lastScannedISBN}`)}` } target="_blank" rel="noreferrer" className="bg-[#A68970] hover:bg-[#92745C] text-white font-bold px-2.5 py-1.5 rounded-xl transition-colors flex items-center gap-1 shadow-sm text-[11px]">
-                      Яндекс
-                    </a>
-                  </div>
-                </div>
-              )}
-
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                 <div className="w-full sm:w-40 shrink-0 flex flex-col gap-2.5">
                   <div className="aspect-[2/3] bg-[#EFE7D8] rounded-3xl border-2 border-dashed border-[#D5C6B4] overflow-hidden relative flex items-center justify-center group max-w-[160px] mx-auto sm:max-w-none w-full">
@@ -2143,18 +1875,22 @@ export default function App() {
                       <span className="text-[#9B8C80] font-bold text-xs text-center px-4">Обложка</span>
                     )}
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-3 gap-2">
-                       <label htmlFor="cover-upload" className="cursor-pointer bg-white/95 text-[#4A4238] text-[10px] font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-white shadow-sm transition-colors">С устройства</label>
-                       <button type="button" onClick={() => {
-                         setCustomModal({
-                           title: 'Вставить URL картинки:', type: 'prompt', defaultValue: currentBook.coverUrl || '',
-                           onSubmit: (url) => { if (url) setCurrentBook({...currentBook, coverUrl: url}); setCustomModal(null); }
-                         });
-                       }} className="bg-white/95 text-[#4A4238] text-[10px] font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-white shadow-sm transition-colors">По ссылке</button>
+                      <label htmlFor="cover-upload" className="cursor-pointer bg-white/95 text-[#4A4238] text-[10px] font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-white shadow-sm transition-colors">С устройства</label>
+                      <button type="button" onClick={() => {
+                        setCustomModal({
+                          title: 'Вставить URL обложки:', type: 'prompt', defaultValue: currentBook.coverUrl || '',
+                          onSubmit: (url) => { if (url) setCurrentBook({...currentBook, coverUrl: url}); setCustomModal(null); }
+                        });
+                      }} className="bg-white/95 text-[#4A4238] text-[10px] font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-white shadow-sm transition-colors">По ссылке</button>
                     </div>
                   </div>
                   <input type="file" id="cover-upload" accept="image/*" className="hidden" onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) { const reader = new FileReader(); reader.onloadend = () => setCurrentBook({ ...currentBook, coverUrl: reader.result }); reader.readAsDataURL(file); }
+                    const file = e.target.files && e.target.files[0];
+                    if (file) { 
+                      const reader = new FileReader(); 
+                      reader.onloadend = () => setCurrentBook({ ...currentBook, coverUrl: reader.result }); 
+                      reader.readAsDataURL(file); 
+                    }
                   }} />
                 </div>
 
@@ -2172,11 +1908,13 @@ export default function App() {
                     <div className="space-y-1 flex-1">
                       <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider">Жанр</label>
                       <select 
-                        value={currentBook.genre || PREDEFINED_GENRES[0]} 
+                        value={currentBook.genre || 'Проза'} 
                         onChange={(e) => setCurrentBook({...currentBook, genre: e.target.value})}
                         className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-bold text-xs sm:text-sm focus:border-[#A68970] outline-none bg-[#FCF9F2] text-[#4A4238] cursor-pointer"
                       >
-                        {PREDEFINED_GENRES.map(g => <option key={g} value={g}>{g}</option>)}
+                        {PREDEFINED_GENRES.map(g => (
+                          <option key={g} value={g}>{g}</option>
+                        ))}
                       </select>
                     </div>
                   </div>
@@ -2184,17 +1922,43 @@ export default function App() {
                   <div className="bg-[#EFE7D8] p-3 rounded-2xl border border-[#EADFCF] space-y-2">
                     <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider">Книжная серия / Цикл</label>
                     <div className="flex gap-2">
-                      <div className="relative flex-1">
-                        <input list="series-list" type="text" placeholder="Напр. Властелин Колец" value={currentBook.seriesName || ''} onChange={(e) => setCurrentBook({...currentBook, seriesName: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-xl p-2 font-bold text-xs bg-white outline-none text-[#4A4238]" />
-                        <datalist id="series-list">{uniqueSeries.map(s => <option key={s} value={s} />)}</datalist>
-                      </div>
+                      <input type="text" placeholder="Напр. Воспоминания о прошлом Земли" value={currentBook.seriesName || ''} onChange={(e) => setCurrentBook({...currentBook, seriesName: e.target.value})} className="flex-1 border-2 border-[#EADFCF] rounded-xl p-2 font-bold text-xs bg-white outline-none text-[#4A4238]" />
                       <input type="number" placeholder="№" value={currentBook.seriesIndex || ''} onChange={(e) => setCurrentBook({...currentBook, seriesIndex: e.target.value ? Number(e.target.value) : ''})} className="w-16 border-2 border-[#EADFCF] rounded-xl p-2 font-bold text-xs bg-white outline-none text-[#4A4238] text-center" />
                     </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider flex items-center gap-1"><TagIcon size={12}/> Теги (через запятую)</label>
-                    <input type="text" placeholder="космос, классика..." value={currentBook.tags?.join(', ') || ''} onChange={(e) => setCurrentBook({...currentBook, tags: e.target.value.split(',').map(t=>t.trim()).filter(Boolean)})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-bold text-xs text-[#846851] focus:border-[#A68970] outline-none bg-[#FCF9F2]" />
+                  {/* Sketchnote Image Upload & URL input */}
+                  <div className="bg-[#EFE7D8] p-3 rounded-2xl border border-[#EADFCF] space-y-2">
+                    <div className="flex justify-between items-center">
+                      <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider flex items-center gap-1.5">
+                        🎨 Визуальный конспект / Sketchnote
+                      </label>
+                      {currentBook.sketchnoteUrl && (
+                        <button type="button" onClick={() => setSketchnoteModalUrl(currentBook.sketchnoteUrl)} className="text-[10px] font-bold text-[#846851] hover:underline flex items-center gap-1">
+                          <EyeIcon size={12} /> Предпросмотр
+                        </button>
+                      )}
+                    </div>
+                    <div className="flex gap-2 items-center">
+                      <input 
+                        type="text" 
+                        placeholder="Ссылка на конспект или загрузите файл..." 
+                        value={currentBook.sketchnoteUrl || ''} 
+                        onChange={(e) => setCurrentBook({...currentBook, sketchnoteUrl: e.target.value})}
+                        className="flex-1 border-2 border-[#EADFCF] rounded-xl p-2 font-bold text-xs bg-white outline-none text-[#4A4238]" 
+                      />
+                      <label htmlFor="sketchnote-upload" className="cursor-pointer bg-[#A68970] hover:bg-[#92745C] text-white text-[11px] font-bold px-3 py-2 rounded-xl shrink-0 transition-colors shadow-sm">
+                        Загрузить
+                      </label>
+                      <input type="file" id="sketchnote-upload" accept="image/*" className="hidden" onChange={(e) => {
+                        const file = e.target.files && e.target.files[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onloadend = () => setCurrentBook({ ...currentBook, sketchnoteUrl: reader.result });
+                          reader.readAsDataURL(file);
+                        }
+                      }} />
+                    </div>
                   </div>
 
                   <div className="space-y-1">
@@ -2245,82 +2009,30 @@ export default function App() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1">
-                     <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider">Дата начала</label>
-                     <input type="date" value={currentBook.dateStarted || ''} onChange={(e) => setCurrentBook({...currentBook, dateStarted: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-2.5 font-bold text-xs bg-white text-[#564B41] outline-none" />
+                    <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider">Дата начала</label>
+                    <input type="date" value={currentBook.dateStarted || ''} onChange={(e) => setCurrentBook({...currentBook, dateStarted: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-2.5 font-bold text-xs bg-white text-[#564B41] outline-none" />
                   </div>
                   {currentBook.status !== 'wishlist' && (
                     <div className="space-y-1">
-                       <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider">Дата завершения</label>
-                       <input type="date" value={currentBook.dateFinished || ''} onChange={(e) => setCurrentBook({...currentBook, dateFinished: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-2.5 font-bold text-xs bg-white text-[#564B41] outline-none" />
+                      <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider">Дата завершения</label>
+                      <input type="date" value={currentBook.dateFinished || ''} onChange={(e) => setCurrentBook({...currentBook, dateFinished: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-2.5 font-bold text-xs bg-white text-[#564B41] outline-none" />
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* SKETCHNOTES / VISUAL CONSPECT SECTION */}
-              <div className="space-y-3 bg-[#EFE7D8] p-4 sm:p-5 rounded-3xl border border-[#EADFCF]">
-                <div className="flex justify-between items-center">
-                  <h3 className="text-xs font-black text-[#74675B] uppercase tracking-wider flex items-center gap-1.5">
-                    <ImageRefIcon size={16} /> Визуальные конспекты / Sketchnotes
-                  </h3>
-                  <button type="button" onClick={() => sketchInputRef.current.click()} className="bg-[#A68970] hover:bg-[#92745C] text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-sm">
-                    <PlusIcon size={14} /> Загрузить скетчноут
-                  </button>
-                  <input type="file" ref={sketchInputRef} accept="image/*" className="hidden" onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                      const reader = new FileReader();
-                      reader.onloadend = () => {
-                        const existingSketches = currentBook.sketches || [];
-                        setCurrentBook({ ...currentBook, sketches: [...existingSketches, reader.result] });
-                      };
-                      reader.readAsDataURL(file);
-                    }
-                  }} />
-                </div>
-
-                {currentBook.sketches && currentBook.sketches.length > 0 ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                    {currentBook.sketches.map((sketchStr, sIdx) => (
-                      <div key={sIdx} className="relative group aspect-[4/3] bg-white rounded-2xl overflow-hidden border border-[#EADFCF] shadow-sm flex items-center justify-center">
-                        <img src={sketchStr} alt={`Sketchnote ${sIdx + 1}`} className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform" onClick={() => setFullImageModalUrl(sketchStr)} />
-                        <button type="button" onClick={() => {
-                          const updated = currentBook.sketches.filter((_, idx) => idx !== sIdx);
-                          setCurrentBook({ ...currentBook, sketches: updated });
-                        }} className="absolute top-2 right-2 bg-red-600/80 hover:bg-red-600 text-white p-1 rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity">
-                          <TrashIcon size={12} />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-xs text-[#948477] italic text-center py-2">Здесь пока нет загруженных визуальных конспектов. Добавьте карту персонажей или инфографику книги!</p>
-                )}
-              </div>
-
-              <div className="space-y-4 bg-[#F2ECE1] p-4 sm:p-5 rounded-3xl border border-[#E2D5C3]">
-                <h3 className="text-xs font-black text-[#74675B] uppercase tracking-wider flex items-center gap-1.5">
-                  <Edit3Icon size={14} /> Заметки, рецензии и цитаты
-                </h3>
-
+              <div className="space-y-3">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-[#847466] uppercase tracking-wider">Аннотация</label>
-                  <textarea rows="2" value={currentBook.annotation || ''} onChange={(e) => setCurrentBook({...currentBook, annotation: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-white resize-none text-[#4A4238] shadow-inner" placeholder="Краткое описание сюжета..."></textarea>
+                  <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider">Аннотация</label>
+                  <textarea rows="2" value={currentBook.annotation || ''} onChange={(e) => setCurrentBook({...currentBook, annotation: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-[#FCF9F2] resize-none text-[#4A4238]" placeholder="О чем книга..."></textarea>
                 </div>
-
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-[#847466] uppercase tracking-wider">Мои личные заметки (мысли, впечатления)</label>
-                  <textarea rows="3" value={currentBook.notes || ''} onChange={(e) => setCurrentBook({...currentBook, notes: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-white resize-none text-[#4A4238] shadow-inner" placeholder="Ваши мысли по ходу чтения, размышления о сюжете и героях..."></textarea>
+                  <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider">Резюме / Рецензия</label>
+                  <textarea rows="2" value={currentBook.summary || ''} onChange={(e) => setCurrentBook({...currentBook, summary: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-[#FCF9F2] resize-none text-[#4A4238]"></textarea>
                 </div>
-
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-[#847466] uppercase tracking-wider">Резюме / Рецензия</label>
-                  <textarea rows="3" value={currentBook.summary || ''} onChange={(e) => setCurrentBook({...currentBook, summary: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-white resize-none text-[#4A4238] shadow-inner" placeholder="Итоговое впечатление после прочтения книги..."></textarea>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-[#847466] uppercase tracking-wider">Любимые цитаты</label>
-                  <textarea rows="3" value={currentBook.quotes || ''} onChange={(e) => setCurrentBook({...currentBook, quotes: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-white resize-none text-[#4A4238] italic shadow-inner" placeholder="«Цитата из книги...»"></textarea>
+                  <label className="text-[10px] font-black text-[#948477] uppercase tracking-wider">Цитаты</label>
+                  <textarea rows="2" value={currentBook.quotes || ''} onChange={(e) => setCurrentBook({...currentBook, quotes: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-[#FCF9F2] resize-none text-[#4A4238]"></textarea>
                 </div>
               </div>
 
@@ -2339,11 +2051,12 @@ export default function App() {
         </div>
       )}
 
+      {/* Custom Modal Dialog */}
       {customModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#4A4238]/60 backdrop-blur-sm" onClick={() => setCustomModal(null)}></div>
-          <div className="bg-[#F7F2E8] rounded-[2rem] p-5 shadow-2xl relative z-10 w-full max-w-sm animate-fade-in border border-[#EADFCF]">
-            <h3 className="text-base font-bold text-[#564B41] mb-2">{customModal.title}</h3>
+          <div className="bg-[#F7F2E8] rounded-[2rem] p-5 shadow-2xl relative z-10 w-full max-w-sm border border-[#EADFCF]">
+            <h3 className="text-base font-bold text-[#564B41] mb-3">{customModal.title}</h3>
             
             {customModal.type === 'prompt' && (
               <input 
@@ -2353,33 +2066,29 @@ export default function App() {
                 className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-bold text-xs sm:text-sm outline-none focus:border-[#A68970] mb-5 bg-[#FCF9F2] text-[#4A4238]"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
-                     customModal.onSubmit(e.target.value);
+                    customModal.onSubmit(e.currentTarget.value);
                   }
                 }}
                 id="custom-modal-input"
               />
             )}
 
-            {customModal.type === 'alert' && customModal.message && (
-              <p className="text-xs text-[#847466] mb-5 leading-relaxed">{customModal.message}</p>
-            )}
-
             <div className="flex gap-2.5 justify-end">
-              {customModal.type !== 'alert' && (
-                <button onClick={() => setCustomModal(null)} className="px-4 py-2 rounded-xl font-bold text-xs text-[#74675B] hover:bg-[#EADFCF] transition-colors">Отмена</button>
+              {customModal.type !== 'info' && (
+                <button onClick={() => setCustomModal(null)} className="px-4 py-2 rounded-xl font-bold text-xs text-[#74675B] hover:bg-[#EADFCF] transition-colors">
+                  Отмена
+                </button>
               )}
               <button 
                 onClick={() => {
                   if (customModal.type === 'prompt') {
-                    const val = document.getElementById('custom-modal-input').value;
-                    customModal.onSubmit(val);
-                  } else if (customModal.onSubmit) {
-                    customModal.onSubmit();
+                    const input = document.getElementById('custom-modal-input');
+                    customModal.onSubmit(input ? input.value : '');
                   } else {
-                    setCustomModal(null);
+                    customModal.onSubmit();
                   }
                 }} 
-                className="px-5 py-2 rounded-xl font-bold text-xs text-white bg-[#A68970] hover:bg-[#92745C] transition-colors shadow-md"
+                className="px-4 py-2 rounded-xl font-bold text-xs text-white bg-[#A68970] hover:bg-[#92745C] transition-colors shadow-md"
               >
                 ОК
               </button>
