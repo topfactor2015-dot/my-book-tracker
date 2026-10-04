@@ -109,59 +109,8 @@ const getPluralDays = (n) => {
   return 'дней';
 };
 
-const INITIAL_BOOKS = [
-  {
-    id: 1, title: 'Задача трех тел', author: 'Лю Цысинь', status: 'reading', genre: 'Научная фантастика', format: 'paper',
-    seriesName: 'Воспоминания о прошлом Земли', seriesIndex: 1, seriesTotal: 3,
-    totalPages: 464, readPages: 180, rating: 0, annotation: 'Секретный военный проект «Красный берег» посылает сигналы внеземной цивилизации...', summary: '', quotes: '', 
-    coverUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=300&h=400',
-    sketchnoteUrl: '', tags: ['космос', 'научная фантастика'],
-    dateStarted: getMoscowDateString(15),
-    // 15 days continuous streak in initial sample data
-    log: Array.from({ length: 15 }).map((_, idx) => ({
-      date: getMoscowDateString(14 - idx),
-      pages: 25 + (idx % 3) * 15,
-      minutes: 40 + (idx % 3) * 20
-    }))
-  },
-  {
-    id: 2, title: 'Темный лес', author: 'Лю Цысинь', status: 'wishlist', genre: 'Научная фантастика', format: 'paper',
-    seriesName: 'Воспоминания о прошлом Земли', seriesIndex: 2, seriesTotal: 3,
-    totalPages: 500, readPages: 0, rating: 0, annotation: 'Вторая книга трилогии Воспоминания о прошлом Земли.', summary: '', quotes: '', 
-    coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=300&h=400',
-    sketchnoteUrl: '', tags: ['космос'],
-    dateStarted: '', dateFinished: '', log: []
-  },
-  {
-    id: 3, title: 'Дюна', author: 'Фрэнк Герберт', status: 'read', genre: 'Научная фантастика', format: 'combo',
-    seriesName: 'Хроники Дюны', seriesIndex: 1, seriesTotal: 6,
-    totalPages: 700, readPages: 700, rating: 5, annotation: 'История Пола Атрейдеса на пустынной планете Арракис...', summary: 'Эпично и масштабно. Лучшая фантастика столетия.', quotes: 'Я не должен бояться. Страх — убийца разума.',
-    coverUrl: 'https://images.unsplash.com/photo-1546552356-372989cfa124?auto=format&fit=crop&q=80&w=300&h=400',
-    sketchnoteUrl: '', tags: ['любимое', 'классика'],
-    dateStarted: getMoscowDateString(35), dateFinished: getMoscowDateString(10), 
-    log: [
-      { date: getMoscowDateString(28), pages: 100, minutes: 150 },
-      { date: getMoscowDateString(20), pages: 200, minutes: 300 }
-    ]
-  },
-  {
-    id: 4, title: 'Желчный Ангел', author: 'Катя Качур', status: 'read', genre: 'Современная проза', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 292, readPages: 292, rating: 5, annotation: 'Роман о желаниях, которые имеют цену. Бриллиант с фигуркой ангела внутри.', summary: 'Удивительная история о судьбах, прощении и исцелении.', quotes: 'Иногда самый страшный ангел — это тот, кто живет внутри нас.',
-    coverUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=300&h=400',
-    sketchnoteUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=800',
-    tags: ['роман', 'глубокое'],
-    dateStarted: getMoscowDateString(50), dateFinished: getMoscowDateString(25), log: []
-  },
-  {
-    id: 5, title: 'Евгений Онегин', author: 'Александр Пушкин', status: 'read', genre: 'Классическая литература', format: 'paper',
-    seriesName: '', seriesIndex: '', seriesTotal: '',
-    totalPages: 240, readPages: 240, rating: 5, annotation: 'Роман в стихах о русской интеллигенции первой трети XIX века.', summary: 'Великая классика стихотворной формы.', quotes: 'Любви все возрасты покорны...',
-    coverUrl: 'https://images.unsplash.com/photo-1476275466078-4007374efbbe?auto=format&fit=crop&q=80&w=300&h=400',
-    sketchnoteUrl: '', tags: ['классика', 'поэзия'],
-    dateStarted: getMoscowDateString(70), dateFinished: getMoscowDateString(62), log: []
-  }
-];
+// Новые пользователи начинают с пустой библиотеки.
+const INITIAL_BOOKS = [];
 
 // Общие правила для поиска и сравнения авторов.
 const cleanText = (value) => String(value ?? '').normalize('NFC').trim().replace(/\s+/g, ' ');
@@ -206,7 +155,7 @@ export default function App() {
       const savedGoals = localStorage.getItem('warm_readingTrackerGoals_v21');
       if (savedGoals) return JSON.parse(savedGoals);
     } catch (e) { console.error(e); }
-    return { yearly: 20, monthly: 5 };
+    return { yearly: 0, monthly: 0 };
   });
 
   useEffect(() => {
@@ -888,12 +837,12 @@ export default function App() {
                         onSubmit: (val) => { if (val && !isNaN(val)) { setGoals({...goals, yearly: Number(val)}); setCustomModal(null); } }
                       });
                     }} className="flex items-center gap-2 text-xl md:text-2xl font-black hover:text-[#241D18] transition-colors bg-white/20 px-3 py-1 rounded-2xl shadow-sm">
-                      {readThisYear} / {goals.yearly}
+                      {goals.yearly > 0 ? `${readThisYear} / ${goals.yearly}` : 'Задать цель'}
                       <Edit3Icon size={14} className="text-[#352B24]" />
                     </button>
                   </div>
                   <div className="w-full bg-[#9A8470]/50 rounded-full h-2.5">
-                    <div className="bg-[#FAF0E6] h-2.5 rounded-full transition-all" style={{ width: `${Math.min(100, (readThisYear / goals.yearly) * 100)}%` }}></div>
+                    <div className="bg-[#FAF0E6] h-2.5 rounded-full transition-all" style={{ width: `${goals.yearly > 0 ? Math.min(100, (readThisYear / goals.yearly) * 100) : 0}%` }}></div>
                   </div>
                 </div>
               </div>
@@ -909,12 +858,12 @@ export default function App() {
                         onSubmit: (val) => { if (val && !isNaN(val)) { setGoals({...goals, monthly: Number(val)}); setCustomModal(null); } }
                       });
                     }} className="flex items-center gap-2 text-xl md:text-2xl font-black hover:text-[#241D18] transition-colors bg-white/20 px-3 py-1 rounded-2xl shadow-sm">
-                      {readThisTargetMonth.length} / {goals.monthly}
+                      {goals.monthly > 0 ? `${readThisTargetMonth.length} / ${goals.monthly}` : 'Задать цель'}
                       <Edit3Icon size={14} className="text-[#352B24]" />
                     </button>
                   </div>
                   <div className="w-full bg-[#83738F]/50 rounded-full h-2.5">
-                    <div className="bg-[#FAF0E6] h-2.5 rounded-full transition-all" style={{ width: `${Math.min(100, (readThisTargetMonth.length / goals.monthly) * 100)}%` }}></div>
+                    <div className="bg-[#FAF0E6] h-2.5 rounded-full transition-all" style={{ width: `${goals.monthly > 0 ? Math.min(100, (readThisTargetMonth.length / goals.monthly) * 100) : 0}%` }}></div>
                   </div>
                 </div>
               </div>
