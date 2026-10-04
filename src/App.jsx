@@ -1852,16 +1852,16 @@ export default function App() {
                     ) : (
                       <span className="text-[#706155] font-bold text-xs text-center px-4">Обложка</span>
                     )}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-3 gap-2">
-                      <label htmlFor="cover-upload" className="cursor-pointer bg-white/95 text-[#4A4238] text-[10px] font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-white shadow-sm transition-colors">С устройства</label>
+                  </div>
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="cover-upload" className="cursor-pointer bg-[#FCF9F2] border border-[#D5C6B4] text-[#4A4238] text-xs font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-white transition-colors">С устройства</label>
                       <button type="button" onClick={() => {
                         setCustomModal({
                           title: 'Вставить URL обложки:', type: 'prompt', defaultValue: currentBook.coverUrl || '',
                           onSubmit: (url) => { if (url) setCurrentBook({...currentBook, coverUrl: url}); setCustomModal(null); }
                         });
-                      }} className="bg-white/95 text-[#4A4238] text-[10px] font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-white shadow-sm transition-colors">По ссылке</button>
+                      }} className="bg-[#FCF9F2] border border-[#D5C6B4] text-[#4A4238] text-xs font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-white transition-colors">По ссылке</button>
                     </div>
-                  </div>
                   <input type="file" id="cover-upload" accept="image/*" className="hidden" onChange={(e) => {
                     const file = e.target.files && e.target.files[0];
                     if (file) { 
