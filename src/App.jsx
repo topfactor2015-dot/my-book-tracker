@@ -1265,7 +1265,7 @@ export default function App() {
                         )}
                       </div>
 
-                      <div className="flex-1 bg-[#EFE7D8] relative overflow-hidden">
+                      <div className="flex-1 min-h-0 bg-[#EFE7D8] relative overflow-hidden">
                         {book.coverUrl ? (
                           <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         ) : (
@@ -1281,15 +1281,15 @@ export default function App() {
                         )}
                       </div>
                       
-                      <div className="p-2.5 bg-[#F7F2E8] h-[64px] flex flex-col justify-between shrink-0 border-t border-[#EFE7D8]">
+                      <div className="p-2.5 bg-[#F7F2E8] min-h-[64px] flex flex-col gap-1 shrink-0 border-t border-[#EFE7D8]">
                         <div>
                           <h3 className="font-bold text-xs text-[#4A4238] line-clamp-1 leading-tight">{book.title}</h3>
                           <p className="text-[10px] text-[#706155] line-clamp-1 mt-0.5">{book.author}</p>
                         </div>
                         
-                        <div className="mt-0.5 flex justify-between items-center text-[9px] font-bold text-[#765A45]">
-                          <span className="truncate max-w-[65%]">{book.genre}</span>
-                          {book.status === 'read' && book.rating > 0 && <span>★ {book.rating}</span>}
+                        <div className="mt-0.5 flex justify-between items-start gap-1 text-[9px] leading-tight font-bold text-[#765A45]">
+                          <span className="min-w-0 flex-1 break-words">{book.genre}</span>
+                          {book.status === 'read' && book.rating > 0 && <span className="shrink-0 whitespace-nowrap">★ {book.rating}</span>}
                         </div>
                       </div>
                     </div>
