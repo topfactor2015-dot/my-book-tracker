@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import IsbnLookup from './IsbnLookup.jsx';
 
 const PlusIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
 const SearchIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
@@ -1832,6 +1833,16 @@ export default function App() {
             </div>
 
             <form onSubmit={handleSaveBook} className="p-4 sm:p-6 space-y-5 sm:space-y-6">
+              <IsbnLookup key={currentBook.id} book={currentBook} books={books} onFound={(details) => {
+                setCurrentBook(previous => {
+                  if (!previous || previous.id !== currentBook.id) return previous;
+                  const updated = { ...previous, isbn: details.isbn };
+                  for (const field of ['title', 'author', 'annotation', 'totalPages', 'coverUrl']) {
+                    if (!previous[field] && details[field]) updated[field] = details[field];
+                  }
+                  return updated;
+                });
+              }} />
               
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                 <div className="w-full sm:w-40 shrink-0 flex flex-col gap-2.5">
