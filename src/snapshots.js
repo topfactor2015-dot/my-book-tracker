@@ -7,10 +7,10 @@ export function validateLibrary(data) {
     !book || typeof book !== 'object' || Array.isArray(book) || book.id == null
   )) throw new Error('В файле нет корректной библиотеки книг.');
   if (data.goals != null && (typeof data.goals !== 'object' || Array.isArray(data.goals) ||
-    !['yearly', 'monthly'].every(key => Number.isFinite(data.goals[key]) && data.goals[key] >= 0))) {
+    !['yearly', 'monthly'].every(key => Number.isFinite(data.goals[key])))) {
     throw new Error('В файле некорректные цели чтения.');
   }
-  if (data.manualStreakBonus != null && (!Number.isFinite(data.manualStreakBonus) || data.manualStreakBonus < 0)) {
+  if (data.manualStreakBonus != null && !Number.isFinite(data.manualStreakBonus)) {
     throw new Error('В файле некорректная серия чтения.');
   }
   return data;
