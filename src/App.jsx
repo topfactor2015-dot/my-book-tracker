@@ -982,7 +982,7 @@ export default function App() {
                               </div>
                               <div className="mt-2.5 flex flex-wrap items-center gap-1.5 overflow-x-auto pb-1">
                                 <span className="text-[9px] font-bold text-[#706155] uppercase shrink-0">Быстро:</span>
-                                {[10, 25, 50].map(p => (
+                                {[10, 25].map(p => (
                                   <button key={p} onClick={() => {
                                     const currentPages = pageMode === 'delta' ? Number(logPagesInput[book.id]) || 0 : 0;
                                     const newPages = currentPages + p;
