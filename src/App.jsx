@@ -1,5 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import IsbnLookup from './IsbnLookup.jsx';
+import SnapshotPanel, { useLibrarySnapshots } from './SnapshotPanel.jsx';
+import { downloadLibrary, saveSnapshot, validateLibrary } from './snapshots.js';
 
 const PlusIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
 const SearchIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
@@ -158,6 +160,13 @@ export default function App() {
     } catch (e) { console.error(e); }
     return { yearly: 0, monthly: 0 };
   });
+
+  const snapshotData = useMemo(() => ({ books, goals, manualStreakBonus }), [books, goals, manualStreakBonus]);
+  const libraryRef = useRef(snapshotData);
+  libraryRef.current = snapshotData;
+  const snapshotError = useLibrarySnapshots(snapshotData);
+  const [isSnapshotsOpen, setIsSnapshotsOpen] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
 
   useEffect(() => {
     try {
@@ -611,41 +620,38 @@ export default function App() {
   };
 
   const exportBackup = () => {
-    const dataObj = { books, goals, exportDate: new Date().toISOString() };
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataObj, null, 2));
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `librimori-backup-${getMoscowDateString(0)}.json`);
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
+    downloadLibrary(snapshotData, `librimori-backup-${getMoscowDateString(0)}.json`);
   };
 
-  const importBackup = (e) => {
-    const fileReader = new FileReader();
-    if (e.target.files && e.target.files[0]) {
-      fileReader.readAsText(e.target.files[0], "UTF-8");
-      fileReader.onload = (event) => {
-        try {
-          const parsed = JSON.parse(event.target.result);
-          if (parsed && parsed.books) {
-            setBooks(normalizeBookAuthors(parsed.books));
-            if (parsed.goals) setGoals(parsed.goals);
-            setCustomModal({
-              title: 'Библиотека успешно восстановлена!',
-              type: 'info',
-              onSubmit: () => setCustomModal(null)
-            });
-          }
-        } catch (err) {
-          setCustomModal({
-            title: 'Не удалось прочитать файл резервной копии.',
-            type: 'info',
-            onSubmit: () => setCustomModal(null)
-          });
-        }
-      };
-    }
+  const applyLibrary = (data) => {
+    validateLibrary(data);
+    setBooks(normalizeBookAuthors(data.books));
+    if (data.goals) setGoals(data.goals);
+    if (data.manualStreakBonus != null) setManualStreakBonus(data.manualStreakBonus);
+  };
+
+  const importBackup = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file || isImporting) return;
+    setIsImporting(true);
+    let validFile = false;
+    try {
+      const parsed = validateLibrary(JSON.parse((await file.text()).replace(/^\uFEFF/, '')));
+      // Normalize before writing a safety copy or changing the current library.
+      const data = { ...parsed, books: normalizeBookAuthors(parsed.books) };
+      validFile = true;
+      await saveSnapshot(libraryRef.current, 'import');
+      applyLibrary(data);
+      setCustomModal({ title: 'Библиотека восстановлена. Предыдущая версия сохранена в снимках.', type: 'info', onSubmit: () => setCustomModal(null) });
+    } catch {
+      setCustomModal({
+        title: validFile
+          ? 'Не удалось сохранить снимок перед импортом. Данные не заменены. Скачайте JSON-бэкап и попробуйте снова.'
+          : 'Не удалось прочитать файл резервной копии. Данные не заменены.',
+        type: 'info', onSubmit: () => setCustomModal(null)
+      });
+    } finally { setIsImporting(false); }
   };
 
   const toggleTournamentSelection = (id) => {
@@ -710,9 +716,9 @@ export default function App() {
       
       {/* Top Header */}
       <div className="bg-[#F7F2E8] border-b border-[#EADFCF] sticky top-0 z-30 shadow-sm backdrop-blur-md bg-opacity-95">
-        <div className="max-w-6xl mx-auto px-4 flex justify-between items-center h-16">
-          <div className="font-black text-xl md:text-2xl text-[#765A45] tracking-tight flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('diary')}>
-            <BookOpenIcon size={26} className="text-[#765A45]" />
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 flex justify-between items-center h-16">
+          <div className="font-black text-lg sm:text-xl md:text-2xl text-[#765A45] tracking-tight flex items-center gap-1 sm:gap-2 cursor-pointer" onClick={() => setActiveTab('diary')}>
+            <BookOpenIcon size={26} className="text-[#765A45] w-5 h-5 sm:w-[26px] sm:h-[26px]" />
             LibriMori
           </div>
           
@@ -726,10 +732,13 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-1.5">
+              <button onClick={() => setIsSnapshotsOpen(true)} disabled={isImporting} title="Снимки библиотеки" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#564B41] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm disabled:opacity-50">
+                <LayersIcon size={16} className="hidden sm:block" /> <span>Снимки</span>
+              </button>
               <button onClick={exportBackup} title="Резервная копия библиотеки" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
                 <DownloadIcon size={16} /> <span className="hidden lg:inline">Бэкап</span>
               </button>
-              <button onClick={() => fileInputRef.current && fileInputRef.current.click()} title="Восстановить из файла" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
+              <button disabled={isImporting} onClick={() => fileInputRef.current && fileInputRef.current.click()} title="Восстановить из файла" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm disabled:opacity-50">
                 <UploadIcon size={16} /> <span className="hidden lg:inline">Загрузить</span>
               </button>
               <input type="file" ref={fileInputRef} onChange={importBackup} accept=".json" className="hidden" />
@@ -739,6 +748,7 @@ export default function App() {
       </div>
 
       <main className="pt-4 md:pt-8 max-w-6xl mx-auto px-4">
+        {snapshotError && <div role="alert" className="mb-4 rounded-2xl border border-[#E2D5C3] bg-[#FCF9F2] p-3 text-sm text-[#9B493B]">{snapshotError} <button onClick={exportBackup} className="underline font-bold">Скачать бэкап</button></div>}
         
         {/* ================= DIARY TAB ================= */}
         {activeTab === 'diary' && (
@@ -2028,6 +2038,8 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {isSnapshotsOpen && <SnapshotPanel data={snapshotData} onRestore={applyLibrary} onClose={() => setIsSnapshotsOpen(false)} />}
 
       {/* Custom Modal Dialog */}
       {customModal && (
