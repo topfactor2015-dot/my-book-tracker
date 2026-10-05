@@ -90,6 +90,11 @@ export async function saveSnapshot(data, kind = 'daily') {
   });
 }
 
+export function libraryFilename(kind = 'бэкап', date = new Date()) {
+  const time = `${String(date.getHours()).padStart(2, '0')}-${String(date.getMinutes()).padStart(2, '0')}`;
+  return `LibriMori-${kind}-${snapshotDay(date)}_${time}.json`;
+}
+
 export function downloadLibrary(data, filename) {
   const blob = new Blob([JSON.stringify({ ...data, exportDate: new Date().toISOString() }, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);

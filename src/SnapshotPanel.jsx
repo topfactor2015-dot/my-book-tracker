@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { downloadLibrary, listSnapshots, saveSnapshot } from './snapshots.js';
+import { downloadLibrary, libraryFilename, listSnapshots, saveSnapshot } from './snapshots.js';
 
 const labels = { daily: 'Ежедневный снимок', import: 'Перед импортом', restore: 'Перед восстановлением' };
 const buttonClass = 'rounded-xl border border-[#E2D5C3] bg-[#EFE7D8] px-3 py-2 text-sm font-bold text-[#564B41] disabled:opacity-50';
@@ -93,7 +93,7 @@ export default function SnapshotPanel({ data, onRestore, onClose }) {
             <p className="text-sm mt-1 mb-3">{labels[record.kind] || 'Снимок'} · Книг: {record.data.books.length}</p>
             <div className="flex flex-wrap gap-2">
               <button className={buttonClass} onClick={() => setSelected(record)}>Восстановить</button>
-              <button className={buttonClass} onClick={() => downloadLibrary(record.data, `librimori-snapshot-${record.day}.json`)}>Скачать JSON</button>
+              <button className={buttonClass} onClick={() => downloadLibrary(record.data, libraryFilename('снимок', new Date(record.createdAt)))}>Скачать JSON</button>
             </div>
           </div>
         ))}</div>}
