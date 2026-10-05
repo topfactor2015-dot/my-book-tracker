@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import IsbnLookup from './IsbnLookup.jsx';
 import SnapshotPanel, { useLibrarySnapshots } from './SnapshotPanel.jsx';
 import { downloadLibrary, libraryFilename, saveSnapshot, validateLibrary } from './snapshots.js';
+import { pagesToLog, recordReadingProgress } from './readingProgress.js';
 
 const PlusIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
 const SearchIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
@@ -200,6 +201,8 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const [logPagesInput, setLogPagesInput] = useState({});
+  const [logPageMode, setLogPageMode] = useState({});
+  const [logProgressErrors, setLogProgressErrors] = useState({});
   const [logMinutesInput, setLogMinutesInput] = useState({});
   const [selectedDate, setSelectedDate] = useState(() => getMoscowDate());
   const [currentMonth, setCurrentMonth] = useState(() => getMoscowDate());
@@ -548,34 +551,25 @@ export default function App() {
   };
 
   const handleLogProgress = (bookId) => {
-    const pagesStr = logPagesInput[bookId];
-    const minsStr = logMinutesInput[bookId];
-    
-    const pages = pagesStr ? parseInt(pagesStr, 10) : 0;
-    const minutes = minsStr ? parseInt(minsStr, 10) : Math.round(pages * 1.5);
-    
-    if (pages <= 0 && minutes <= 0) return;
-
+    const input = logPagesInput[bookId] ?? '';
+    const mode = logPageMode[bookId] || 'page';
+    const minutes = logMinutesInput[bookId] ?? '';
     const logDateKey = formatDateKey(selectedDate);
-
-    setBooks(books.map(b => {
-      if (b.id === bookId) {
-        const newLog = [...(b.log || []), { date: logDateKey, pages, minutes }];
-        const newReadPages = (b.readPages || 0) + pages;
-        
-        let newStatus = b.status;
-        let newFinished = b.dateFinished;
-        
-        if (b.totalPages && newReadPages >= b.totalPages && newStatus !== 'read') {
-          newStatus = 'read';
-          newFinished = getMoscowDateString(0);
-        }
-
-        return { ...b, readPages: newReadPages, status: newStatus, log: newLog, dateFinished: newFinished };
-      }
-      return b;
+    const current = libraryRef.current.books.find(book => book.id === bookId);
+    if (!current) return;
+    try {
+      if (recordReadingProgress(current, input, mode, minutes, logDateKey) === current) return;
+    } catch (error) {
+      setLogProgressErrors(prev => ({ ...prev, [bookId]: error.message }));
+      return;
+    }
+    setBooks(prev => prev.map(book => {
+      if (book.id !== bookId) return book;
+      // Recalculate against the latest progress, including a queued earlier click.
+      try { return recordReadingProgress(book, input, mode, minutes, logDateKey); }
+      catch { return book; }
     }));
-
+    setLogProgressErrors(prev => ({ ...prev, [bookId]: '' }));
     setLogPagesInput(prev => ({ ...prev, [bookId]: '' }));
     setLogMinutesInput(prev => ({ ...prev, [bookId]: '' }));
   };
@@ -916,6 +910,11 @@ export default function App() {
                     {activeBooks.map(book => {
                       const pagesOnSelectedDate = book.log?.reduce((acc, entry) => formatDateKey(entry.date) === selectedDateKey ? acc + (Number(entry.pages) || 0) : acc, 0) || 0;
                       const minsOnSelectedDate = book.log?.reduce((acc, entry) => formatDateKey(entry.date) === selectedDateKey ? acc + (Number(entry.minutes) || 0) : acc, 0) || 0;
+                      const pageMode = logPageMode[book.id] || 'page';
+                      let pagesPreview = 0;
+                      let pageInputError = '';
+                      try { pagesPreview = pagesToLog(book, logPagesInput[book.id] ?? '', pageMode); }
+                      catch (error) { pageInputError = error.message; }
 
                       return (
                         <div key={book.id} className="bg-[#F7F2E8] rounded-3xl p-4 md:p-5 shadow-sm border border-[#EADFCF]">
@@ -971,12 +970,24 @@ export default function App() {
                               </div>
                               
                               {/* Quick increment buttons */}
+                              <div className="mt-3 flex flex-wrap gap-1.5" aria-label={`Способ ввода страниц — ${book.title}`}>
+                                {[['page', 'До страницы'], ['delta', '+ Страницы']].map(([mode, label]) => (
+                                  <button key={mode} type="button" aria-pressed={pageMode === mode} onClick={() => {
+                                    setLogPageMode(prev => ({ ...prev, [book.id]: mode }));
+                                    setLogPagesInput(prev => ({ ...prev, [book.id]: '' }));
+                                    setLogMinutesInput(prev => ({ ...prev, [book.id]: '' }));
+                                    setLogProgressErrors(prev => ({ ...prev, [book.id]: '' }));
+                                  }} className={`px-3 py-1.5 rounded-xl text-xs font-bold border border-[#E2D5C3] ${pageMode === mode ? 'bg-[#806047] text-white' : 'bg-[#EFE7D8] text-[#564B41]'}`}>{label}</button>
+                                ))}
+                              </div>
                               <div className="mt-2.5 flex flex-wrap items-center gap-1.5 overflow-x-auto pb-1">
                                 <span className="text-[9px] font-bold text-[#706155] uppercase shrink-0">Быстро:</span>
                                 {[10, 25, 50].map(p => (
                                   <button key={p} onClick={() => {
-                                    const currentPages = parseInt(logPagesInput[book.id] || 0, 10);
+                                    const currentPages = pageMode === 'delta' ? Number(logPagesInput[book.id]) || 0 : 0;
                                     const newPages = currentPages + p;
+                                    setLogPageMode(prev => ({ ...prev, [book.id]: 'delta' }));
+                                    setLogProgressErrors(prev => ({ ...prev, [book.id]: '' }));
                                     setLogPagesInput(prev => ({ ...prev, [book.id]: newPages }));
                                     setLogMinutesInput(prev => ({ ...prev, [book.id]: Math.round(newPages * 1.5) }));
                                   }} className="bg-[#EFE7D8] hover:bg-[#EADFCF] active:scale-95 text-[#74675B] text-[10px] font-bold px-2.5 py-1 rounded-xl shrink-0 transition-all shadow-sm border border-[#E2D5C3]">
@@ -987,6 +998,7 @@ export default function App() {
                                   <button onClick={() => {
                                     setLogPagesInput(prev => ({ ...prev, [book.id]: '' }));
                                     setLogMinutesInput(prev => ({ ...prev, [book.id]: '' }));
+                                    setLogProgressErrors(prev => ({ ...prev, [book.id]: '' }));
                                   }} className="text-[9px] text-[#9B493B] font-bold hover:underline ml-auto">сбросить</button>
                                 ) : null}
                               </div>
@@ -1000,25 +1012,27 @@ export default function App() {
                                   {activeTimer?.bookId === book.id ? formatTimer(timerDisplay) : 'Таймер'}
                                 </button>
                                 <input 
-                                  type="number" placeholder="+ стр" 
+                                  type="number" min="0" step="1" max={pageMode === 'page' && Number(book.totalPages) > 0 ? book.totalPages : undefined} placeholder={pageMode === 'page' ? 'Страница' : '+ стр'}
+                                  aria-label={`${pageMode === 'page' ? 'Дочитал до страницы' : 'Добавить страниц'} — ${book.title}`}
                                   value={logPagesInput[book.id] || ''} 
+                                  onKeyDown={(event) => { if (event.key === 'Enter') handleLogProgress(book.id); }}
                                   onChange={(e) => {
                                     const val = e.target.value;
                                     setLogPagesInput({ ...logPagesInput, [book.id]: val });
-                                    if (val && !isNaN(val)) {
-                                      setLogMinutesInput(prev => ({ ...prev, [book.id]: Math.round(Number(val) * 1.5) }));
-                                    } else {
-                                      setLogMinutesInput(prev => ({ ...prev, [book.id]: '' }));
+                                    setLogProgressErrors(prev => ({ ...prev, [book.id]: '' }));
+                                    if (pageMode === 'delta') {
+                                      setLogMinutesInput(prev => ({ ...prev, [book.id]: val && Number.isFinite(Number(val)) && Number(val) >= 0 ? Math.round(Number(val) * 1.5) : '' }));
                                     }
                                   }}
-                                  className="w-16 bg-[#FCF9F2] border border-[#EADFCF] rounded-xl px-2 py-2 text-xs font-bold outline-none focus:border-[#A68970] text-center"
+                                  className="w-24 bg-[#FCF9F2] border border-[#EADFCF] rounded-xl px-2 py-2 text-xs font-bold outline-none focus:border-[#A68970] text-center"
                                 />
                                 <input 
-                                  type="number" placeholder="+ мин" value={logMinutesInput[book.id] || ''} onChange={(e) => setLogMinutesInput({ ...logMinutesInput, [book.id]: e.target.value })}
+                                  type="number" min="0" step="1" placeholder="+ мин" aria-label={`Минуты чтения — ${book.title}`} value={logMinutesInput[book.id] ?? ''} onChange={(e) => setLogMinutesInput({ ...logMinutesInput, [book.id]: e.target.value })}
+                                  onKeyDown={(event) => { if (event.key === 'Enter') handleLogProgress(book.id); }}
                                   className="w-16 bg-[#FCF9F2] border border-[#EADFCF] rounded-xl px-2 py-2 text-xs font-bold outline-none focus:border-[#A68970] text-center"
                                 />
                                 <button onClick={() => handleLogProgress(book.id)} className="bg-[#806047] hover:bg-[#694C37] text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-colors shadow-sm">
-                                  Ок
+                                  Записать
                                 </button>
                                 {book.totalPages && (book.readPages || 0) < book.totalPages && (
                                   <button onClick={() => handleQuickFinish(book.id)} title="Дочитал до конца!" className="bg-[#DDEAE3] hover:bg-[#C9DEC2] text-[#4F6F61] p-2 rounded-xl transition-colors ml-auto sm:ml-0 shadow-sm">
@@ -1026,6 +1040,11 @@ export default function App() {
                                   </button>
                                 )}
                               </div>
+                              {(pageInputError || logProgressErrors[book.id]) ? (
+                                <p role="alert" className="mt-2 text-xs text-[#9B493B]">{pageInputError || logProgressErrors[book.id]}</p>
+                              ) : (
+                                <p className="mt-2 text-xs text-[#706155]" aria-live="polite">{logPagesInput[book.id] !== '' && logPagesInput[book.id] != null ? `Будет добавлено: ${pagesPreview} стр. (сейчас ${book.readPages || 0}).` : 'Введите страницу, до которой дочитали, или выберите «+ Страницы».'}</p>
+                              )}
                             </div>
                           </div>
                           
