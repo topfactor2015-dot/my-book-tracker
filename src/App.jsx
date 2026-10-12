@@ -3,6 +3,8 @@ import IsbnLookup from './IsbnLookup.jsx';
 import SnapshotPanel, { useLibrarySnapshots } from './SnapshotPanel.jsx';
 import { downloadLibrary, libraryFilename, saveSnapshot, validateLibrary } from './snapshots.js';
 import { pagesToLog, recordReadingProgress } from './readingProgress.js';
+import { Moon, Sun } from 'lucide-react';
+import './theme.css';
 
 const PlusIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
 const SearchIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
@@ -136,6 +138,17 @@ const getUniqueAuthors = (items) => {
 };
 
 export default function App() {
+  const [theme, setTheme] = useState(() => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    try {
+      localStorage.setItem('librimori_theme', theme);
+    } catch {
+      // The switch still works when browser storage is unavailable.
+    }
+  }, [theme]);
+
   const [activeTab, setActiveTab] = useState('diary'); // 'diary' | 'library' | 'analytics' | 'roulette' | 'tournament'
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'shelf'
   const [statViewType, setStatViewType] = useState('months'); // 'months' | 'genres' | 'formats' | 'activity'
@@ -706,33 +719,43 @@ export default function App() {
   }, [filteredBooks]);
 
   return (
-    <div className="min-h-screen bg-[#FCF9F2] text-[#4A4238] font-sans pb-24 md:pb-16 selection:bg-[#EEDFCC]">
+    <div className="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans pb-24 lg:pb-16 selection:bg-[var(--selection)]">
       
       {/* Top Header */}
-      <div className="bg-[#F7F2E8] border-b border-[#EADFCF] sticky top-0 z-30 shadow-sm backdrop-blur-md bg-opacity-95">
+      <div className="bg-[var(--panel)] border-b border-[var(--border)] sticky top-0 z-30 shadow-sm backdrop-blur-md bg-opacity-95">
         <div className="max-w-6xl mx-auto px-3 sm:px-4 flex justify-between items-center h-16">
-          <div className="font-black text-lg sm:text-xl md:text-2xl text-[#765A45] tracking-tight flex items-center gap-1 sm:gap-2 cursor-pointer" onClick={() => setActiveTab('diary')}>
-            <BookOpenIcon size={26} className="text-[#765A45] w-5 h-5 sm:w-[26px] sm:h-[26px]" />
+          <div className="font-black text-lg sm:text-xl md:text-2xl text-[var(--accent)] tracking-tight flex items-center gap-1 sm:gap-2 cursor-pointer" onClick={() => setActiveTab('diary')}>
+            <BookOpenIcon size={26} className="text-[var(--accent)] w-5 h-5 sm:w-[26px] sm:h-[26px]" />
             LibriMori
           </div>
           
           <div className="flex items-center gap-2">
-            <div className="hidden sm:flex bg-[#EFE7D8] rounded-2xl p-1 shadow-inner border border-[#E2D5C3]">
-              <button onClick={() => setActiveTab('diary')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'diary' ? 'bg-white text-[#765A45] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Дневник</button>
-              <button onClick={() => setActiveTab('library')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'library' ? 'bg-white text-[#765A45] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Библиотека</button>
-              <button onClick={() => setActiveTab('analytics')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'analytics' ? 'bg-white text-[#765A45] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Аналитика</button>
-              <button onClick={() => setActiveTab('roulette')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'roulette' ? 'bg-white text-[#765A45] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Рулетка</button>
-              <button onClick={() => setActiveTab('tournament')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'tournament' ? 'bg-white text-[#765A45] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}>Турнир</button>
+            <div className="hidden lg:flex bg-[var(--inset)] rounded-2xl p-1 shadow-inner border border-[var(--border-strong)]">
+              <button onClick={() => setActiveTab('diary')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'diary' ? 'bg-[var(--surface)] text-[var(--accent)] shadow-sm' : 'text-[var(--secondary)] hover:text-[var(--ink)]'}`}>Дневник</button>
+              <button onClick={() => setActiveTab('library')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'library' ? 'bg-[var(--surface)] text-[var(--accent)] shadow-sm' : 'text-[var(--secondary)] hover:text-[var(--ink)]'}`}>Библиотека</button>
+              <button onClick={() => setActiveTab('analytics')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'analytics' ? 'bg-[var(--surface)] text-[var(--accent)] shadow-sm' : 'text-[var(--secondary)] hover:text-[var(--ink)]'}`}>Аналитика</button>
+              <button onClick={() => setActiveTab('roulette')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'roulette' ? 'bg-[var(--surface)] text-[var(--accent)] shadow-sm' : 'text-[var(--secondary)] hover:text-[var(--ink)]'}`}>Рулетка</button>
+              <button onClick={() => setActiveTab('tournament')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'tournament' ? 'bg-[var(--surface)] text-[var(--accent)] shadow-sm' : 'text-[var(--secondary)] hover:text-[var(--ink)]'}`}>Турнир</button>
             </div>
 
             <div className="flex items-center gap-1.5">
-              <button onClick={() => setIsSnapshotsOpen(true)} disabled={isImporting} title="Снимки библиотеки" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#564B41] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm disabled:opacity-50">
-                <LayersIcon size={16} className="hidden sm:block" /> <span>Снимки</span>
+              <button
+                type="button"
+                onClick={() => setTheme(current => current === 'dark' ? 'light' : 'dark')}
+                aria-label="Тёмная тема"
+                aria-pressed={theme === 'dark'}
+                title={theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'}
+                className="theme-toggle bg-[var(--inset)] hover:bg-[var(--border)] text-[var(--accent)] p-2.5 rounded-2xl transition-colors flex items-center justify-center border border-[var(--border-strong)] shadow-sm"
+              >
+                {theme === 'dark' ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
               </button>
-              <button onClick={exportBackup} title="Резервная копия библиотеки" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm">
+              <button onClick={() => setIsSnapshotsOpen(true)} disabled={isImporting} title="Снимки библиотеки" className="bg-[var(--inset)] hover:bg-[var(--border)] text-[var(--heading)] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[var(--border-strong)] shadow-sm disabled:opacity-50">
+                <LayersIcon size={16} aria-hidden="true" /> <span className="hidden sm:inline">Снимки</span>
+              </button>
+              <button onClick={exportBackup} title="Резервная копия библиотеки" className="bg-[var(--inset)] hover:bg-[var(--border)] text-[var(--secondary)] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[var(--border-strong)] shadow-sm">
                 <DownloadIcon size={16} /> <span className="hidden lg:inline">Бэкап</span>
               </button>
-              <button disabled={isImporting} onClick={() => fileInputRef.current && fileInputRef.current.click()} title="Восстановить из файла" className="bg-[#EFE7D8] hover:bg-[#EADFCF] text-[#74675B] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[#E2D5C3] shadow-sm disabled:opacity-50">
+              <button disabled={isImporting} onClick={() => fileInputRef.current && fileInputRef.current.click()} title="Восстановить из файла" className="bg-[var(--inset)] hover:bg-[var(--border)] text-[var(--secondary)] p-2.5 rounded-2xl transition-colors flex items-center gap-1 text-xs font-bold border border-[var(--border-strong)] shadow-sm disabled:opacity-50">
                 <UploadIcon size={16} /> <span className="hidden lg:inline">Загрузить</span>
               </button>
               <input type="file" ref={fileInputRef} onChange={importBackup} accept=".json" className="hidden" />
@@ -742,25 +765,25 @@ export default function App() {
       </div>
 
       <main className="pt-4 md:pt-8 max-w-6xl mx-auto px-4">
-        {snapshotError && <div role="alert" className="mb-4 rounded-2xl border border-[#E2D5C3] bg-[#FCF9F2] p-3 text-sm text-[#9B493B]">{snapshotError} <button onClick={exportBackup} className="underline font-bold">Скачать бэкап</button></div>}
+        {snapshotError && <div role="alert" className="mb-4 rounded-2xl border border-[var(--border-strong)] bg-[var(--paper)] p-3 text-sm text-[var(--danger-ink)]">{snapshotError} <button onClick={exportBackup} className="underline font-bold">Скачать бэкап</button></div>}
         
         {/* ================= DIARY TAB ================= */}
         {activeTab === 'diary' && (
           <div className="space-y-5 md:space-y-6">
             
             {/* Reading Streak & Motivation Banner */}
-            <div className="bg-[#F7F2E8] border border-[#EADFCF] p-4 md:p-5 rounded-3xl shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="bg-[var(--panel)] border border-[var(--border)] p-4 md:p-5 rounded-3xl shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3.5">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm ${totalStreak > 0 ? 'bg-[#FBE8E4] text-[#9B493B]' : 'bg-[#EFE7D8] text-[#706155]'}`}>
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm ${totalStreak > 0 ? 'bg-[var(--danger-soft)] text-[var(--danger-ink)]' : 'bg-[var(--inset)] text-[var(--muted)]'}`}>
                   <FlameIcon size={26} className={totalStreak > 0 ? 'animate-pulse' : ''} />
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm md:text-base font-black text-[#564B41]">
+                    <span className="text-sm md:text-base font-black text-[var(--heading)]">
                       {totalStreak > 0 ? `Серия: ${totalStreak} ${getPluralDays(totalStreak)} без пропуска!` : 'Серия чтения ещё не начата'}
                     </span>
                     {maxStreak > 0 && (
-                      <span className="text-[10px] font-bold bg-[#EFE7D8] text-[#765A45] px-2.5 py-0.5 rounded-full border border-[#E2D5C3]">
+                      <span className="text-[10px] font-bold bg-[var(--inset)] text-[var(--accent)] px-2.5 py-0.5 rounded-full border border-[var(--border-strong)]">
                         Рекорд: {maxStreak} {getPluralDays(maxStreak)}
                       </span>
                     )}
@@ -780,12 +803,12 @@ export default function App() {
                         });
                       }}
                       title="Скорректировать счётчик серии"
-                      className="p-1 hover:bg-[#E2D5C3] rounded-lg text-[#765A45] transition-colors"
+                      className="p-1 hover:bg-[var(--border-strong)] rounded-lg text-[var(--accent)] transition-colors"
                     >
                       <Edit3Icon size={14} />
                     </button>
                   </div>
-                  <p className="text-xs text-[#706155] italic mt-0.5">
+                  <p className="text-xs text-[var(--muted)] italic mt-0.5">
                     «{dailyMotivation}»
                   </p>
                 </div>
@@ -793,11 +816,11 @@ export default function App() {
 
               <div className="self-end sm:self-center">
                 {hasReadToday ? (
-                  <span className="inline-flex items-center gap-1.5 bg-[#DDEAE3] text-[#4F6F61] px-3.5 py-1.5 rounded-2xl text-xs font-black uppercase tracking-wider shadow-sm">
+                  <span className="inline-flex items-center gap-1.5 bg-[var(--success-soft)] text-[var(--success-ink)] px-3.5 py-1.5 rounded-2xl text-xs font-black uppercase tracking-wider shadow-sm">
                     <CheckIcon size={14} /> Сегодня прочитано!
                   </span>
                 ) : (
-                  <span className="inline-block bg-[#F2E8DC] text-[#765A45] px-3.5 py-1.5 rounded-2xl text-xs font-bold border border-[#E2D5C3] shadow-sm">
+                  <span className="inline-block bg-[var(--accent-soft)] text-[var(--accent)] px-3.5 py-1.5 rounded-2xl text-xs font-bold border border-[var(--border-strong)] shadow-sm">
                     Отметьте чтение за сегодня
                   </span>
                 )}
@@ -806,69 +829,69 @@ export default function App() {
 
             {/* Quick Stats Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
-              <div className="bg-[#F7F2E8] p-3.5 md:p-4 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col items-center justify-center text-center">
-                <span className="text-2xl md:text-3xl font-black text-[#765A45] mb-1">{totalReadBooks}</span>
-                <span className="text-[10px] font-bold text-[#706155] uppercase tracking-wider">Прочитано</span>
+              <div className="bg-[var(--panel)] p-3.5 md:p-4 rounded-3xl border border-[var(--border)] shadow-sm flex flex-col items-center justify-center text-center">
+                <span className="text-2xl md:text-3xl font-black text-[var(--accent)] mb-1">{totalReadBooks}</span>
+                <span className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider">Прочитано</span>
               </div>
-              <div className="bg-[#F7F2E8] p-3.5 md:p-4 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col items-center justify-center text-center">
-                <span className="text-2xl md:text-3xl font-black text-[#486B59] mb-1">{totalReadPages}</span>
-                <span className="text-[10px] font-bold text-[#706155] uppercase tracking-wider">Всего страниц</span>
+              <div className="bg-[var(--panel)] p-3.5 md:p-4 rounded-3xl border border-[var(--border)] shadow-sm flex flex-col items-center justify-center text-center">
+                <span className="text-2xl md:text-3xl font-black text-[var(--green-ink)] mb-1">{totalReadPages}</span>
+                <span className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider">Всего страниц</span>
               </div>
-              <div className="bg-[#F7F2E8] p-3.5 md:p-4 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col items-center justify-center text-center">
-                <span className="text-2xl md:text-3xl font-black text-[#765B82] mb-1">
+              <div className="bg-[var(--panel)] p-3.5 md:p-4 rounded-3xl border border-[var(--border)] shadow-sm flex flex-col items-center justify-center text-center">
+                <span className="text-2xl md:text-3xl font-black text-[var(--purple-ink)] mb-1">
                   {Math.floor(totalMinutesAllTime / 60)}<span className="text-sm">ч</span> {totalMinutesAllTime % 60}<span className="text-sm">м</span>
                 </span>
-                <span className="text-[10px] font-bold text-[#706155] uppercase tracking-wider">Время за чтением</span>
+                <span className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider">Время за чтением</span>
               </div>
-              <div className="bg-[#F7F2E8] p-3.5 md:p-4 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col items-center justify-center text-center">
-                <span className="text-2xl md:text-3xl font-black text-[#8A542B] mb-1">{activeBooks.length}</span>
-                <span className="text-[10px] font-bold text-[#706155] uppercase tracking-wider">В процессе</span>
+              <div className="bg-[var(--panel)] p-3.5 md:p-4 rounded-3xl border border-[var(--border)] shadow-sm flex flex-col items-center justify-center text-center">
+                <span className="text-2xl md:text-3xl font-black text-[var(--orange-ink)] mb-1">{activeBooks.length}</span>
+                <span className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider">В процессе</span>
               </div>
-              <div className="bg-[#F7F2E8] p-3.5 md:p-4 rounded-3xl border border-[#EADFCF] shadow-sm flex flex-col items-center justify-center text-center col-span-2 sm:col-span-1">
-                <span className="text-2xl md:text-3xl font-black text-[#46657F] mb-1">{avgPagesPerDay}</span>
-                <span className="text-[10px] font-bold text-[#706155] uppercase tracking-wider">Стр/день (мес)</span>
+              <div className="bg-[var(--panel)] p-3.5 md:p-4 rounded-3xl border border-[var(--border)] shadow-sm flex flex-col items-center justify-center text-center col-span-2 sm:col-span-1">
+                <span className="text-2xl md:text-3xl font-black text-[var(--blue-ink)] mb-1">{avgPagesPerDay}</span>
+                <span className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider">Стр/день (мес)</span>
               </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-3.5 md:gap-4">
-              <div className="bg-[#BFA892] rounded-3xl p-4 md:p-5 shadow-sm text-[#352B24] flex items-center gap-4 relative overflow-hidden">
+              <div className="bg-[var(--goal-year)] rounded-3xl p-4 md:p-5 shadow-sm text-[var(--goal-ink)] flex items-center gap-4 relative overflow-hidden">
                 <div className="absolute right-[-20px] opacity-15"><TargetIcon size={120} /></div>
                 <div className="flex-1 relative z-10">
                   <div className="flex justify-between items-end mb-2">
-                    <span className="text-[11px] md:text-xs font-bold uppercase tracking-wider text-[#352B24]">Цель на {currentYear} год</span>
+                    <span className="text-[11px] md:text-xs font-bold uppercase tracking-wider text-[var(--goal-ink)]">Цель на {currentYear} год</span>
                     <button onClick={() => {
                       setCustomModal({
                         title: 'Изменить годовую цель (книг):', type: 'prompt', defaultValue: goals.yearly,
                         onSubmit: (val) => { if (val && !isNaN(val)) { setGoals({...goals, yearly: Number(val)}); setCustomModal(null); } }
                       });
-                    }} className="flex items-center gap-2 text-xl md:text-2xl font-black hover:text-[#241D18] transition-colors bg-white/20 px-3 py-1 rounded-2xl shadow-sm">
+                    }} className="flex items-center gap-2 text-xl md:text-2xl font-black hover:text-[var(--goal-ink-hover)] transition-colors bg-white/20 px-3 py-1 rounded-2xl shadow-sm">
                       {goals.yearly > 0 ? `${readThisYear} / ${goals.yearly}` : 'Задать цель'}
-                      <Edit3Icon size={14} className="text-[#352B24]" />
+                      <Edit3Icon size={14} className="text-[var(--goal-ink)]" />
                     </button>
                   </div>
-                  <div className="w-full bg-[#9A8470]/50 rounded-full h-2.5">
-                    <div className="bg-[#FAF0E6] h-2.5 rounded-full transition-all" style={{ width: `${goals.yearly > 0 ? Math.min(100, (readThisYear / goals.yearly) * 100) : 0}%` }}></div>
+                  <div className="w-full bg-[var(--goal-year-track)]/50 rounded-full h-2.5">
+                    <div className="bg-[var(--progress-light)] h-2.5 rounded-full transition-all" style={{ width: `${goals.yearly > 0 ? Math.min(100, (readThisYear / goals.yearly) * 100) : 0}%` }}></div>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-[#A896B5] rounded-3xl p-4 md:p-5 shadow-sm text-[#352B24] flex items-center gap-4 relative overflow-hidden">
+              <div className="bg-[var(--goal-month)] rounded-3xl p-4 md:p-5 shadow-sm text-[var(--goal-ink)] flex items-center gap-4 relative overflow-hidden">
                 <div className="absolute right-[-20px] opacity-15"><BookOpenIcon size={120} /></div>
                 <div className="flex-1 relative z-10">
                   <div className="flex justify-between items-end mb-2">
-                    <span className="text-[11px] md:text-xs font-bold uppercase tracking-wider text-[#352B24]">Цель на {currentMonth.toLocaleDateString('ru-RU', {month:'long'})}</span>
+                    <span className="text-[11px] md:text-xs font-bold uppercase tracking-wider text-[var(--goal-ink)]">Цель на {currentMonth.toLocaleDateString('ru-RU', {month:'long'})}</span>
                     <button onClick={() => {
                       setCustomModal({
                         title: 'Изменить месячную цель (книг):', type: 'prompt', defaultValue: goals.monthly,
                         onSubmit: (val) => { if (val && !isNaN(val)) { setGoals({...goals, monthly: Number(val)}); setCustomModal(null); } }
                       });
-                    }} className="flex items-center gap-2 text-xl md:text-2xl font-black hover:text-[#241D18] transition-colors bg-white/20 px-3 py-1 rounded-2xl shadow-sm">
+                    }} className="flex items-center gap-2 text-xl md:text-2xl font-black hover:text-[var(--goal-ink-hover)] transition-colors bg-white/20 px-3 py-1 rounded-2xl shadow-sm">
                       {goals.monthly > 0 ? `${readThisTargetMonth.length} / ${goals.monthly}` : 'Задать цель'}
-                      <Edit3Icon size={14} className="text-[#352B24]" />
+                      <Edit3Icon size={14} className="text-[var(--goal-ink)]" />
                     </button>
                   </div>
-                  <div className="w-full bg-[#83738F]/50 rounded-full h-2.5">
-                    <div className="bg-[#FAF0E6] h-2.5 rounded-full transition-all" style={{ width: `${goals.monthly > 0 ? Math.min(100, (readThisTargetMonth.length / goals.monthly) * 100) : 0}%` }}></div>
+                  <div className="w-full bg-[var(--goal-month-track)]/50 rounded-full h-2.5">
+                    <div className="bg-[var(--progress-light)] h-2.5 rounded-full transition-all" style={{ width: `${goals.monthly > 0 ? Math.min(100, (readThisTargetMonth.length / goals.monthly) * 100) : 0}%` }}></div>
                   </div>
                 </div>
               </div>
@@ -879,31 +902,31 @@ export default function App() {
               
               {/* Tracker / Log Column */}
               <div className="lg:col-span-2 space-y-4 md:space-y-6">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#F7F2E8] p-4 md:p-5 rounded-3xl border border-[#EADFCF] shadow-sm gap-3">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[var(--panel)] p-4 md:p-5 rounded-3xl border border-[var(--border)] shadow-sm gap-3">
                   <div>
-                    <h2 className="text-base md:text-xl font-bold text-[#564B41] flex items-center gap-2">
-                      <span className="bg-[#EFE7D8] text-[#765A45] p-2 rounded-2xl"><ClockIcon size={18}/></span>
+                    <h2 className="text-base md:text-xl font-bold text-[var(--heading)] flex items-center gap-2">
+                      <span className="bg-[var(--inset)] text-[var(--accent)] p-2 rounded-2xl"><ClockIcon size={18}/></span>
                       Записи за: {selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
                     </h2>
                     <div className="flex flex-wrap items-center gap-2 mt-2">
                       {selectedDate.toDateString() === todayMoscow.toDateString() && (
-                        <span className="inline-block bg-[#DDEAE3] text-[#4F6F61] text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">Сегодня</span>
+                        <span className="inline-block bg-[var(--success-soft)] text-[var(--success-ink)] text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">Сегодня</span>
                       )}
-                      <span className="inline-block bg-[#EFE7D8] text-[#765A45] text-[11px] font-bold px-3 py-1 rounded-full border border-[#E2D5C3] shadow-sm">
+                      <span className="inline-block bg-[var(--inset)] text-[var(--accent)] text-[11px] font-bold px-3 py-1 rounded-full border border-[var(--border-strong)] shadow-sm">
                         Итог дня: {pagesOnSelectedDateAllBooks} стр. / {Math.floor(minsOnSelectedDateAllBooks / 60)}ч {minsOnSelectedDateAllBooks % 60}м
                       </span>
                     </div>
                   </div>
-                  <button onClick={openNewBookModal} className="bg-[#806047] hover:bg-[#694C37] text-white w-full sm:w-auto px-4 py-2.5 rounded-2xl font-bold text-xs md:text-sm transition-colors flex items-center justify-center gap-2 shadow-sm">
+                  <button onClick={openNewBookModal} className="bg-[var(--button)] hover:bg-[var(--button-hover)] text-white w-full sm:w-auto px-4 py-2.5 rounded-2xl font-bold text-xs md:text-sm transition-colors flex items-center justify-center gap-2 shadow-sm">
                     <PlusIcon size={16}/> Добавить книгу
                   </button>
                 </div>
 
                 {activeBooks.length === 0 ? (
-                  <div className="bg-[#F7F2E8] border-2 border-dashed border-[#DDD0BE] rounded-3xl p-8 text-center">
-                    <div className="text-[#BAACA0] mb-3 flex justify-center"><BookOpenIcon size={42} /></div>
-                    <h3 className="text-base font-bold text-[#675B50] mb-1">Вы сейчас ничего не читаете</h3>
-                    <p className="text-[#706155] text-xs mb-4">Нажмите кнопку добавления книги, чтобы начать трекать чтение.</p>
+                  <div className="bg-[var(--panel)] border-2 border-dashed border-[var(--hover)] rounded-3xl p-8 text-center">
+                    <div className="text-[var(--placeholder)] mb-3 flex justify-center"><BookOpenIcon size={42} /></div>
+                    <h3 className="text-base font-bold text-[var(--empty-heading)] mb-1">Вы сейчас ничего не читаете</h3>
+                    <p className="text-[var(--muted)] text-xs mb-4">Нажмите кнопку добавления книги, чтобы начать трекать чтение.</p>
                   </div>
                 ) : (
                   <div className="space-y-3.5 md:space-y-4">
@@ -917,18 +940,18 @@ export default function App() {
                       catch (error) { pageInputError = error.message; }
 
                       return (
-                        <div key={book.id} className="bg-[#F7F2E8] rounded-3xl p-4 md:p-5 shadow-sm border border-[#EADFCF]">
+                        <div key={book.id} className="bg-[var(--panel)] rounded-3xl p-4 md:p-5 shadow-sm border border-[var(--border)]">
                           <div className="flex gap-3.5 md:gap-4 items-start">
                             
                             {/* Unstretched Cover */}
                             <div 
                               onClick={() => { setCurrentBook(book); setIsModalOpen(true); }}
-                              className="w-20 sm:w-24 aspect-[2/3] bg-[#EFE7D8] rounded-2xl shrink-0 overflow-hidden shadow-sm border border-[#E2D5C3] relative cursor-pointer group"
+                              className="w-20 sm:w-24 aspect-[2/3] bg-[var(--inset)] rounded-2xl shrink-0 overflow-hidden shadow-sm border border-[var(--border-strong)] relative cursor-pointer group"
                             >
                               {book.coverUrl ? (
                                 <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center bg-[#EAE2D2] text-[#765A45] p-1.5 text-center text-[10px] font-bold leading-tight">
+                                <div className="w-full h-full flex items-center justify-center bg-[var(--cover)] text-[var(--accent)] p-1.5 text-center text-[10px] font-bold leading-tight">
                                   {book.title}
                                 </div>
                               )}
@@ -936,7 +959,7 @@ export default function App() {
                                 <button 
                                   onClick={(e) => { e.stopPropagation(); setSketchnoteModalUrl(book.sketchnoteUrl); }} 
                                   title="Открыть конспект / скетч"
-                                  className="absolute bottom-1 right-1 bg-white/90 text-[#765A45] p-1 rounded-lg shadow-sm backdrop-blur-sm"
+                                  className="absolute bottom-1 right-1 bg-[var(--surface)]/90 text-[var(--accent)] p-1 rounded-lg shadow-sm backdrop-blur-sm"
                                 >
                                   <EyeIcon size={12} />
                                 </button>
@@ -946,26 +969,26 @@ export default function App() {
                             <div className="flex-1 min-w-0 flex flex-col justify-between">
                               <div>
                                 <div className="flex justify-between items-start gap-1">
-                                  <h3 onClick={() => { setCurrentBook(book); setIsModalOpen(true); }} className="font-bold text-sm sm:text-base md:text-lg text-[#4A4238] line-clamp-1 cursor-pointer hover:underline">
+                                  <h3 onClick={() => { setCurrentBook(book); setIsModalOpen(true); }} className="font-bold text-sm sm:text-base md:text-lg text-[var(--ink)] line-clamp-1 cursor-pointer hover:underline">
                                     {book.title}
                                   </h3>
-                                  {book.status === 'rereading' && <span className="text-[9px] bg-[#EFE4D3] text-[#9E7749] px-2 py-0.5 rounded-full font-bold shrink-0">Перечитываю</span>}
+                                  {book.status === 'rereading' && <span className="text-[9px] bg-[var(--rereading-soft)] text-[var(--gold-ink)] px-2 py-0.5 rounded-full font-bold shrink-0">Перечитываю</span>}
                                 </div>
                                 <div className="flex flex-wrap items-center gap-2 mb-1">
-                                  <p className="text-xs text-[#706155]">{book.author}</p>
+                                  <p className="text-xs text-[var(--muted)]">{book.author}</p>
                                   {book.seriesName && (
-                                    <span className="text-[9px] bg-[#E2D5C3] text-[#6A5443] px-2 py-0.5 rounded-full font-bold">
+                                    <span className="text-[9px] bg-[var(--border-strong)] text-[var(--tag-ink)] px-2 py-0.5 rounded-full font-bold">
                                       📚 {book.seriesName} {book.seriesIndex ? `(№${book.seriesIndex})` : ''}
                                     </span>
                                   )}
                                 </div>
                                 
-                                <div className="flex justify-between text-[10px] font-bold text-[#74675B] mb-1">
+                                <div className="flex justify-between text-[10px] font-bold text-[var(--secondary)] mb-1">
                                   <span>Прогресс</span>
                                   <span>{book.readPages || 0} / {book.totalPages || '?'} стр.</span>
                                 </div>
-                                <div className="w-full bg-[#EADFCF] rounded-full h-2 shadow-inner overflow-hidden">
-                                  <div className="bg-[#9ABAA9] h-2 rounded-full transition-all duration-500" style={{ width: `${book.totalPages ? Math.min(100, Math.round(((book.readPages || 0) / book.totalPages) * 100)) : 0}%` }}></div>
+                                <div className="w-full bg-[var(--border)] rounded-full h-2 shadow-inner overflow-hidden">
+                                  <div className="bg-[var(--progress-green)] h-2 rounded-full transition-all duration-500" style={{ width: `${book.totalPages ? Math.min(100, Math.round(((book.readPages || 0) / book.totalPages) * 100)) : 0}%` }}></div>
                                 </div>
                               </div>
                               
@@ -977,11 +1000,11 @@ export default function App() {
                                     setLogPagesInput(prev => ({ ...prev, [book.id]: '' }));
                                     setLogMinutesInput(prev => ({ ...prev, [book.id]: '' }));
                                     setLogProgressErrors(prev => ({ ...prev, [book.id]: '' }));
-                                  }} className={`px-3 py-1.5 rounded-xl text-xs font-bold border border-[#E2D5C3] ${pageMode === mode ? 'bg-[#806047] text-white' : 'bg-[#EFE7D8] text-[#564B41]'}`}>{label}</button>
+                                  }} className={`px-3 py-1.5 rounded-xl text-xs font-bold border border-[var(--border-strong)] ${pageMode === mode ? 'bg-[var(--button)] text-white' : 'bg-[var(--inset)] text-[var(--heading)]'}`}>{label}</button>
                                 ))}
                               </div>
                               <div className="mt-2.5 flex flex-wrap items-center gap-1.5 overflow-x-auto pb-1">
-                                <span className="text-[9px] font-bold text-[#706155] uppercase shrink-0">Быстро:</span>
+                                <span className="text-[9px] font-bold text-[var(--muted)] uppercase shrink-0">Быстро:</span>
                                 {[10, 25].map(p => (
                                   <button key={p} onClick={() => {
                                     const currentPages = pageMode === 'delta' ? Number(logPagesInput[book.id]) || 0 : 0;
@@ -990,7 +1013,7 @@ export default function App() {
                                     setLogProgressErrors(prev => ({ ...prev, [book.id]: '' }));
                                     setLogPagesInput(prev => ({ ...prev, [book.id]: newPages }));
                                     setLogMinutesInput(prev => ({ ...prev, [book.id]: Math.round(newPages * 1.5) }));
-                                  }} className="bg-[#EFE7D8] hover:bg-[#EADFCF] active:scale-95 text-[#74675B] text-[10px] font-bold px-2.5 py-1 rounded-xl shrink-0 transition-all shadow-sm border border-[#E2D5C3]">
+                                  }} className="bg-[var(--inset)] hover:bg-[var(--border)] active:scale-95 text-[var(--secondary)] text-[10px] font-bold px-2.5 py-1 rounded-xl shrink-0 transition-all shadow-sm border border-[var(--border-strong)]">
                                     +{p} стр
                                   </button>
                                 ))}
@@ -999,14 +1022,14 @@ export default function App() {
                                     setLogPagesInput(prev => ({ ...prev, [book.id]: '' }));
                                     setLogMinutesInput(prev => ({ ...prev, [book.id]: '' }));
                                     setLogProgressErrors(prev => ({ ...prev, [book.id]: '' }));
-                                  }} className="text-[9px] text-[#9B493B] font-bold hover:underline ml-auto">сбросить</button>
+                                  }} className="text-[9px] text-[var(--danger-ink)] font-bold hover:underline ml-auto">сбросить</button>
                                 ) : null}
                               </div>
 
                               <div className="mt-2 flex flex-wrap items-center gap-2">
                                 <button 
                                   onClick={() => toggleTimer(book.id)} 
-                                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all shadow-sm shrink-0 ${activeTimer?.bookId === book.id ? 'bg-[#9B493B] text-white animate-pulse' : 'bg-[#EADFCF] hover:bg-[#DDD0BE] text-[#564B41]'}`}
+                                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all shadow-sm shrink-0 ${activeTimer?.bookId === book.id ? 'bg-[var(--danger-button)] text-white animate-pulse' : 'bg-[var(--border)] hover:bg-[var(--hover)] text-[var(--heading)]'}`}
                                 >
                                   {activeTimer?.bookId === book.id ? <SquareIcon size={14} /> : <PlayIcon size={14} />}
                                   {activeTimer?.bookId === book.id ? formatTimer(timerDisplay) : 'Таймер'}
@@ -1024,36 +1047,36 @@ export default function App() {
                                       setLogMinutesInput(prev => ({ ...prev, [book.id]: val && Number.isFinite(Number(val)) && Number(val) >= 0 ? Math.round(Number(val) * 1.5) : '' }));
                                     }
                                   }}
-                                  className="w-24 bg-[#FCF9F2] border border-[#EADFCF] rounded-xl px-2 py-2 text-xs font-bold outline-none focus:border-[#A68970] text-center"
+                                  className="w-24 bg-[var(--paper)] border border-[var(--border)] rounded-xl px-2 py-2 text-xs font-bold outline-none focus:border-[var(--focus)] text-center"
                                 />
                                 <input 
                                   type="number" min="0" step="1" placeholder="+ мин" aria-label={`Минуты чтения — ${book.title}`} value={logMinutesInput[book.id] ?? ''} onChange={(e) => setLogMinutesInput({ ...logMinutesInput, [book.id]: e.target.value })}
                                   onKeyDown={(event) => { if (event.key === 'Enter') handleLogProgress(book.id); }}
-                                  className="w-16 bg-[#FCF9F2] border border-[#EADFCF] rounded-xl px-2 py-2 text-xs font-bold outline-none focus:border-[#A68970] text-center"
+                                  className="w-16 bg-[var(--paper)] border border-[var(--border)] rounded-xl px-2 py-2 text-xs font-bold outline-none focus:border-[var(--focus)] text-center"
                                 />
-                                <button onClick={() => handleLogProgress(book.id)} className="bg-[#806047] hover:bg-[#694C37] text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-colors shadow-sm">
+                                <button onClick={() => handleLogProgress(book.id)} className="bg-[var(--button)] hover:bg-[var(--button-hover)] text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-colors shadow-sm">
                                   Записать
                                 </button>
                                 {book.totalPages && (book.readPages || 0) < book.totalPages && (
-                                  <button onClick={() => handleQuickFinish(book.id)} title="Дочитал до конца!" className="bg-[#DDEAE3] hover:bg-[#C9DEC2] text-[#4F6F61] p-2 rounded-xl transition-colors ml-auto sm:ml-0 shadow-sm">
+                                  <button onClick={() => handleQuickFinish(book.id)} title="Дочитал до конца!" className="bg-[var(--success-soft)] hover:bg-[var(--success-hover)] text-[var(--success-ink)] p-2 rounded-xl transition-colors ml-auto sm:ml-0 shadow-sm">
                                     <CheckIcon size={16} />
                                   </button>
                                 )}
                               </div>
                               {(pageInputError || logProgressErrors[book.id]) ? (
-                                <p role="alert" className="mt-2 text-xs text-[#9B493B]">{pageInputError || logProgressErrors[book.id]}</p>
+                                <p role="alert" className="mt-2 text-xs text-[var(--danger-ink)]">{pageInputError || logProgressErrors[book.id]}</p>
                               ) : (
-                                <p className="mt-2 text-xs text-[#706155]" aria-live="polite">{logPagesInput[book.id] !== '' && logPagesInput[book.id] != null ? `Будет добавлено: ${pagesPreview} стр. (сейчас ${book.readPages || 0}).` : 'Введите страницу, до которой дочитали, или выберите «+ Страницы».'}</p>
+                                <p className="mt-2 text-xs text-[var(--muted)]" aria-live="polite">{logPagesInput[book.id] !== '' && logPagesInput[book.id] != null ? `Будет добавлено: ${pagesPreview} стр. (сейчас ${book.readPages || 0}).` : 'Введите страницу, до которой дочитали, или выберите «+ Страницы».'}</p>
                               )}
                             </div>
                           </div>
                           
                           <div className="mt-3 text-[11px] font-bold flex flex-wrap gap-2">
-                            <span className="bg-[#EFE7D8] text-[#74675B] px-3 py-1.5 rounded-xl border border-[#E2D5C3] flex items-center gap-1">
+                            <span className="bg-[var(--inset)] text-[var(--secondary)] px-3 py-1.5 rounded-xl border border-[var(--border-strong)] flex items-center gap-1">
                               За {selectedDate.toLocaleDateString()}: {pagesOnSelectedDate} стр. / {minsOnSelectedDate} мин.
                             </span>
                             {book.sketchnoteUrl && (
-                              <button onClick={() => setSketchnoteModalUrl(book.sketchnoteUrl)} className="bg-[#F2E8DC] hover:bg-[#EADFCF] text-[#765A45] px-3 py-1.5 rounded-xl border border-[#E2D5C3] flex items-center gap-1 transition-colors">
+                              <button onClick={() => setSketchnoteModalUrl(book.sketchnoteUrl)} className="bg-[var(--accent-soft)] hover:bg-[var(--border)] text-[var(--accent)] px-3 py-1.5 rounded-xl border border-[var(--border-strong)] flex items-center gap-1 transition-colors">
                                 🎨 Визуальный конспект
                               </button>
                             )}
@@ -1067,24 +1090,24 @@ export default function App() {
 
               {/* Calendar Column */}
               <div className="space-y-3 lg:sticky lg:top-24 max-w-sm mx-auto w-full">
-                <div className="bg-[#F7F2E8] rounded-3xl p-3 sm:p-4 shadow-sm border border-[#EADFCF]">
+                <div className="bg-[var(--panel)] rounded-3xl p-3 sm:p-4 shadow-sm border border-[var(--border)]">
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="font-black text-sm sm:text-base text-[#564B41] capitalize">
+                    <h3 className="font-black text-sm sm:text-base text-[var(--heading)] capitalize">
                       {currentMonth.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}
                     </h3>
-                    <button onClick={() => setIsSummaryModalOpen(true)} className="text-[#765A45] bg-[#EADFCF] hover:bg-[#DDD0BE] px-2.5 py-1.5 rounded-2xl text-[10px] font-bold transition-colors flex items-center gap-1 shadow-sm">
+                    <button onClick={() => setIsSummaryModalOpen(true)} className="text-[var(--accent)] bg-[var(--border)] hover:bg-[var(--hover)] px-2.5 py-1.5 rounded-2xl text-[10px] font-bold transition-colors flex items-center gap-1 shadow-sm">
                       <CameraIcon size={12}/> Итоги
                     </button>
                   </div>
                   
                   <div className="flex justify-between mb-2">
-                    <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="p-1 hover:bg-[#EADFCF] rounded-lg text-[#74675B]"><ChevronLeftIcon size={16}/></button>
-                    <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="p-1 hover:bg-[#EADFCF] rounded-lg text-[#74675B]"><ChevronRightIcon size={16}/></button>
+                    <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="p-1 hover:bg-[var(--border)] rounded-lg text-[var(--secondary)]"><ChevronLeftIcon size={16}/></button>
+                    <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="p-1 hover:bg-[var(--border)] rounded-lg text-[var(--secondary)]"><ChevronRightIcon size={16}/></button>
                   </div>
 
                   <div className="grid grid-cols-7 gap-1 text-center mb-1">
                     {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(d => (
-                      <div key={d} className="text-[9px] font-black text-[#706155]">{d}</div>
+                      <div key={d} className="text-[9px] font-black text-[var(--muted)]">{d}</div>
                     ))}
                   </div>
                   
@@ -1097,60 +1120,60 @@ export default function App() {
                       const isFuture = day.date > todayMoscow;
                       const isPastOrToday = day.date <= todayMoscow;
                       
-                      let bgClass = 'bg-[#EFE7D8] hover:bg-[#E2D5C3] text-[#74675B]';
+                      let bgClass = 'bg-[var(--inset)] hover:bg-[var(--border-strong)] text-[var(--secondary)]';
                       
                       if (day.pages > 0) {
                         if (day.pages <= 20) {
-                          bgClass = 'bg-[#D2E7DB] hover:bg-[#C0DEC9] text-[#3E5C4E] shadow-sm'; 
+                          bgClass = 'bg-[var(--calendar-low)] hover:bg-[var(--calendar-low-hover)] text-[var(--calendar-low-ink)] shadow-sm';
                         } else if (day.pages <= 50) {
-                          bgClass = 'bg-[#98C4AB] hover:bg-[#83B398] text-[#243C2F] shadow-sm'; 
+                          bgClass = 'bg-[var(--calendar-medium)] hover:bg-[var(--calendar-medium-hover)] text-[var(--calendar-medium-ink)] shadow-sm';
                         } else if (day.pages <= 100) {
-                          bgClass = 'bg-[#6CA384] hover:bg-[#5B9273] text-[#102017] shadow-sm'; 
+                          bgClass = 'bg-[var(--calendar-high)] hover:bg-[var(--calendar-high-hover)] text-[var(--calendar-high-ink)] shadow-sm';
                         } else {
-                          bgClass = 'bg-[#477C5E] hover:bg-[#3D6B51] text-white shadow-sm'; 
+                          bgClass = 'bg-[var(--calendar-full)] hover:bg-[var(--calendar-full-hover)] text-white shadow-sm';
                         }
                       } else if (isPastOrToday) {
-                        bgClass = 'bg-[#E8C2C2] hover:bg-[#DFB3B3] text-[#7A3E3E] shadow-sm'; 
+                        bgClass = 'bg-[var(--calendar-empty)] hover:bg-[var(--calendar-empty-hover)] text-[var(--calendar-empty-ink)] shadow-sm';
                       } else if (isFuture) {
-                        bgClass = 'bg-transparent opacity-30 cursor-not-allowed text-[#706155]';
+                        bgClass = 'bg-transparent opacity-30 cursor-not-allowed text-[var(--muted)]';
                       }
 
                       return (
                         <button 
                           key={idx} onClick={() => handleDateClick(day.date)} disabled={isFuture}
-                          className={`aspect-square rounded-lg flex items-center justify-center text-[11px] font-bold transition-all relative ${bgClass} ${isSelected ? 'ring-2 ring-[#A68970] ring-offset-1 scale-110 z-10' : ''}`}
+                          className={`aspect-square rounded-lg flex items-center justify-center text-[11px] font-bold transition-all relative ${bgClass} ${isSelected ? 'ring-2 ring-[var(--focus)] ring-offset-1 scale-110 z-10' : ''}`}
                           title={`${day.date.toLocaleDateString()} - ${day.pages} стр. / ${day.minutes} мин.`}
                         >
                           {day.date.getDate()}
-                          {isToday && <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#846851] rounded-full"></div>}
+                          {isToday && <div className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[var(--today)] rounded-full"></div>}
                         </button>
                       );
                     })}
                   </div>
 
                   {/* Calendar Page-Count Legend */}
-                  <div className="mt-3.5 pt-2.5 border-t border-[#EADFCF] flex flex-wrap gap-1.5 sm:gap-2 text-[8px] sm:text-[9px] font-bold text-[#74675B] justify-center items-center">
-                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[#E8C2C2] rounded-sm shadow-xs"></div> 0 стр</div>
-                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[#D2E7DB] rounded-sm shadow-xs"></div> 1–20</div>
-                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[#98C4AB] rounded-sm shadow-xs"></div> 21–50</div>
-                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[#6CA384] rounded-sm shadow-xs"></div> 51–100</div>
-                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[#477C5E] rounded-sm shadow-xs"></div> 100+</div>
+                  <div className="mt-3.5 pt-2.5 border-t border-[var(--border)] flex flex-wrap gap-1.5 sm:gap-2 text-[8px] sm:text-[9px] font-bold text-[var(--secondary)] justify-center items-center">
+                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[var(--calendar-empty)] rounded-sm shadow-xs"></div> 0 стр</div>
+                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[var(--calendar-low)] rounded-sm shadow-xs"></div> 1–20</div>
+                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[var(--calendar-medium)] rounded-sm shadow-xs"></div> 21–50</div>
+                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[var(--calendar-high)] rounded-sm shadow-xs"></div> 51–100</div>
+                    <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 bg-[var(--calendar-full)] rounded-sm shadow-xs"></div> 100+</div>
                   </div>
                 </div>
 
                 {/* Day Summary Card below calendar for mobile quick-view */}
-                <div className="bg-[#F7F2E8] rounded-2xl p-4 shadow-sm border border-[#EADFCF] flex justify-between items-center">
+                <div className="bg-[var(--panel)] rounded-2xl p-4 shadow-sm border border-[var(--border)] flex justify-between items-center">
                   <div className="flex flex-col">
-                    <span className="font-bold text-[#564B41] text-sm">
+                    <span className="font-bold text-[var(--heading)] text-sm">
                       {selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}
                     </span>
                     {selectedDate.toDateString() === todayMoscow.toDateString() && (
-                      <span className="text-[9px] font-black text-[#4F6F61] uppercase tracking-wider mt-0.5">Сегодня</span>
+                      <span className="text-[9px] font-black text-[var(--success-ink)] uppercase tracking-wider mt-0.5">Сегодня</span>
                     )}
                   </div>
                   <div className="flex flex-col items-end">
-                    <span className="font-black text-[#765A45] text-lg leading-none">{pagesOnSelectedDateAllBooks} <span className="text-[10px] uppercase text-[#706155]">стр</span></span>
-                    <span className="text-[11px] font-bold text-[#74675B] mt-1">{Math.floor(minsOnSelectedDateAllBooks / 60)}ч {minsOnSelectedDateAllBooks % 60}м</span>
+                    <span className="font-black text-[var(--accent)] text-lg leading-none">{pagesOnSelectedDateAllBooks} <span className="text-[10px] uppercase text-[var(--muted)]">стр</span></span>
+                    <span className="text-[11px] font-bold text-[var(--secondary)] mt-1">{Math.floor(minsOnSelectedDateAllBooks / 60)}ч {minsOnSelectedDateAllBooks % 60}м</span>
                   </div>
                 </div>
               </div>
@@ -1166,51 +1189,51 @@ export default function App() {
             {/* Library Status Badges with Book Counts */}
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
               {[
-                { id: 'all', label: 'Все книги', count: books.length, color: 'text-[#765A45]' },
-                { id: 'reading', label: 'В процессе', count: activeBooks.length, color: 'text-[#8A542B]' },
-                { id: 'read', label: 'Прочитано', count: readBooksList.length, color: 'text-[#486B59]' },
-                { id: 'wishlist', label: 'Виш-лист', count: wishlistBooks.length, color: 'text-[#46657F]' },
-                { id: 'dropped', label: 'Брошено', count: droppedBooks.length, color: 'text-[#9B493B]' }
+                { id: 'all', label: 'Все книги', count: books.length, color: 'text-[var(--accent)]' },
+                { id: 'reading', label: 'В процессе', count: activeBooks.length, color: 'text-[var(--orange-ink)]' },
+                { id: 'read', label: 'Прочитано', count: readBooksList.length, color: 'text-[var(--green-ink)]' },
+                { id: 'wishlist', label: 'Виш-лист', count: wishlistBooks.length, color: 'text-[var(--blue-ink)]' },
+                { id: 'dropped', label: 'Брошено', count: droppedBooks.length, color: 'text-[var(--danger-ink)]' }
               ].map(badge => (
                 <button
                   key={badge.id}
                   onClick={() => setFilter(badge.id)}
                   className={`p-3 rounded-2xl border transition-all text-left flex flex-col justify-between ${
                     filter === badge.id 
-                      ? 'bg-white border-[#A68970] shadow-sm' 
-                      : 'bg-[#F7F2E8] border-[#EADFCF] hover:bg-[#EFE7D8]'
+                      ? 'bg-[var(--surface)] border-[var(--focus)] shadow-sm'
+                      : 'bg-[var(--panel)] border-[var(--border)] hover:bg-[var(--inset)]'
                   }`}
                 >
-                  <span className="text-[10px] font-bold text-[#706155] uppercase">{badge.label}</span>
+                  <span className="text-[10px] font-bold text-[var(--muted)] uppercase">{badge.label}</span>
                   <span className={`text-xl font-black ${badge.color}`}>{badge.count}</span>
                 </button>
               ))}
             </div>
 
             {/* Filter and Search Bar */}
-            <div className="flex flex-col gap-3.5 bg-[#F7F2E8] p-4 md:p-5 rounded-3xl shadow-sm border border-[#EADFCF]">
+            <div className="flex flex-col gap-3.5 bg-[var(--panel)] p-4 md:p-5 rounded-3xl shadow-sm border border-[var(--border)]">
               <div className="flex flex-wrap justify-between items-center gap-2">
                 <div className="flex-1 relative min-w-[200px]">
-                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#706155]"><SearchIcon size={16}/></div>
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)]"><SearchIcon size={16}/></div>
                   <input 
                     type="text" 
                     placeholder="Поиск по названию, автору или серии..." 
                     value={searchQuery} 
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-[#FCF9F2] border border-[#EADFCF] text-[#4A4238] pl-10 pr-4 py-2.5 rounded-2xl font-bold text-xs md:text-sm outline-none focus:border-[#A68970] transition-colors"
+                    className="w-full bg-[var(--paper)] border border-[var(--border)] text-[var(--ink)] pl-10 pr-4 py-2.5 rounded-2xl font-bold text-xs md:text-sm outline-none focus:border-[var(--focus)] transition-colors"
                   />
                   {searchQuery && (
-                    <button onClick={() => setSearchQuery('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#706155] hover:text-[#564B41]">
+                    <button onClick={() => setSearchQuery('')} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)] hover:text-[var(--heading)]">
                       <XIcon size={14} />
                     </button>
                   )}
                 </div>
 
-                <div className="flex bg-[#EFE7D8] rounded-2xl p-1 border border-[#E2D5C3]">
-                  <button onClick={() => setViewMode('grid')} title="Сетка обложек" className={`p-2 rounded-xl transition-all ${viewMode === 'grid' ? 'bg-white text-[#765A45] shadow-sm' : 'text-[#74675B]'}`}>
+                <div className="flex bg-[var(--inset)] rounded-2xl p-1 border border-[var(--border-strong)]">
+                  <button onClick={() => setViewMode('grid')} title="Сетка обложек" className={`p-2 rounded-xl transition-all ${viewMode === 'grid' ? 'bg-[var(--surface)] text-[var(--accent)] shadow-sm' : 'text-[var(--secondary)]'}`}>
                     <GridIcon size={16} />
                   </button>
-                  <button onClick={() => setViewMode('shelf')} title="Книжная полка" className={`p-2 rounded-xl transition-all ${viewMode === 'shelf' ? 'bg-white text-[#765A45] shadow-sm' : 'text-[#74675B]'}`}>
+                  <button onClick={() => setViewMode('shelf')} title="Книжная полка" className={`p-2 rounded-xl transition-all ${viewMode === 'shelf' ? 'bg-[var(--surface)] text-[var(--accent)] shadow-sm' : 'text-[var(--secondary)]'}`}>
                     <LayersBoxIcon size={16} />
                   </button>
                 </div>
@@ -1221,7 +1244,7 @@ export default function App() {
                 <select 
                   value={genreFilter} 
                   onChange={(e) => setGenreFilter(e.target.value)} 
-                  className="bg-[#FCF9F2] border border-[#EADFCF] text-[#564B41] px-3 py-2 rounded-2xl font-bold text-xs outline-none cursor-pointer"
+                  className="bg-[var(--paper)] border border-[var(--border)] text-[var(--heading)] px-3 py-2 rounded-2xl font-bold text-xs outline-none cursor-pointer"
                 >
                   <option value="all">Все жанры</option>
                   {PREDEFINED_GENRES.map(g => (
@@ -1232,7 +1255,7 @@ export default function App() {
                 <select 
                   value={authorFilter} 
                   onChange={(e) => setAuthorFilter(e.target.value)} 
-                  className="bg-[#FCF9F2] border border-[#EADFCF] text-[#564B41] px-3 py-2 rounded-2xl font-bold text-xs outline-none cursor-pointer"
+                  className="bg-[var(--paper)] border border-[var(--border)] text-[var(--heading)] px-3 py-2 rounded-2xl font-bold text-xs outline-none cursor-pointer"
                 >
                   <option value="all">Все авторы</option>
                   {uniqueAuthors.map(a => <option key={a} value={a}>{a}</option>)}
@@ -1242,7 +1265,7 @@ export default function App() {
                   <select 
                     value={seriesFilter} 
                     onChange={(e) => setSeriesFilter(e.target.value)} 
-                    className="bg-[#FCF9F2] border border-[#EADFCF] text-[#564B41] px-3 py-2 rounded-2xl font-bold text-xs outline-none cursor-pointer"
+                    className="bg-[var(--paper)] border border-[var(--border)] text-[var(--heading)] px-3 py-2 rounded-2xl font-bold text-xs outline-none cursor-pointer"
                   >
                     <option value="all">Все серии</option>
                     {uniqueSeries.map(s => <option key={s} value={s}>{s}</option>)}
@@ -1252,7 +1275,7 @@ export default function App() {
                 {(genreFilter !== 'all' || authorFilter !== 'all' || seriesFilter !== 'all') && (
                   <button 
                     onClick={() => { setGenreFilter('all'); setAuthorFilter('all'); setSeriesFilter('all'); }} 
-                    className="text-xs font-bold text-[#9B493B] hover:underline px-2"
+                    className="text-xs font-bold text-[var(--danger-ink)] hover:underline px-2"
                   >
                     Сбросить
                   </button>
@@ -1263,8 +1286,8 @@ export default function App() {
             {/* Grid View */}
             {viewMode === 'grid' && (
               <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3.5">
-                <button onClick={openNewBookModal} className="bg-[#F7F2E8] border-2 border-dashed border-[#D5C6B4] rounded-2xl flex flex-col items-center justify-center text-[#706155] hover:text-[#765A45] hover:border-[#A68970] hover:bg-[#EFE7D8] transition-all aspect-[2/3] group shadow-sm">
-                  <div className="bg-[#EFE7D8] group-hover:bg-[#EADFCF] p-2.5 rounded-2xl mb-1.5 transition-colors"><PlusIcon size={20} /></div>
+                <button onClick={openNewBookModal} className="bg-[var(--panel)] border-2 border-dashed border-[var(--border-input)] rounded-2xl flex flex-col items-center justify-center text-[var(--muted)] hover:text-[var(--accent)] hover:border-[var(--focus)] hover:bg-[var(--inset)] transition-all aspect-[2/3] group shadow-sm">
+                  <div className="bg-[var(--inset)] group-hover:bg-[var(--border)] p-2.5 rounded-2xl mb-1.5 transition-colors"><PlusIcon size={20} /></div>
                   <span className="font-bold text-xs">Добавить книгу</span>
                 </button>
 
@@ -1275,49 +1298,49 @@ export default function App() {
                     <div 
                       key={book.id} 
                       onClick={() => { setCurrentBook(book); setIsModalOpen(true); }} 
-                      className="bg-[#F7F2E8] border border-[#EADFCF] rounded-2xl overflow-hidden hover:shadow-md transition-all cursor-pointer group flex flex-col aspect-[2/3] relative"
+                      className="bg-[var(--panel)] border border-[var(--border)] rounded-2xl overflow-hidden hover:shadow-md transition-all cursor-pointer group flex flex-col aspect-[2/3] relative"
                     >
                       <div className="absolute top-1.5 right-1.5 z-10 flex flex-col gap-1">
-                        <div className={`p-1 rounded-lg shadow-sm backdrop-blur-md bg-white/90 ${book.status === 'read' ? 'text-[#486B59]' : book.status === 'reading' || book.status === 'rereading' ? 'text-[#8A542B]' : book.status === 'dropped' ? 'text-[#9B493B]' : 'text-[#706155]'}`}>
+                        <div className={`p-1 rounded-lg shadow-sm backdrop-blur-md bg-[var(--surface)]/90 ${book.status === 'read' ? 'text-[var(--green-ink)]' : book.status === 'reading' || book.status === 'rereading' ? 'text-[var(--orange-ink)]' : book.status === 'dropped' ? 'text-[var(--danger-ink)]' : 'text-[var(--muted)]'}`}>
                           <CheckIcon size={10} />
                         </div>
-                        <div className="p-1 rounded-lg shadow-sm backdrop-blur-md bg-white/90 text-[#74675B]">
+                        <div className="p-1 rounded-lg shadow-sm backdrop-blur-md bg-[var(--surface)]/90 text-[var(--secondary)]">
                           <FormatIcon size={10} />
                         </div>
                         {book.sketchnoteUrl && (
                           <button 
                             onClick={(e) => { e.stopPropagation(); setSketchnoteModalUrl(book.sketchnoteUrl); }}
                             title="Посмотреть визуальный конспект"
-                            className="p-1 rounded-lg shadow-sm backdrop-blur-md bg-white/90 text-[#765A45] hover:scale-110 transition-transform"
+                            className="p-1 rounded-lg shadow-sm backdrop-blur-md bg-[var(--surface)]/90 text-[var(--accent)] hover:scale-110 transition-transform"
                           >
                             <EyeIcon size={10} />
                           </button>
                         )}
                       </div>
 
-                      <div className="flex-1 min-h-0 bg-[#EFE7D8] relative overflow-hidden">
+                      <div className="flex-1 min-h-0 bg-[var(--inset)] relative overflow-hidden">
                         {book.coverUrl ? (
                           <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-[#EAE2D2] text-[#765A45] font-black p-2 text-center text-xs">
+                          <div className="w-full h-full flex items-center justify-center bg-[var(--cover)] text-[var(--accent)] font-black p-2 text-center text-xs">
                             {book.title}
                           </div>
                         )}
                         
                         {book.seriesName && (
-                          <div className="absolute top-1.5 left-1.5 bg-black/60 text-[#FDFBF7] text-[7px] font-bold px-1.5 py-0.5 rounded backdrop-blur-sm max-w-[80%] truncate">
+                          <div className="absolute top-1.5 left-1.5 bg-black/60 text-[var(--ivory)] text-[7px] font-bold px-1.5 py-0.5 rounded backdrop-blur-sm max-w-[80%] truncate">
                             {book.seriesName} {book.seriesIndex ? `#${book.seriesIndex}` : ''}
                           </div>
                         )}
                       </div>
                       
-                      <div className="p-2.5 bg-[#F7F2E8] min-h-[64px] flex flex-col gap-1 shrink-0 border-t border-[#EFE7D8]">
+                      <div className="p-2.5 bg-[var(--panel)] min-h-[64px] flex flex-col gap-1 shrink-0 border-t border-[var(--inset)]">
                         <div>
-                          <h3 className="font-bold text-xs text-[#4A4238] line-clamp-1 leading-tight">{book.title}</h3>
-                          <p className="text-[10px] text-[#706155] line-clamp-1 mt-0.5">{book.author}</p>
+                          <h3 className="font-bold text-xs text-[var(--ink)] line-clamp-1 leading-tight">{book.title}</h3>
+                          <p className="text-[10px] text-[var(--muted)] line-clamp-1 mt-0.5">{book.author}</p>
                         </div>
                         
-                        <div className="mt-0.5 flex justify-between items-start gap-1 text-[9px] leading-tight font-bold text-[#765A45]">
+                        <div className="mt-0.5 flex justify-between items-start gap-1 text-[9px] leading-tight font-bold text-[var(--accent)]">
                           <span className="min-w-0 flex-1 break-words">{book.genre}</span>
                           {book.status === 'read' && book.rating > 0 && <span className="shrink-0 whitespace-nowrap">★ {book.rating}</span>}
                         </div>
@@ -1335,7 +1358,7 @@ export default function App() {
                   <div key={shelfIdx} className="relative pt-4">
                     <div className="flex flex-wrap items-end gap-3 sm:gap-6 px-4 pb-2 min-h-[210px]">
                       {shelfIdx === 0 && (
-                        <div onClick={openNewBookModal} className="w-20 sm:w-24 h-40 sm:h-52 border-2 border-dashed border-[#D5C6B4] bg-[#F7F2E8]/80 rounded-xl flex flex-col items-center justify-center text-[#706155] hover:text-[#765A45] hover:border-[#A68970] transition-all cursor-pointer shadow-sm mb-1">
+                        <div onClick={openNewBookModal} className="w-20 sm:w-24 h-40 sm:h-52 border-2 border-dashed border-[var(--border-input)] bg-[var(--panel)]/80 rounded-xl flex flex-col items-center justify-center text-[var(--muted)] hover:text-[var(--accent)] hover:border-[var(--focus)] transition-all cursor-pointer shadow-sm mb-1">
                           <PlusIcon size={24} />
                           <span className="text-[10px] font-bold mt-1">Добавить</span>
                         </div>
@@ -1343,12 +1366,12 @@ export default function App() {
 
                       {shelfBooks.map((book, bookIdx) => {
                         const spineColors = [
-                          'bg-[#846851] text-[#FDFBF7]',
-                          'bg-[#486B59] text-[#FDFBF7]',
-                          'bg-[#765B82] text-[#FDFBF7]',
-                          'bg-[#8A542B] text-[#FDFBF7]',
-                          'bg-[#564B41] text-[#FDFBF7]',
-                          'bg-[#BFA892] text-[#4A4238]'
+                          'bg-[var(--spine-brown)] text-[var(--ivory)]',
+                          'bg-[var(--spine-green)] text-[var(--ivory)]',
+                          'bg-[var(--spine-purple)] text-[var(--ivory)]',
+                          'bg-[var(--spine-orange)] text-[var(--ivory)]',
+                          'bg-[var(--duel)] text-[var(--ivory)]',
+                          'bg-[var(--goal-year)] text-[var(--ink)]'
                         ];
                         const spineColor = spineColors[(book.id + bookIdx) % spineColors.length];
 
@@ -1365,7 +1388,7 @@ export default function App() {
                               <div>
                                 <div className="text-[8px] font-bold opacity-80 uppercase tracking-widest truncate">{book.genre}</div>
                                 {book.seriesName && (
-                                  <div className="text-[7px] font-bold text-[#E2D5C3] truncate mt-0.5">
+                                  <div className="text-[7px] font-bold text-[var(--border-strong)] truncate mt-0.5">
                                     {book.seriesName} {book.seriesIndex ? `#${book.seriesIndex}` : ''}
                                   </div>
                                 )}
@@ -1385,15 +1408,15 @@ export default function App() {
                       })}
                     </div>
 
-                    <div className="h-4 sm:h-5 bg-gradient-to-b from-[#A68970] via-[#8C745E] to-[#6A5443] rounded-sm shadow-xl border-t border-[#C7B299] relative z-10 flex items-center justify-between px-6">
-                      <div className="w-2 h-2 rounded-full bg-[#524133] shadow-inner"></div>
-                      <div className="w-2 h-2 rounded-full bg-[#524133] shadow-inner"></div>
+                    <div className="h-4 sm:h-5 bg-gradient-to-b from-[var(--focus)] via-[var(--shelf-edge)] to-[var(--tag-ink)] rounded-sm shadow-xl border-t border-[var(--shelf)] relative z-10 flex items-center justify-between px-6">
+                      <div className="w-2 h-2 rounded-full bg-[var(--shelf-shadow)] shadow-inner"></div>
+                      <div className="w-2 h-2 rounded-full bg-[var(--shelf-shadow)] shadow-inner"></div>
                     </div>
                   </div>
                 ))}
 
                 {filteredBooks.length === 0 && (
-                  <div className="text-center py-12 text-[#706155] font-bold text-sm">
+                  <div className="text-center py-12 text-[var(--muted)] font-bold text-sm">
                     Книги не найдены. Измените параметры фильтрации или добавьте новую книгу.
                   </div>
                 )}
@@ -1406,19 +1429,19 @@ export default function App() {
           <div className="space-y-5 md:space-y-6">
             
             {/* Analytics Header Card */}
-            <div className="bg-[#F7F2E8] rounded-3xl p-5 md:p-6 shadow-sm border border-[#EADFCF] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="bg-[var(--panel)] rounded-3xl p-5 md:p-6 shadow-sm border border-[var(--border)] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
-                <h2 className="text-xl md:text-2xl font-black text-[#564B41] flex items-center gap-2.5">
-                  <span className="bg-[#EFE7D8] text-[#765A45] p-2 rounded-2xl"><BarChart2Icon size={22}/></span>
+                <h2 className="text-xl md:text-2xl font-black text-[var(--heading)] flex items-center gap-2.5">
+                  <span className="bg-[var(--inset)] text-[var(--accent)] p-2 rounded-2xl"><BarChart2Icon size={22}/></span>
                   Аналитика и прочитанное
                 </h2>
-                <p className="text-xs md:text-sm text-[#706155] mt-1">
+                <p className="text-xs md:text-sm text-[var(--muted)] mt-1">
                   Подробная статистика вашего прогресса чтения, разбивка по месяцам, жанрам и форматам.
                 </p>
               </div>
 
               {/* Subtabs Switcher */}
-              <div className="flex flex-wrap bg-[#EFE7D8] rounded-2xl p-1 border border-[#E2D5C3]">
+              <div className="flex flex-wrap bg-[var(--inset)] rounded-2xl p-1 border border-[var(--border-strong)]">
                 {[
                   { id: 'months', label: 'По месяцам' },
                   { id: 'genres', label: 'По жанрам' },
@@ -1428,7 +1451,7 @@ export default function App() {
                   <button
                     key={tab.id}
                     onClick={() => setStatViewType(tab.id)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${statViewType === tab.id ? 'bg-white text-[#765A45] shadow-sm' : 'text-[#74675B] hover:text-[#4A4238]'}`}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${statViewType === tab.id ? 'bg-[var(--surface)] text-[var(--accent)] shadow-sm' : 'text-[var(--secondary)] hover:text-[var(--ink)]'}`}
                   >
                     {tab.label}
                   </button>
@@ -1438,43 +1461,43 @@ export default function App() {
 
             {/* Quick Metrics Bar in Analytics */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className="bg-[#F7F2E8] p-4 rounded-2xl border border-[#EADFCF] shadow-sm">
-                <span className="text-[10px] font-bold text-[#706155] uppercase">Всего прочитано</span>
-                <p className="text-2xl font-black text-[#765A45] mt-1">{totalReadBooks} книг</p>
+              <div className="bg-[var(--panel)] p-4 rounded-2xl border border-[var(--border)] shadow-sm">
+                <span className="text-[10px] font-bold text-[var(--muted)] uppercase">Всего прочитано</span>
+                <p className="text-2xl font-black text-[var(--accent)] mt-1">{totalReadBooks} книг</p>
               </div>
-              <div className="bg-[#F7F2E8] p-4 rounded-2xl border border-[#EADFCF] shadow-sm">
-                <span className="text-[10px] font-bold text-[#706155] uppercase">Прочитано страниц</span>
-                <p className="text-2xl font-black text-[#486B59] mt-1">{totalReadPages}</p>
+              <div className="bg-[var(--panel)] p-4 rounded-2xl border border-[var(--border)] shadow-sm">
+                <span className="text-[10px] font-bold text-[var(--muted)] uppercase">Прочитано страниц</span>
+                <p className="text-2xl font-black text-[var(--green-ink)] mt-1">{totalReadPages}</p>
               </div>
-              <div className="bg-[#F7F2E8] p-4 rounded-2xl border border-[#EADFCF] shadow-sm">
-                <span className="text-[10px] font-bold text-[#706155] uppercase">Время за чтением</span>
-                <p className="text-2xl font-black text-[#765B82] mt-1">{Math.floor(totalMinutesAllTime / 60)}ч {totalMinutesAllTime % 60}м</p>
+              <div className="bg-[var(--panel)] p-4 rounded-2xl border border-[var(--border)] shadow-sm">
+                <span className="text-[10px] font-bold text-[var(--muted)] uppercase">Время за чтением</span>
+                <p className="text-2xl font-black text-[var(--purple-ink)] mt-1">{Math.floor(totalMinutesAllTime / 60)}ч {totalMinutesAllTime % 60}м</p>
               </div>
-              <div className="bg-[#F7F2E8] p-4 rounded-2xl border border-[#EADFCF] shadow-sm">
-                <span className="text-[10px] font-bold text-[#706155] uppercase">Дней без пропуска</span>
-                <p className="text-2xl font-black text-[#9B493B] mt-1">{totalStreak} {getPluralDays(totalStreak)}</p>
+              <div className="bg-[var(--panel)] p-4 rounded-2xl border border-[var(--border)] shadow-sm">
+                <span className="text-[10px] font-bold text-[var(--muted)] uppercase">Дней без пропуска</span>
+                <p className="text-2xl font-black text-[var(--danger-ink)] mt-1">{totalStreak} {getPluralDays(totalStreak)}</p>
               </div>
             </div>
 
             {/* Monthly Breakdown View */}
             {statViewType === 'months' && (
-              <div className="bg-[#F7F2E8] p-5 md:p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-4">
+              <div className="bg-[var(--panel)] p-5 md:p-6 rounded-3xl border border-[var(--border)] shadow-sm space-y-4">
                 <div className="flex justify-between items-center">
-                  <h4 className="text-xs md:text-sm font-black text-[#765A45] uppercase tracking-wider">История прочитанного по месяцам</h4>
-                  <span className="text-[11px] font-bold text-[#706155]">Нажмите на обложку для просмотра деталей</span>
+                  <h4 className="text-xs md:text-sm font-black text-[var(--accent)] uppercase tracking-wider">История прочитанного по месяцам</h4>
+                  <span className="text-[11px] font-bold text-[var(--muted)]">Нажмите на обложку для просмотра деталей</span>
                 </div>
 
                 {monthlyStats.length === 0 ? (
-                  <p className="text-xs text-[#706155] py-10 text-center">Вы пока не завершили ни одной книги с указанием даты.</p>
+                  <p className="text-xs text-[var(--muted)] py-10 text-center">Вы пока не завершили ни одной книги с указанием даты.</p>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {monthlyStats.map(month => (
-                      <div key={month.key} className="bg-[#FCF9F2] p-4 rounded-2xl border border-[#EADFCF] shadow-sm flex flex-col gap-3">
-                        <div className="flex justify-between items-center border-b border-[#EADFCF] pb-2">
-                          <h5 className="font-bold text-[#564B41] capitalize">{month.label}</h5>
+                      <div key={month.key} className="bg-[var(--paper)] p-4 rounded-2xl border border-[var(--border)] shadow-sm flex flex-col gap-3">
+                        <div className="flex justify-between items-center border-b border-[var(--border)] pb-2">
+                          <h5 className="font-bold text-[var(--heading)] capitalize">{month.label}</h5>
                           <div className="text-right">
-                            <span className="block font-black text-[#765A45] text-sm">{month.books.length} книг</span>
-                            <span className="block text-[10px] font-bold text-[#706155]">{month.pages} стр.</span>
+                            <span className="block font-black text-[var(--accent)] text-sm">{month.books.length} книг</span>
+                            <span className="block text-[10px] font-bold text-[var(--muted)]">{month.pages} стр.</span>
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-2.5 overflow-y-auto max-h-48 pr-1">
@@ -1483,12 +1506,12 @@ export default function App() {
                               key={b.id} 
                               title={`${b.title} — ${b.author}`} 
                               onClick={() => { setCurrentBook(b); setIsModalOpen(true); }} 
-                              className="w-14 sm:w-16 aspect-[2/3] bg-[#EFE7D8] rounded-xl overflow-hidden shadow-sm border border-[#E2D5C3] cursor-pointer hover:scale-105 transition-transform shrink-0 relative group"
+                              className="w-14 sm:w-16 aspect-[2/3] bg-[var(--inset)] rounded-xl overflow-hidden shadow-sm border border-[var(--border-strong)] cursor-pointer hover:scale-105 transition-transform shrink-0 relative group"
                             >
                               {b.coverUrl ? (
                                 <img src={b.coverUrl} className="w-full h-full object-cover" alt="" />
                               ) : (
-                                <div className="text-[8px] p-1 text-center font-bold text-[#765A45] leading-tight flex items-center justify-center h-full bg-[#EAE2D2]">{b.title}</div>
+                                <div className="text-[8px] p-1 text-center font-bold text-[var(--accent)] leading-tight flex items-center justify-center h-full bg-[var(--cover)]">{b.title}</div>
                               )}
                               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                 <SearchIcon size={14} className="text-white" />
@@ -1504,30 +1527,30 @@ export default function App() {
             )}
 
             {statViewType === 'genres' && (
-              <div className="bg-[#F7F2E8] p-5 md:p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-4">
+              <div className="bg-[var(--panel)] p-5 md:p-6 rounded-3xl border border-[var(--border)] shadow-sm space-y-4">
                 <div className="flex justify-between items-center">
-                  <h4 className="text-xs md:text-sm font-black text-[#765A45] uppercase tracking-wider">Распределение по жанрам</h4>
-                  <span className="text-[11px] font-bold text-[#706155]">Всего прочитано: {totalReadBooks}</span>
+                  <h4 className="text-xs md:text-sm font-black text-[var(--accent)] uppercase tracking-wider">Распределение по жанрам</h4>
+                  <span className="text-[11px] font-bold text-[var(--muted)]">Всего прочитано: {totalReadBooks}</span>
                 </div>
                 {genreStats.length === 0 ? (
-                  <p className="text-xs text-[#706155] py-10 text-center">Прочитайте книги, чтобы увидеть статистику жанров.</p>
+                  <p className="text-xs text-[var(--muted)] py-10 text-center">Прочитайте книги, чтобы увидеть статистику жанров.</p>
                 ) : (
-                  <div className="space-y-3.5 bg-[#FCF9F2] p-5 rounded-2xl border border-[#EADFCF]">
+                  <div className="space-y-3.5 bg-[var(--paper)] p-5 rounded-2xl border border-[var(--border)]">
                     {genreStats.map(([genre, count], i) => {
                       const percent = totalReadBooks > 0 ? Math.round((count / totalReadBooks) * 100) : 0;
-                      const colors = ['bg-[#846851]', 'bg-[#6F8E80]', 'bg-[#9E82A8]', 'bg-[#C98E5E]', 'bg-[#62839F]', 'bg-[#BFA892]'];
+                      const colors = ['bg-[var(--today)]', 'bg-[var(--green-bar)]', 'bg-[var(--purple-bar)]', 'bg-[var(--orange-bar)]', 'bg-[var(--blue-bar)]', 'bg-[var(--goal-year)]'];
                       const barColor = colors[i % colors.length];
 
                       return (
                         <div key={genre} className="space-y-1.5">
-                          <div className="flex justify-between text-xs font-bold text-[#564B41]">
+                          <div className="flex justify-between text-xs font-bold text-[var(--heading)]">
                             <span className="flex items-center gap-2">
                               <span className={`w-2.5 h-2.5 rounded-full ${barColor}`}></span>
                               {genre}
                             </span>
                             <span>{count} книг ({percent}%)</span>
                           </div>
-                          <div className="w-full bg-[#EADFCF] rounded-full h-2.5 overflow-hidden shadow-inner">
+                          <div className="w-full bg-[var(--border)] rounded-full h-2.5 overflow-hidden shadow-inner">
                             <div className={`${barColor} h-2.5 rounded-full transition-all duration-700`} style={{ width: `${percent}%` }}></div>
                           </div>
                         </div>
@@ -1539,24 +1562,24 @@ export default function App() {
             )}
 
             {statViewType === 'formats' && (
-              <div className="bg-[#F7F2E8] p-5 md:p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-4">
-                <h4 className="text-xs md:text-sm font-black text-[#765A45] uppercase tracking-wider">Форматы прочитанных книг</h4>
+              <div className="bg-[var(--panel)] p-5 md:p-6 rounded-3xl border border-[var(--border)] shadow-sm space-y-4">
+                <h4 className="text-xs md:text-sm font-black text-[var(--accent)] uppercase tracking-wider">Форматы прочитанных книг</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                   {[
-                    { id: 'paper', label: 'Бумажные', count: formatStats.paper, color: 'border-[#846851] text-[#765A45]', bg: 'bg-[#846851]' },
-                    { id: 'ebook', label: 'Электронные', count: formatStats.ebook, color: 'border-[#62839F] text-[#46657F]', bg: 'bg-[#62839F]' },
-                    { id: 'audio', label: 'Аудиокниги', count: formatStats.audio, color: 'border-[#9E82A8] text-[#765B82]', bg: 'bg-[#9E82A8]' },
-                    { id: 'combo', label: 'Комбо', count: formatStats.combo, color: 'border-[#6F8E80] text-[#486B59]', bg: 'bg-[#6F8E80]' }
+                    { id: 'paper', label: 'Бумажные', count: formatStats.paper, color: 'border-[var(--today)] text-[var(--accent)]', bg: 'bg-[var(--today)]' },
+                    { id: 'ebook', label: 'Электронные', count: formatStats.ebook, color: 'border-[var(--blue-bar)] text-[var(--blue-ink)]', bg: 'bg-[var(--blue-bar)]' },
+                    { id: 'audio', label: 'Аудиокниги', count: formatStats.audio, color: 'border-[var(--purple-bar)] text-[var(--purple-ink)]', bg: 'bg-[var(--purple-bar)]' },
+                    { id: 'combo', label: 'Комбо', count: formatStats.combo, color: 'border-[var(--green-bar)] text-[var(--green-ink)]', bg: 'bg-[var(--green-bar)]' }
                   ].map(f => {
                     const percent = totalReadBooks > 0 ? Math.round((f.count / totalReadBooks) * 100) : 0;
                     return (
-                      <div key={f.id} className="bg-[#FCF9F2] p-4 rounded-2xl border border-[#EADFCF] flex flex-col justify-between shadow-sm">
+                      <div key={f.id} className="bg-[var(--paper)] p-4 rounded-2xl border border-[var(--border)] flex flex-col justify-between shadow-sm">
                         <div className="flex justify-between items-center mb-2">
-                          <span className="text-xs font-bold text-[#74675B]">{f.label}</span>
-                          <span className={`text-[10px] font-black px-2 py-0.5 rounded-full bg-white border ${f.color}`}>{percent}%</span>
+                          <span className="text-xs font-bold text-[var(--secondary)]">{f.label}</span>
+                          <span className={`text-[10px] font-black px-2 py-0.5 rounded-full bg-[var(--surface)] border ${f.color}`}>{percent}%</span>
                         </div>
-                        <div className="text-2xl font-black text-[#4A4238] mb-2">{f.count} <span className="text-xs font-bold text-[#706155]">книг</span></div>
-                        <div className="w-full bg-[#EADFCF] rounded-full h-1.5 overflow-hidden">
+                        <div className="text-2xl font-black text-[var(--ink)] mb-2">{f.count} <span className="text-xs font-bold text-[var(--muted)]">книг</span></div>
+                        <div className="w-full bg-[var(--border)] rounded-full h-1.5 overflow-hidden">
                           <div className={`${f.bg} h-1.5 rounded-full transition-all duration-500`} style={{ width: `${percent}%` }}></div>
                         </div>
                       </div>
@@ -1567,26 +1590,26 @@ export default function App() {
             )}
 
             {statViewType === 'activity' && (
-              <div className="bg-[#F7F2E8] p-5 md:p-6 rounded-3xl border border-[#EADFCF] shadow-sm space-y-4">
+              <div className="bg-[var(--panel)] p-5 md:p-6 rounded-3xl border border-[var(--border)] shadow-sm space-y-4">
                 <div className="flex justify-between items-center">
-                  <h4 className="text-xs md:text-sm font-black text-[#765A45] uppercase tracking-wider">Активность чтения по дням недели</h4>
-                  <span className="text-[11px] font-bold text-[#706155]">Сумма прочитанных страниц</span>
+                  <h4 className="text-xs md:text-sm font-black text-[var(--accent)] uppercase tracking-wider">Активность чтения по дням недели</h4>
+                  <span className="text-[11px] font-bold text-[var(--muted)]">Сумма прочитанных страниц</span>
                 </div>
-                <div className="bg-[#FCF9F2] p-5 rounded-2xl border border-[#EADFCF]">
+                <div className="bg-[var(--paper)] p-5 rounded-2xl border border-[var(--border)]">
                   <div className="grid grid-cols-2 sm:grid-cols-7 gap-2.5">
                     {weekdayStats.map(w => {
                       const maxPages = Math.max(...weekdayStats.map(item => item.pages), 1);
                       const heightPercent = Math.max(15, Math.round((w.pages / maxPages) * 100));
 
                       return (
-                        <div key={w.day} className="bg-[#F7F2E8] p-3 rounded-2xl border border-[#EADFCF] flex flex-col items-center justify-between h-40">
-                          <span className="text-[10px] font-black text-[#564B41]">{w.pages} стр.</span>
-                          <div className="w-8 bg-[#EADFCF] rounded-xl h-24 flex items-end overflow-hidden p-1">
-                            <div className="w-full bg-[#806047] rounded-lg transition-all duration-700" style={{ height: `${heightPercent}%` }}></div>
+                        <div key={w.day} className="bg-[var(--panel)] p-3 rounded-2xl border border-[var(--border)] flex flex-col items-center justify-between h-40">
+                          <span className="text-[10px] font-black text-[var(--heading)]">{w.pages} стр.</span>
+                          <div className="w-8 bg-[var(--border)] rounded-xl h-24 flex items-end overflow-hidden p-1">
+                            <div className="w-full bg-[var(--button)] rounded-lg transition-all duration-700" style={{ height: `${heightPercent}%` }}></div>
                           </div>
                           <div className="text-center">
-                            <span className="block text-[11px] font-bold text-[#706155]">{w.day}</span>
-                            <span className="hidden sm:block text-[8px] text-[#706155]">{w.fullName.slice(0, 3)}</span>
+                            <span className="block text-[11px] font-bold text-[var(--muted)]">{w.day}</span>
+                            <span className="hidden sm:block text-[8px] text-[var(--muted)]">{w.fullName.slice(0, 3)}</span>
                           </div>
                         </div>
                       );
@@ -1602,20 +1625,20 @@ export default function App() {
         {/* ================= ROULETTE TAB ================= */}
         {activeTab === 'roulette' && (
           <div className="max-w-xl mx-auto text-center py-6">
-            <div className="bg-[#F7F2E8] rounded-[2.5rem] p-6 sm:p-10 shadow-sm border border-[#EADFCF]">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-[#EFE7D8] text-[#765A45] rounded-3xl mb-4 shadow-sm">
+            <div className="bg-[var(--panel)] rounded-[2.5rem] p-6 sm:p-10 shadow-sm border border-[var(--border)]">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-[var(--inset)] text-[var(--accent)] rounded-3xl mb-4 shadow-sm">
                 <ShuffleIcon size={32} />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#564B41] mb-2">Книжная рулетка</h2>
-              <p className="text-[#706155] text-xs sm:text-sm mb-6">Случайный выбор следующей книги из вашего списка желаний.</p>
+              <h2 className="text-2xl sm:text-3xl font-black text-[var(--heading)] mb-2">Книжная рулетка</h2>
+              <p className="text-[var(--muted)] text-xs sm:text-sm mb-6">Случайный выбор следующей книги из вашего списка желаний.</p>
 
               {/* Genre selector for Roulette */}
               <div className="mb-6 flex justify-center items-center gap-2">
-                <span className="text-xs font-bold text-[#74675B]">Жанр:</span>
+                <span className="text-xs font-bold text-[var(--secondary)]">Жанр:</span>
                 <select 
                   value={rouletteGenre} 
                   onChange={(e) => setRouletteGenre(e.target.value)}
-                  className="bg-[#FCF9F2] border border-[#EADFCF] rounded-2xl px-3 py-2 text-xs font-bold text-[#564B41] outline-none"
+                  className="bg-[var(--paper)] border border-[var(--border)] rounded-2xl px-3 py-2 text-xs font-bold text-[var(--heading)] outline-none"
                 >
                   <option value="all">Любой жанр ({wishlistBooks.length})</option>
                   {PREDEFINED_GENRES.map(g => {
@@ -1627,33 +1650,33 @@ export default function App() {
               </div>
 
               {roulettePool.length === 0 ? (
-                <div className="p-6 bg-[#EFE7D8] rounded-2xl text-xs font-bold text-[#706155] mb-6">
+                <div className="p-6 bg-[var(--inset)] rounded-2xl text-xs font-bold text-[var(--muted)] mb-6">
                   {wishlistBooks.length === 0 
                     ? 'В вашем виш-листе пока нет книг. Добавьте книги со статусом «Виш-лист», чтобы запустить рулетку!'
                     : 'В выбранном жанре нет книг в виш-листе. Выберите другой жанр или сбросьте фильтр.'}
                 </div>
               ) : (
                 <div className="mb-8">
-                  <div className="w-44 sm:w-52 aspect-[2/3] mx-auto bg-[#EFE7D8] rounded-3xl overflow-hidden shadow-xl border-4 border-[#EADFCF] mb-4 flex items-center justify-center relative">
+                  <div className="w-44 sm:w-52 aspect-[2/3] mx-auto bg-[var(--inset)] rounded-3xl overflow-hidden shadow-xl border-4 border-[var(--border)] mb-4 flex items-center justify-center relative">
                     {rouletteBook ? (
                       rouletteBook.coverUrl ? (
                         <img src={rouletteBook.coverUrl} className={`w-full h-full object-cover transition-all ${isSpinning ? 'blur-sm scale-105' : 'scale-100'}`} alt="" />
                       ) : (
-                        <div className="p-4 text-center text-xs font-bold text-[#765A45]">{rouletteBook.title}</div>
+                        <div className="p-4 text-center text-xs font-bold text-[var(--accent)]">{rouletteBook.title}</div>
                       )
                     ) : (
-                      <div className="text-[#706155] font-bold text-xs p-4 text-center">Нажмите кнопку ниже, чтобы выбрать книгу</div>
+                      <div className="text-[var(--muted)] font-bold text-xs p-4 text-center">Нажмите кнопку ниже, чтобы выбрать книгу</div>
                     )}
                   </div>
 
                   {rouletteBook && !isSpinning && (
                     <div className="space-y-2">
-                      <h3 className="font-black text-lg sm:text-xl text-[#4A4238]">{rouletteBook.title}</h3>
-                      <p className="text-xs sm:text-sm text-[#706155]">{rouletteBook.author} • {rouletteBook.genre}</p>
+                      <h3 className="font-black text-lg sm:text-xl text-[var(--ink)]">{rouletteBook.title}</h3>
+                      <p className="text-xs sm:text-sm text-[var(--muted)]">{rouletteBook.author} • {rouletteBook.genre}</p>
                       <button onClick={() => {
                         setBooks(books.map(b => b.id === rouletteBook.id ? { ...b, status: 'reading', dateStarted: getMoscowDateString(0) } : b));
                         setActiveTab('diary');
-                      }} className="bg-[#486B59] hover:bg-[#3C594A] text-white px-6 py-2.5 rounded-2xl font-bold text-xs sm:text-sm transition-colors shadow-sm mt-3">
+                      }} className="bg-[var(--spine-green)] hover:bg-[var(--success-button-hover)] text-white px-6 py-2.5 rounded-2xl font-bold text-xs sm:text-sm transition-colors shadow-sm mt-3">
                         Начать читать эту книгу!
                       </button>
                     </div>
@@ -1662,7 +1685,7 @@ export default function App() {
               )}
 
               {roulettePool.length > 0 && (
-                <button onClick={spinRoulette} disabled={isSpinning} className="bg-[#806047] hover:bg-[#694C37] disabled:bg-[#D5C6B4] disabled:text-[#564B41] text-white px-8 py-3.5 rounded-2xl font-black text-sm sm:text-base transition-all shadow-md flex items-center gap-2 mx-auto">
+                <button onClick={spinRoulette} disabled={isSpinning} className="bg-[var(--button)] hover:bg-[var(--button-hover)] disabled:bg-[var(--border-input)] disabled:text-[var(--heading)] text-white px-8 py-3.5 rounded-2xl font-black text-sm sm:text-base transition-all shadow-md flex items-center gap-2 mx-auto">
                   <ShuffleIcon size={18} /> {isSpinning ? 'Крутим рулетку...' : 'Испытать удачу'}
                 </button>
               )}
@@ -1674,115 +1697,115 @@ export default function App() {
         {activeTab === 'tournament' && (
           <div className="max-w-4xl mx-auto">
             {tournamentPhase === 'setup' && (
-              <div className="bg-[#F7F2E8] rounded-3xl p-5 sm:p-10 shadow-sm border border-[#EADFCF]">
+              <div className="bg-[var(--panel)] rounded-3xl p-5 sm:p-10 shadow-sm border border-[var(--border)]">
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-14 h-14 bg-[#EFE7D8] text-[#765A45] rounded-3xl mb-3 shadow-sm"><TrophyIcon size={28} /></div>
-                  <h2 className="text-2xl sm:text-3xl font-black text-[#564B41] mb-1.5">Книжный Турнир</h2>
-                  <p className="text-[#706155] text-xs sm:text-base">Столкните прочитанные книги в раундах на вылет и определите главного победителя!</p>
+                  <div className="inline-flex items-center justify-center w-14 h-14 bg-[var(--inset)] text-[var(--accent)] rounded-3xl mb-3 shadow-sm"><TrophyIcon size={28} /></div>
+                  <h2 className="text-2xl sm:text-3xl font-black text-[var(--heading)] mb-1.5">Книжный Турнир</h2>
+                  <p className="text-[var(--muted)] text-xs sm:text-base">Столкните прочитанные книги в раундах на вылет и определите главного победителя!</p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row justify-center gap-3 mb-6">
-                  <button onClick={() => { setBracketSize(4); setSelectedForTournament([]); }} className={`px-5 py-2.5 rounded-2xl font-bold border-2 text-xs sm:text-sm transition-all ${bracketSize === 4 ? 'border-[#A68970] bg-[#FCF9F2] text-[#765A45]' : 'border-[#EADFCF] text-[#706155] hover:border-[#D5C6B4]'}`}>Полуфинал (4 книги)</button>
-                  <button onClick={() => { setBracketSize(8); setSelectedForTournament([]); }} className={`px-5 py-2.5 rounded-2xl font-bold border-2 text-xs sm:text-sm transition-all ${bracketSize === 8 ? 'border-[#A68970] bg-[#FCF9F2] text-[#765A45]' : 'border-[#EADFCF] text-[#706155] hover:border-[#D5C6B4]'}`}>Четвертьфинал (8 книг)</button>
+                  <button onClick={() => { setBracketSize(4); setSelectedForTournament([]); }} className={`px-5 py-2.5 rounded-2xl font-bold border-2 text-xs sm:text-sm transition-all ${bracketSize === 4 ? 'border-[var(--focus)] bg-[var(--paper)] text-[var(--accent)]' : 'border-[var(--border)] text-[var(--muted)] hover:border-[var(--border-input)]'}`}>Полуфинал (4 книги)</button>
+                  <button onClick={() => { setBracketSize(8); setSelectedForTournament([]); }} className={`px-5 py-2.5 rounded-2xl font-bold border-2 text-xs sm:text-sm transition-all ${bracketSize === 8 ? 'border-[var(--focus)] bg-[var(--paper)] text-[var(--accent)]' : 'border-[var(--border)] text-[var(--muted)] hover:border-[var(--border-input)]'}`}>Четвертьфинал (8 книг)</button>
                 </div>
 
-                <div className="mb-3 flex justify-between items-center text-xs sm:text-sm font-bold text-[#706155]">
+                <div className="mb-3 flex justify-between items-center text-xs sm:text-sm font-bold text-[var(--muted)]">
                   <span>Выберите {bracketSize} книг:</span>
-                  <span className={selectedForTournament.length === bracketSize ? 'text-[#486B59]' : 'text-[#706155]'}>Выбрано: {selectedForTournament.length} / {bracketSize}</span>
+                  <span className={selectedForTournament.length === bracketSize ? 'text-[var(--green-ink)]' : 'text-[var(--muted)]'}>Выбрано: {selectedForTournament.length} / {bracketSize}</span>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 mb-6">
                   {readBooksList.map(book => (
-                    <div key={book.id} onClick={() => toggleTournamentSelection(book.id)} className={`cursor-pointer rounded-2xl border-2 p-2.5 transition-all flex flex-col aspect-[3/4] sm:aspect-auto sm:h-28 relative overflow-hidden group ${selectedForTournament.includes(book.id) ? 'border-[#A68970]' : 'border-[#EADFCF] hover:border-[#D5C6B4]'}`}>
+                    <div key={book.id} onClick={() => toggleTournamentSelection(book.id)} className={`cursor-pointer rounded-2xl border-2 p-2.5 transition-all flex flex-col aspect-[3/4] sm:aspect-auto sm:h-28 relative overflow-hidden group ${selectedForTournament.includes(book.id) ? 'border-[var(--focus)]' : 'border-[var(--border)] hover:border-[var(--border-input)]'}`}>
                       {book.coverUrl ? (
                         <div className="absolute inset-0 z-0 opacity-40 group-hover:opacity-60 transition-opacity"><img src={book.coverUrl} className="w-full h-full object-cover blur-[2px] scale-110" alt=""/></div>
-                      ) : <div className="absolute inset-0 bg-[#EFE7D8] z-0"></div>}
+                      ) : <div className="absolute inset-0 bg-[var(--inset)] z-0"></div>}
                       
                       <div className="relative z-10 flex flex-col h-full justify-between">
-                        <div className="bg-white/90 backdrop-blur rounded-xl p-1.5 shadow-sm">
-                          <h4 className="font-bold text-[10px] sm:text-xs text-[#4A4238] line-clamp-2 leading-tight">{book.title}</h4>
+                        <div className="bg-[var(--surface)]/90 backdrop-blur rounded-xl p-1.5 shadow-sm">
+                          <h4 className="font-bold text-[10px] sm:text-xs text-[var(--ink)] line-clamp-2 leading-tight">{book.title}</h4>
                         </div>
                         <div className="self-end mt-auto">
-                          <div className={`inline-flex rounded-full p-1 shadow-sm ${selectedForTournament.includes(book.id) ? 'bg-[#806047] text-white' : 'bg-white text-[#706155]'}`}><CheckIcon size={12} /></div>
+                          <div className={`inline-flex rounded-full p-1 shadow-sm ${selectedForTournament.includes(book.id) ? 'bg-[var(--button)] text-white' : 'bg-[var(--surface)] text-[var(--muted)]'}`}><CheckIcon size={12} /></div>
                         </div>
                       </div>
                     </div>
                   ))}
-                  {readBooksList.length === 0 && <div className="col-span-full py-8 text-center text-[#765A45] font-bold text-sm">Добавьте книги со статусом «Прочитано», чтобы начать турнир!</div>}
+                  {readBooksList.length === 0 && <div className="col-span-full py-8 text-center text-[var(--accent)] font-bold text-sm">Добавьте книги со статусом «Прочитано», чтобы начать турнир!</div>}
                 </div>
 
                 <div className="text-center">
-                  <button onClick={startTournament} disabled={selectedForTournament.length !== bracketSize} className="bg-[#806047] hover:bg-[#694C37] disabled:bg-[#EADFCF] disabled:text-[#564B41] disabled:cursor-not-allowed text-white px-7 py-3.5 rounded-2xl font-black text-sm sm:text-base tracking-wide transition-all shadow-md w-full sm:w-auto">НАЧАТЬ ТУРНИР</button>
+                  <button onClick={startTournament} disabled={selectedForTournament.length !== bracketSize} className="bg-[var(--button)] hover:bg-[var(--button-hover)] disabled:bg-[var(--border)] disabled:text-[var(--heading)] disabled:cursor-not-allowed text-white px-7 py-3.5 rounded-2xl font-black text-sm sm:text-base tracking-wide transition-all shadow-md w-full sm:w-auto">НАЧАТЬ ТУРНИР</button>
                 </div>
               </div>
             )}
 
             {tournamentPhase === 'bracket' && (
-              <div className="bg-[#564B41] rounded-3xl p-5 sm:p-10 shadow-xl text-center relative overflow-hidden text-[#F7F2E8]">
-                <h3 className="text-[#BAACA0] font-bold tracking-widest uppercase text-xs sm:text-sm mb-6">
+              <div className="bg-[var(--duel)] rounded-3xl p-5 sm:p-10 shadow-xl text-center relative overflow-hidden text-[var(--ivory)]">
+                <h3 className="text-[var(--placeholder)] font-bold tracking-widest uppercase text-xs sm:text-sm mb-6">
                   {currentRound.length === 4 ? 'Четвертьфинал' : currentRound.length === 2 ? 'Полуфинал' : 'Финал'} &nbsp;• Дуэль {currentMatchIndex + 1} из {currentRound.length}
                 </h3>
                 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-16">
                   {currentRound[currentMatchIndex].map((book, idx) => (
                     <div key={idx} className="relative group w-full sm:w-auto">
-                      <button onClick={() => selectWinner(book)} className="bg-white/5 hover:bg-white/10 border-2 border-white/10 hover:border-[#BFA892] transition-all rounded-3xl p-4 w-full sm:w-64 flex flex-row sm:flex-col items-center gap-4 text-left group-hover:scale-105">
-                        <div className="w-16 sm:w-32 aspect-[2/3] bg-[#4A4238] rounded-2xl overflow-hidden shadow-2xl shrink-0">
-                          {book.coverUrl ? <img src={book.coverUrl} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center text-[#BAACA0] text-[10px] text-center p-2">{book.title}</div>}
+                      <button onClick={() => selectWinner(book)} className="bg-white/5 hover:bg-white/10 border-2 border-white/10 hover:border-[var(--goal-year)] transition-all rounded-3xl p-4 w-full sm:w-64 flex flex-row sm:flex-col items-center gap-4 text-left group-hover:scale-105">
+                        <div className="w-16 sm:w-32 aspect-[2/3] bg-[var(--overlay)] rounded-2xl overflow-hidden shadow-2xl shrink-0">
+                          {book.coverUrl ? <img src={book.coverUrl} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center text-[var(--placeholder)] text-[10px] text-center p-2">{book.title}</div>}
                         </div>
                         <div className="text-left sm:text-center flex-1">
                           <h4 className="font-black text-white text-sm sm:text-lg line-clamp-2">{book.title}</h4>
-                          <p className="text-[#BAACA0] text-xs sm:text-sm mt-1">{book.author}</p>
+                          <p className="text-[var(--placeholder)] text-xs sm:text-sm mt-1">{book.author}</p>
                         </div>
                       </button>
                     </div>
                   ))}
                   
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none hidden sm:flex">
-                    <div className="w-12 h-12 rounded-2xl bg-[#BFA892] flex items-center justify-center text-[#4A4238] font-black text-xl italic shadow-lg border-4 border-[#564B41]">VS</div>
+                    <div className="w-12 h-12 rounded-2xl bg-[var(--goal-year)] flex items-center justify-center text-[var(--ink)] font-black text-xl italic shadow-lg border-4 border-[var(--duel)]">VS</div>
                   </div>
                 </div>
               </div>
             )}
 
             {tournamentPhase === 'winner' && (
-              <div className="bg-gradient-to-br from-[#73543E] to-[#604632] rounded-3xl p-6 sm:p-12 text-center text-white shadow-2xl relative overflow-hidden">
-                <TrophyIcon size={56} className="mx-auto mb-3 text-[#FDFBF7] drop-shadow-lg" />
+              <div className="bg-gradient-to-br from-[var(--gradient-brown)] to-[var(--wood)] rounded-3xl p-6 sm:p-12 text-center text-white shadow-2xl relative overflow-hidden">
+                <TrophyIcon size={56} className="mx-auto mb-3 text-[var(--ivory)] drop-shadow-lg" />
                 <h2 className="text-2xl sm:text-4xl font-black mb-1.5 tracking-tight">Абсолютный Чемпион!</h2>
-                <p className="text-[#F9F4EC] mb-6 font-bold text-xs sm:text-base">Победитель вашего книжного турнира</p>
+                <p className="text-[var(--cream)] mb-6 font-bold text-xs sm:text-base">Победитель вашего книжного турнира</p>
                 
-                <div className="w-28 sm:w-44 aspect-[2/3] mx-auto bg-[#4A4238] rounded-2xl overflow-hidden shadow-2xl ring-4 ring-[#FDFBF7] ring-offset-4 ring-offset-[#BFA892] mb-5 transform hover:scale-105 transition-transform">
-                  {tournamentWinner?.coverUrl ? <img src={tournamentWinner.coverUrl} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center text-[#BAACA0] p-3 text-center font-bold text-xs">{tournamentWinner?.title}</div>}
+                <div className="w-28 sm:w-44 aspect-[2/3] mx-auto bg-[var(--overlay)] rounded-2xl overflow-hidden shadow-2xl ring-4 ring-[var(--ivory)] ring-offset-4 ring-offset-[var(--goal-year)] mb-5 transform hover:scale-105 transition-transform">
+                  {tournamentWinner?.coverUrl ? <img src={tournamentWinner.coverUrl} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center text-[var(--placeholder)] p-3 text-center font-bold text-xs">{tournamentWinner?.title}</div>}
                 </div>
                 
                 <h3 className="text-xl sm:text-3xl font-black mb-1 px-4">{tournamentWinner?.title}</h3>
-                <p className="text-base sm:text-xl text-[#F9F4EC] mb-6">{tournamentWinner?.author}</p>
+                <p className="text-base sm:text-xl text-[var(--cream)] mb-6">{tournamentWinner?.author}</p>
                 
-                <button onClick={() => setTournamentPhase('setup')} className="bg-white text-[#4A4238] px-7 py-3 rounded-2xl font-black text-sm sm:text-base hover:bg-[#F9F4EC] transition-colors shadow-lg">Новый турнир</button>
+                <button onClick={() => setTournamentPhase('setup')} className="bg-[var(--surface)] text-[var(--ink)] px-7 py-3 rounded-2xl font-black text-sm sm:text-base hover:bg-[var(--cream)] transition-colors shadow-lg">Новый турнир</button>
               </div>
             )}
           </div>
         )}
       </main>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-[#F7F2E8]/95 backdrop-blur-md border-t border-[#EADFCF] py-2 px-3 z-30 flex justify-around items-center md:hidden shadow-lg">
-        <button onClick={() => setActiveTab('diary')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'diary' ? 'text-[#765A45]' : 'text-[#706155]'}`}>
+      <div className="fixed bottom-0 left-0 right-0 bg-[var(--panel)]/95 backdrop-blur-md border-t border-[var(--border)] py-2 px-3 z-30 flex justify-around items-center lg:hidden shadow-lg">
+        <button onClick={() => setActiveTab('diary')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'diary' ? 'text-[var(--accent)]' : 'text-[var(--muted)]'}`}>
           <ClockIcon size={18} />
           <span className="text-[9px] font-bold">Дневник</span>
         </button>
-        <button onClick={() => setActiveTab('library')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'library' ? 'text-[#765A45]' : 'text-[#706155]'}`}>
+        <button onClick={() => setActiveTab('library')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'library' ? 'text-[var(--accent)]' : 'text-[var(--muted)]'}`}>
           <BookOpenIcon size={18} />
           <span className="text-[9px] font-bold">Библиотека</span>
         </button>
-        <button onClick={() => setActiveTab('analytics')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'analytics' ? 'text-[#765A45]' : 'text-[#706155]'}`}>
+        <button onClick={() => setActiveTab('analytics')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'analytics' ? 'text-[var(--accent)]' : 'text-[var(--muted)]'}`}>
           <BarChart2Icon size={18} />
           <span className="text-[9px] font-bold">Аналитика</span>
         </button>
-        <button onClick={() => setActiveTab('roulette')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'roulette' ? 'text-[#765A45]' : 'text-[#706155]'}`}>
+        <button onClick={() => setActiveTab('roulette')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'roulette' ? 'text-[var(--accent)]' : 'text-[var(--muted)]'}`}>
           <ShuffleIcon size={18} />
           <span className="text-[9px] font-bold">Рулетка</span>
         </button>
-        <button onClick={() => setActiveTab('tournament')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'tournament' ? 'text-[#765A45]' : 'text-[#706155]'}`}>
+        <button onClick={() => setActiveTab('tournament')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'tournament' ? 'text-[var(--accent)]' : 'text-[var(--muted)]'}`}>
           <TrophyIcon size={18} />
           <span className="text-[9px] font-bold">Турнир</span>
         </button>
@@ -1791,10 +1814,10 @@ export default function App() {
       {/* Fullscreen Sketchnote Modal Viewer */}
       {sketchnoteModalUrl && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/80 backdrop-blur-md" onClick={() => setSketchnoteModalUrl(null)}>
-          <div className="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl bg-[#FCF9F2] shadow-2xl p-2 flex flex-col" onClick={(e) => e.stopPropagation()}>
-            <div className="flex justify-between items-center px-3 py-2 border-b border-[#EADFCF]">
-              <span className="text-xs font-bold text-[#765A45]">Визуальный конспект / Скетч</span>
-              <button onClick={() => setSketchnoteModalUrl(null)} className="text-[#74675B] hover:text-[#4A4238] p-1"><XIcon size={20}/></button>
+          <div className="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl bg-[var(--paper)] shadow-2xl p-2 flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center px-3 py-2 border-b border-[var(--border)]">
+              <span className="text-xs font-bold text-[var(--accent)]">Визуальный конспект / Скетч</span>
+              <button onClick={() => setSketchnoteModalUrl(null)} className="text-[var(--secondary)] hover:text-[var(--ink)] p-1"><XIcon size={20}/></button>
             </div>
             <div className="overflow-auto flex-1 p-2 flex justify-center items-center">
               <img src={sketchnoteModalUrl} alt="Sketchnote" className="max-w-full max-h-[80vh] object-contain rounded-lg" />
@@ -1806,9 +1829,9 @@ export default function App() {
       {/* Monthly Summary Share Card Modal */}
       {isSummaryModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-[#4A4238]/60 backdrop-blur-sm" onClick={() => setIsSummaryModalOpen(false)}></div>
-          <div className="bg-[#F7F2E8] rounded-[2.5rem] shadow-2xl relative z-10 w-full max-w-[340px] overflow-hidden flex flex-col border border-[#EADFCF]">
-            <div className="bg-gradient-to-br from-[#73543E] via-[#665071] to-[#854438] p-5 text-white text-center flex flex-col items-center">
+          <div className="absolute inset-0 bg-[var(--overlay)]/60 backdrop-blur-sm" onClick={() => setIsSummaryModalOpen(false)}></div>
+          <div className="bg-[var(--panel)] rounded-[2.5rem] shadow-2xl relative z-10 w-full max-w-[340px] overflow-hidden flex flex-col border border-[var(--border)]">
+            <div className="bg-gradient-to-br from-[var(--gradient-brown)] via-[var(--gradient-purple)] to-[var(--gradient-red)] p-5 text-white text-center flex flex-col items-center">
               <h2 className="text-2xl font-black mb-1 uppercase tracking-wider">Итоги месяца</h2>
               <p className="text-white font-bold mb-5 bg-black/10 px-3.5 py-1 rounded-full uppercase text-xs tracking-widest backdrop-blur-sm">
                 {currentMonth.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}
@@ -1834,7 +1857,7 @@ export default function App() {
                   <p className="text-[9px] uppercase font-bold text-white mb-2">Прочитано в этом месяце:</p>
                   <div className="flex flex-wrap justify-center gap-1.5">
                     {readThisTargetMonth.map(b => (
-                      <div key={b.id} className="w-10 aspect-[2/3] bg-[#4A4238] rounded-xl shadow-md overflow-hidden border border-white/30">
+                      <div key={b.id} className="w-10 aspect-[2/3] bg-[var(--overlay)] rounded-xl shadow-md overflow-hidden border border-white/30">
                         {b.coverUrl ? <img src={b.coverUrl} className="w-full h-full object-cover" alt="" /> : <div className="text-[5px] p-0.5 text-center font-bold">{b.title}</div>}
                       </div>
                     ))}
@@ -1843,8 +1866,8 @@ export default function App() {
               )}
               <div className="mt-5 text-[8px] uppercase tracking-widest text-white">LibriMori Tracker</div>
             </div>
-            <div className="p-3.5 flex gap-2 justify-center bg-[#F7F2E8]">
-              <button onClick={() => setIsSummaryModalOpen(false)} className="px-5 py-2 bg-[#EADFCF] hover:bg-[#DDD0BE] text-[#564B41] rounded-2xl font-bold text-xs transition-colors">Закрыть</button>
+            <div className="p-3.5 flex gap-2 justify-center bg-[var(--panel)]">
+              <button onClick={() => setIsSummaryModalOpen(false)} className="px-5 py-2 bg-[var(--border)] hover:bg-[var(--hover)] text-[var(--heading)] rounded-2xl font-bold text-xs transition-colors">Закрыть</button>
             </div>
           </div>
         </div>
@@ -1853,12 +1876,12 @@ export default function App() {
       {/* Book Edit / Add Modal */}
       {isModalOpen && currentBook && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
-          <div className="absolute inset-0 bg-[#4A4238]/50 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-          <div className="bg-[#F7F2E8] rounded-[2.5rem] shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative z-10 flex flex-col border border-[#EADFCF]">
+          <div className="absolute inset-0 bg-[var(--overlay)]/50 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
+          <div className="bg-[var(--panel)] rounded-[2.5rem] shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto relative z-10 flex flex-col border border-[var(--border)]">
             
-            <div className="flex justify-between items-center p-4 sm:p-5 border-b border-[#EADFCF] sticky top-0 bg-[#F7F2E8]/95 backdrop-blur-md z-20">
-              <h2 className="text-lg sm:text-xl font-black text-[#564B41]">{currentBook.id.toString().length > 10 ? 'Новая книга' : 'Редактирование'}</h2>
-              <button onClick={() => setIsModalOpen(false)} className="bg-[#EADFCF] hover:bg-[#DDD0BE] p-2 rounded-full text-[#74675B] transition-colors"><XIcon size={18}/></button>
+            <div className="flex justify-between items-center p-4 sm:p-5 border-b border-[var(--border)] sticky top-0 bg-[var(--panel)]/95 backdrop-blur-md z-20">
+              <h2 className="text-lg sm:text-xl font-black text-[var(--heading)]">{currentBook.id.toString().length > 10 ? 'Новая книга' : 'Редактирование'}</h2>
+              <button onClick={() => setIsModalOpen(false)} className="bg-[var(--border)] hover:bg-[var(--hover)] p-2 rounded-full text-[var(--secondary)] transition-colors"><XIcon size={18}/></button>
             </div>
 
             <form onSubmit={handleSaveBook} className="p-4 sm:p-6 space-y-5 sm:space-y-6">
@@ -1875,21 +1898,21 @@ export default function App() {
               
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                 <div className="w-full sm:w-40 shrink-0 flex flex-col gap-2.5">
-                  <div className="aspect-[2/3] bg-[#EFE7D8] rounded-3xl border-2 border-dashed border-[#D5C6B4] overflow-hidden relative flex items-center justify-center group max-w-[160px] mx-auto sm:max-w-none w-full">
+                  <div className="aspect-[2/3] bg-[var(--inset)] rounded-3xl border-2 border-dashed border-[var(--border-input)] overflow-hidden relative flex items-center justify-center group max-w-[160px] mx-auto sm:max-w-none w-full">
                     {currentBook.coverUrl ? (
                       <img src={currentBook.coverUrl} className="w-full h-full object-cover" alt="Cover" />
                     ) : (
-                      <span className="text-[#706155] font-bold text-xs text-center px-4">Обложка</span>
+                      <span className="text-[var(--muted)] font-bold text-xs text-center px-4">Обложка</span>
                     )}
                   </div>
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="cover-upload" className="cursor-pointer bg-[#FCF9F2] border border-[#D5C6B4] text-[#4A4238] text-xs font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-white transition-colors">С устройства</label>
+                      <label htmlFor="cover-upload" className="cursor-pointer bg-[var(--paper)] border border-[var(--border-input)] text-[var(--ink)] text-xs font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-[var(--surface)] transition-colors">С устройства</label>
                       <button type="button" onClick={() => {
                         setCustomModal({
                           title: 'Вставить URL обложки:', type: 'prompt', defaultValue: currentBook.coverUrl || '',
                           onSubmit: (url) => { if (url) setCurrentBook({...currentBook, coverUrl: url}); setCustomModal(null); }
                         });
-                      }} className="bg-[#FCF9F2] border border-[#D5C6B4] text-[#4A4238] text-xs font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-white transition-colors">По ссылке</button>
+                      }} className="bg-[var(--paper)] border border-[var(--border-input)] text-[var(--ink)] text-xs font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-[var(--surface)] transition-colors">По ссылке</button>
                     </div>
                   <input type="file" id="cover-upload" accept="image/*" className="hidden" onChange={(e) => {
                     const file = e.target.files && e.target.files[0];
@@ -1903,21 +1926,21 @@ export default function App() {
 
                 <div className="flex-1 space-y-3.5">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Название книги *</label>
-                    <input required type="text" value={currentBook.title} onChange={(e) => setCurrentBook({...currentBook, title: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-bold text-xs sm:text-sm focus:border-[#A68970] outline-none bg-[#FCF9F2] text-[#4A4238]" />
+                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Название книги *</label>
+                    <input required type="text" value={currentBook.title} onChange={(e) => setCurrentBook({...currentBook, title: e.target.value})} className="w-full border-2 border-[var(--border)] rounded-2xl p-3 font-bold text-xs sm:text-sm focus:border-[var(--focus)] outline-none bg-[var(--paper)] text-[var(--ink)]" />
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-3">
                     <div className="space-y-1 flex-1">
-                      <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Автор</label>
-                      <input type="text" value={currentBook.author} onChange={(e) => setCurrentBook({...currentBook, author: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-bold text-xs sm:text-sm focus:border-[#A68970] outline-none bg-[#FCF9F2] text-[#4A4238]" />
+                      <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Автор</label>
+                      <input type="text" value={currentBook.author} onChange={(e) => setCurrentBook({...currentBook, author: e.target.value})} className="w-full border-2 border-[var(--border)] rounded-2xl p-3 font-bold text-xs sm:text-sm focus:border-[var(--focus)] outline-none bg-[var(--paper)] text-[var(--ink)]" />
                     </div>
                     <div className="space-y-1 flex-1">
-                      <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Жанр</label>
+                      <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Жанр</label>
                       <select 
                         value={currentBook.genre || 'Проза'} 
                         onChange={(e) => setCurrentBook({...currentBook, genre: e.target.value})}
-                        className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-bold text-xs sm:text-sm focus:border-[#A68970] outline-none bg-[#FCF9F2] text-[#4A4238] cursor-pointer"
+                        className="w-full border-2 border-[var(--border)] rounded-2xl p-3 font-bold text-xs sm:text-sm focus:border-[var(--focus)] outline-none bg-[var(--paper)] text-[var(--ink)] cursor-pointer"
                       >
                         {PREDEFINED_GENRES.map(g => (
                           <option key={g} value={g}>{g}</option>
@@ -1926,22 +1949,22 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="bg-[#EFE7D8] p-3 rounded-2xl border border-[#EADFCF] space-y-2">
-                    <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Книжная серия / Цикл</label>
+                  <div className="bg-[var(--inset)] p-3 rounded-2xl border border-[var(--border)] space-y-2">
+                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Книжная серия / Цикл</label>
                     <div className="flex gap-2">
-                      <input type="text" placeholder="Напр. Воспоминания о прошлом Земли" value={currentBook.seriesName || ''} onChange={(e) => setCurrentBook({...currentBook, seriesName: e.target.value})} className="flex-1 border-2 border-[#EADFCF] rounded-xl p-2 font-bold text-xs bg-white outline-none text-[#4A4238]" />
-                      <input type="number" placeholder="№" value={currentBook.seriesIndex || ''} onChange={(e) => setCurrentBook({...currentBook, seriesIndex: e.target.value ? Number(e.target.value) : ''})} className="w-16 border-2 border-[#EADFCF] rounded-xl p-2 font-bold text-xs bg-white outline-none text-[#4A4238] text-center" />
+                      <input type="text" placeholder="Напр. Воспоминания о прошлом Земли" value={currentBook.seriesName || ''} onChange={(e) => setCurrentBook({...currentBook, seriesName: e.target.value})} className="flex-1 border-2 border-[var(--border)] rounded-xl p-2 font-bold text-xs bg-[var(--surface)] outline-none text-[var(--ink)]" />
+                      <input type="number" placeholder="№" value={currentBook.seriesIndex || ''} onChange={(e) => setCurrentBook({...currentBook, seriesIndex: e.target.value ? Number(e.target.value) : ''})} className="w-16 border-2 border-[var(--border)] rounded-xl p-2 font-bold text-xs bg-[var(--surface)] outline-none text-[var(--ink)] text-center" />
                     </div>
                   </div>
 
                   {/* Sketchnote Image Upload & URL input */}
-                  <div className="bg-[#EFE7D8] p-3 rounded-2xl border border-[#EADFCF] space-y-2">
+                  <div className="bg-[var(--inset)] p-3 rounded-2xl border border-[var(--border)] space-y-2">
                     <div className="flex justify-between items-center">
-                      <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider flex items-center gap-1.5">
+                      <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider flex items-center gap-1.5">
                         🎨 Визуальный конспект / Sketchnote
                       </label>
                       {currentBook.sketchnoteUrl && (
-                        <button type="button" onClick={() => setSketchnoteModalUrl(currentBook.sketchnoteUrl)} className="text-[10px] font-bold text-[#765A45] hover:underline flex items-center gap-1">
+                        <button type="button" onClick={() => setSketchnoteModalUrl(currentBook.sketchnoteUrl)} className="text-[10px] font-bold text-[var(--accent)] hover:underline flex items-center gap-1">
                           <EyeIcon size={12} /> Предпросмотр
                         </button>
                       )}
@@ -1952,9 +1975,9 @@ export default function App() {
                         placeholder="Ссылка на конспект или загрузите файл..." 
                         value={currentBook.sketchnoteUrl || ''} 
                         onChange={(e) => setCurrentBook({...currentBook, sketchnoteUrl: e.target.value})}
-                        className="flex-1 border-2 border-[#EADFCF] rounded-xl p-2 font-bold text-xs bg-white outline-none text-[#4A4238]" 
+                        className="flex-1 border-2 border-[var(--border)] rounded-xl p-2 font-bold text-xs bg-[var(--surface)] outline-none text-[var(--ink)]"
                       />
-                      <label htmlFor="sketchnote-upload" className="cursor-pointer bg-[#806047] hover:bg-[#694C37] text-white text-[11px] font-bold px-3 py-2 rounded-xl shrink-0 transition-colors shadow-sm">
+                      <label htmlFor="sketchnote-upload" className="cursor-pointer bg-[var(--button)] hover:bg-[var(--button-hover)] text-white text-[11px] font-bold px-3 py-2 rounded-xl shrink-0 transition-colors shadow-sm">
                         Загрузить
                       </label>
                       <input type="file" id="sketchnote-upload" accept="image/*" className="hidden" onChange={(e) => {
@@ -1969,10 +1992,10 @@ export default function App() {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Формат</label>
+                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Формат</label>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
                       {FORMATS.map(f => (
-                        <button key={f.id} type="button" onClick={() => setCurrentBook({...currentBook, format: f.id})} className={`flex items-center justify-center gap-1 py-2 px-2 rounded-xl border-2 font-bold text-[11px] transition-all ${currentBook.format === f.id ? 'border-[#A68970] bg-[#FCF9F2] text-[#765A45] shadow-sm' : 'border-[#EADFCF] bg-[#F7F2E8] text-[#74675B]'}`}>
+                        <button key={f.id} type="button" onClick={() => setCurrentBook({...currentBook, format: f.id})} className={`flex items-center justify-center gap-1 py-2 px-2 rounded-xl border-2 font-bold text-[11px] transition-all ${currentBook.format === f.id ? 'border-[var(--focus)] bg-[var(--paper)] text-[var(--accent)] shadow-sm' : 'border-[var(--border)] bg-[var(--panel)] text-[var(--secondary)]'}`}>
                           <f.icon size={13} /> {f.label}
                         </button>
                       ))}
@@ -1981,12 +2004,12 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="bg-[#EFE7D8] p-4 rounded-3xl border border-[#EADFCF] space-y-4">
+              <div className="bg-[var(--inset)] p-4 rounded-3xl border border-[var(--border)] space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Статус</label>
-                  <div className="grid grid-cols-2 sm:grid-cols-5 bg-[#F7F2E8] rounded-2xl border-2 border-[#EADFCF] p-1 gap-1">
+                  <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Статус</label>
+                  <div className="grid grid-cols-2 sm:grid-cols-5 bg-[var(--panel)] rounded-2xl border-2 border-[var(--border)] p-1 gap-1">
                     {STATUSES.map(s => (
-                      <button key={s.id} type="button" onClick={() => setCurrentBook({...currentBook, status: s.id})} className={`py-1.5 text-[11px] font-bold rounded-xl transition-all ${currentBook.status === s.id ? 'bg-[#806047] text-white shadow-sm' : 'text-[#74675B] hover:bg-[#EADFCF]'}`}>
+                      <button key={s.id} type="button" onClick={() => setCurrentBook({...currentBook, status: s.id})} className={`py-1.5 text-[11px] font-bold rounded-xl transition-all ${currentBook.status === s.id ? 'bg-[var(--button)] text-white shadow-sm' : 'text-[var(--secondary)] hover:bg-[var(--border)]'}`}>
                         {s.label}
                       </button>
                     ))}
@@ -1995,34 +2018,34 @@ export default function App() {
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Всего страниц</label>
-                    <input type="number" value={currentBook.totalPages} onChange={(e) => setCurrentBook({...currentBook, totalPages: e.target.value ? Number(e.target.value) : ''})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-2.5 font-bold text-xs sm:text-sm bg-white outline-none text-[#4A4238]" />
+                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Всего страниц</label>
+                    <input type="number" value={currentBook.totalPages} onChange={(e) => setCurrentBook({...currentBook, totalPages: e.target.value ? Number(e.target.value) : ''})} className="w-full border-2 border-[var(--border)] rounded-2xl p-2.5 font-bold text-xs sm:text-sm bg-[var(--surface)] outline-none text-[var(--ink)]" />
                   </div>
                   
                   {(currentBook.status === 'reading' || currentBook.status === 'rereading' || currentBook.status === 'dropped') && (
                     <div className="space-y-1">
-                      <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Прочитано</label>
-                      <input type="number" value={currentBook.readPages} onChange={(e) => setCurrentBook({...currentBook, readPages: e.target.value ? Number(e.target.value) : 0})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-2.5 font-bold text-xs sm:text-sm bg-white outline-none text-[#4A4238]" />
+                      <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Прочитано</label>
+                      <input type="number" value={currentBook.readPages} onChange={(e) => setCurrentBook({...currentBook, readPages: e.target.value ? Number(e.target.value) : 0})} className="w-full border-2 border-[var(--border)] rounded-2xl p-2.5 font-bold text-xs sm:text-sm bg-[var(--surface)] outline-none text-[var(--ink)]" />
                     </div>
                   )}
 
                   {currentBook.status === 'read' && (
                     <div className="space-y-1">
-                      <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Оценка (1-5)</label>
-                      <input type="number" min="1" max="5" value={currentBook.rating || ''} onChange={(e) => setCurrentBook({...currentBook, rating: Number(e.target.value)})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-2.5 font-bold text-xs sm:text-sm bg-white outline-none text-[#4A4238]" />
+                      <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Оценка (1-5)</label>
+                      <input type="number" min="1" max="5" value={currentBook.rating || ''} onChange={(e) => setCurrentBook({...currentBook, rating: Number(e.target.value)})} className="w-full border-2 border-[var(--border)] rounded-2xl p-2.5 font-bold text-xs sm:text-sm bg-[var(--surface)] outline-none text-[var(--ink)]" />
                     </div>
                   )}
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Дата начала</label>
-                    <input type="date" value={currentBook.dateStarted || ''} onChange={(e) => setCurrentBook({...currentBook, dateStarted: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-2.5 font-bold text-xs bg-white text-[#564B41] outline-none" />
+                    <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Дата начала</label>
+                    <input type="date" value={currentBook.dateStarted || ''} onChange={(e) => setCurrentBook({...currentBook, dateStarted: e.target.value})} className="w-full border-2 border-[var(--border)] rounded-2xl p-2.5 font-bold text-xs bg-[var(--surface)] text-[var(--heading)] outline-none" />
                   </div>
                   {currentBook.status !== 'wishlist' && (
                     <div className="space-y-1">
-                      <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Дата завершения</label>
-                      <input type="date" value={currentBook.dateFinished || ''} onChange={(e) => setCurrentBook({...currentBook, dateFinished: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-2.5 font-bold text-xs bg-white text-[#564B41] outline-none" />
+                      <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Дата завершения</label>
+                      <input type="date" value={currentBook.dateFinished || ''} onChange={(e) => setCurrentBook({...currentBook, dateFinished: e.target.value})} className="w-full border-2 border-[var(--border)] rounded-2xl p-2.5 font-bold text-xs bg-[var(--surface)] text-[var(--heading)] outline-none" />
                     </div>
                   )}
                 </div>
@@ -2030,26 +2053,26 @@ export default function App() {
 
               <div className="space-y-3">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Аннотация</label>
-                  <textarea rows="2" value={currentBook.annotation || ''} onChange={(e) => setCurrentBook({...currentBook, annotation: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-[#FCF9F2] resize-none text-[#4A4238]" placeholder="О чем книга..."></textarea>
+                  <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Аннотация</label>
+                  <textarea rows="2" value={currentBook.annotation || ''} onChange={(e) => setCurrentBook({...currentBook, annotation: e.target.value})} className="w-full border-2 border-[var(--border)] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-[var(--paper)] resize-none text-[var(--ink)]" placeholder="О чем книга..."></textarea>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Резюме / Рецензия</label>
-                  <textarea rows="2" value={currentBook.summary || ''} onChange={(e) => setCurrentBook({...currentBook, summary: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-[#FCF9F2] resize-none text-[#4A4238]"></textarea>
+                  <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Резюме / Рецензия</label>
+                  <textarea rows="2" value={currentBook.summary || ''} onChange={(e) => setCurrentBook({...currentBook, summary: e.target.value})} className="w-full border-2 border-[var(--border)] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-[var(--paper)] resize-none text-[var(--ink)]"></textarea>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-[#706155] uppercase tracking-wider">Цитаты</label>
-                  <textarea rows="2" value={currentBook.quotes || ''} onChange={(e) => setCurrentBook({...currentBook, quotes: e.target.value})} className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-[#FCF9F2] resize-none text-[#4A4238]"></textarea>
+                  <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Цитаты</label>
+                  <textarea rows="2" value={currentBook.quotes || ''} onChange={(e) => setCurrentBook({...currentBook, quotes: e.target.value})} className="w-full border-2 border-[var(--border)] rounded-2xl p-3 font-medium text-xs sm:text-sm outline-none bg-[var(--paper)] resize-none text-[var(--ink)]"></textarea>
                 </div>
               </div>
 
               <div className="pt-2 flex flex-col-reverse sm:flex-row justify-between items-center gap-3">
                 {currentBook.id.toString().length < 10 ? (
-                  <button type="button" onClick={() => handleDeleteBook(currentBook.id)} className="w-full sm:w-auto flex items-center justify-center gap-2 text-[#9B493B] hover:bg-[#FCEAE8] px-4 py-2.5 rounded-2xl font-bold text-xs transition-colors">
+                  <button type="button" onClick={() => handleDeleteBook(currentBook.id)} className="w-full sm:w-auto flex items-center justify-center gap-2 text-[var(--danger-ink)] hover:bg-[var(--danger-hover)] px-4 py-2.5 rounded-2xl font-bold text-xs transition-colors">
                     <TrashIcon size={16}/> Удалить
                   </button>
                 ) : <div></div>}
-                <button type="submit" className="w-full sm:w-auto bg-[#806047] hover:bg-[#694C37] text-white px-7 py-3 rounded-2xl font-black text-sm transition-colors shadow-lg">
+                <button type="submit" className="w-full sm:w-auto bg-[var(--button)] hover:bg-[var(--button-hover)] text-white px-7 py-3 rounded-2xl font-black text-sm transition-colors shadow-lg">
                   Сохранить
                 </button>
               </div>
@@ -2063,16 +2086,16 @@ export default function App() {
       {/* Custom Modal Dialog */}
       {customModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-[#4A4238]/60 backdrop-blur-sm" onClick={() => setCustomModal(null)}></div>
-          <div className="bg-[#F7F2E8] rounded-[2rem] p-5 shadow-2xl relative z-10 w-full max-w-sm border border-[#EADFCF]">
-            <h3 className="text-base font-bold text-[#564B41] mb-3">{customModal.title}</h3>
+          <div className="absolute inset-0 bg-[var(--overlay)]/60 backdrop-blur-sm" onClick={() => setCustomModal(null)}></div>
+          <div className="bg-[var(--panel)] rounded-[2rem] p-5 shadow-2xl relative z-10 w-full max-w-sm border border-[var(--border)]">
+            <h3 className="text-base font-bold text-[var(--heading)] mb-3">{customModal.title}</h3>
             
             {customModal.type === 'prompt' && (
               <input 
                 autoFocus
                 type="text" 
                 defaultValue={customModal.defaultValue}
-                className="w-full border-2 border-[#EADFCF] rounded-2xl p-3 font-bold text-xs sm:text-sm outline-none focus:border-[#A68970] mb-5 bg-[#FCF9F2] text-[#4A4238]"
+                className="w-full border-2 border-[var(--border)] rounded-2xl p-3 font-bold text-xs sm:text-sm outline-none focus:border-[var(--focus)] mb-5 bg-[var(--paper)] text-[var(--ink)]"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     customModal.onSubmit(e.currentTarget.value);
@@ -2084,7 +2107,7 @@ export default function App() {
 
             <div className="flex gap-2.5 justify-end">
               {customModal.type !== 'info' && (
-                <button onClick={() => setCustomModal(null)} className="px-4 py-2 rounded-xl font-bold text-xs text-[#74675B] hover:bg-[#EADFCF] transition-colors">
+                <button onClick={() => setCustomModal(null)} className="px-4 py-2 rounded-xl font-bold text-xs text-[var(--secondary)] hover:bg-[var(--border)] transition-colors">
                   Отмена
                 </button>
               )}
@@ -2097,7 +2120,7 @@ export default function App() {
                     customModal.onSubmit();
                   }
                 }} 
-                className="px-4 py-2 rounded-xl font-bold text-xs text-white bg-[#806047] hover:bg-[#694C37] transition-colors shadow-md"
+                className="px-4 py-2 rounded-xl font-bold text-xs text-white bg-[var(--button)] hover:bg-[var(--button-hover)] transition-colors shadow-md"
               >
                 ОК
               </button>

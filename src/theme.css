@@ -1,0 +1,202 @@
+/* Shared palette for all screens, forms, and dialogs. */
+:root {
+  --calendar-high-ink: #102017;
+  --shelf-shadow: #524133;
+  --wood: #604632;
+  --gradient-purple: #665071;
+  --muted: #706155;
+  --button: #806047;
+  --today: #846851;
+  --gradient-red: #854438;
+  --paper: #FCF9F2;
+  --panel: #F7F2E8;
+  --inset: #EFE7D8;
+  --border: #EADFCF;
+  --border-strong: #E2D5C3;
+  --hover: #DDD0BE;
+  --border-input: #D5C6B4;
+  --cover: #EAE2D2;
+  --selection: #EEDFCC;
+  --accent-soft: #F2E8DC;
+  --rereading-soft: #EFE4D3;
+  --ink: #4A4238;
+  --heading: #564B41;
+  --secondary: #74675B;
+  --empty-heading: #675B50;
+  --placeholder: #BAACA0;
+  --accent: #765A45;
+  --tag-ink: #6A5443;
+  --goal-ink: #352B24;
+  --goal-ink-hover: #241D18;
+  --button-hover: #694C37;
+  --focus: #A68970;
+  --goal-year: #BFA892;
+  --goal-month: #A896B5;
+  --goal-year-track: #9A8470;
+  --goal-month-track: #83738F;
+  --progress-light: #FAF0E6;
+  --cream: #F9F4EC;
+  --ivory: #FDFBF7;
+  --success-soft: #DDEAE3;
+  --success-hover: #C9DEC2;
+  --success-ink: #4F6F61;
+  --green-ink: #486B59;
+  --green-heading: #3C594A;
+  --progress-green: #9ABAA9;
+  --green-bar: #6F8E80;
+  --danger-soft: #FBE8E4;
+  --danger-hover: #FCEAE8;
+  --danger-ink: #9B493B;
+  --danger-button: #9B493B;
+  --calendar-empty: #E8C2C2;
+  --calendar-empty-hover: #DFB3B3;
+  --calendar-empty-ink: #7A3E3E;
+  --calendar-low: #D2E7DB;
+  --calendar-low-hover: #C0DEC9;
+  --calendar-low-ink: #3E5C4E;
+  --calendar-medium: #98C4AB;
+  --calendar-medium-hover: #83B398;
+  --calendar-medium-ink: #243C2F;
+  --calendar-high: #6CA384;
+  --calendar-high-hover: #5B9273;
+  --calendar-full: #477C5E;
+  --calendar-full-hover: #3D6B51;
+  --purple-ink: #765B82;
+  --purple-bar: #9E82A8;
+  --blue-ink: #46657F;
+  --blue-bar: #62839F;
+  --orange-ink: #8A542B;
+  --orange-bar: #C98E5E;
+  --gold-ink: #9E7749;
+  --shelf: #C7B299;
+  --shelf-edge: #8C745E;
+  --gradient-brown: #73543E;
+  --surface: #FFFFFF;
+  --overlay: #4A4238;
+  --spine-brown: #846851;
+  --spine-green: #486B59;
+  --spine-purple: #765B82;
+  --spine-orange: #8A542B;
+  --duel: #564B41;
+  --success-button-hover: #3C594A;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --calendar-high-ink: #102017;
+  --shelf-shadow: #201B16;
+  --wood: #3D2D21;
+  --gradient-purple: #4C3A57;
+  --muted: #B9AA98;
+  --button: #886347;
+  --today: #D5A876;
+  --gradient-red: #63372F;
+  --paper: #181715;
+  --panel: #22211E;
+  --inset: #2B2925;
+  --border: #3B3731;
+  --border-strong: #494238;
+  --hover: #39342D;
+  --border-input: #554A3D;
+  --cover: #312D26;
+  --selection: #66513C;
+  --accent-soft: #332B23;
+  --rereading-soft: #3B3021;
+  --ink: #EDE6DB;
+  --heading: #E6DCCF;
+  --secondary: #C3B3A1;
+  --empty-heading: #D3C3B0;
+  --placeholder: #A79580;
+  --accent: #DDB58D;
+  --tag-ink: #E2C3A4;
+  --goal-ink: #F3E4D1;
+  --goal-ink-hover: #FFFFFF;
+  --button-hover: #735238;
+  --focus: #C9A17C;
+  --goal-year: #624B36;
+  --goal-month: #53435E;
+  --goal-year-track: #A18161;
+  --goal-month-track: #9D86AE;
+  --progress-light: #F2D4AD;
+  --cream: #F9F4EC;
+  --ivory: #FDFBF7;
+  --success-soft: #26382E;
+  --success-hover: #344B37;
+  --success-ink: #B0D4BD;
+  --green-ink: #A4CDAF;
+  --green-heading: #C3DFC9;
+  --progress-green: #83AC94;
+  --green-bar: #7AA18C;
+  --danger-soft: #402925;
+  --danger-hover: #4D302A;
+  --danger-ink: #E5A092;
+  --danger-button: #9B493B;
+  --calendar-empty: #482E2C;
+  --calendar-empty-hover: #583733;
+  --calendar-empty-ink: #E7B7AC;
+  --calendar-low: #2E4738;
+  --calendar-low-hover: #3A5744;
+  --calendar-low-ink: #C1DDC7;
+  --calendar-medium: #98C4AB;
+  --calendar-medium-hover: #83B398;
+  --calendar-medium-ink: #243C2F;
+  --calendar-high: #6CA384;
+  --calendar-high-hover: #5B9273;
+  --calendar-full: #477C5E;
+  --calendar-full-hover: #3D6B51;
+  --purple-ink: #C5ABD4;
+  --purple-bar: #B396C2;
+  --blue-ink: #9FBDD8;
+  --blue-bar: #83A3BE;
+  --orange-ink: #E2B586;
+  --orange-bar: #C98E5E;
+  --gold-ink: #DABA86;
+  --shelf: #5D4A38;
+  --shelf-edge: #423326;
+  --gradient-brown: #59402E;
+  --surface: #34302A;
+  --overlay: #100E0C;
+  --duel: #302A23;
+  color-scheme: dark;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+button, a, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--placeholder);
+  opacity: 1;
+}
+
+.theme-toggle {
+  min-width: 40px;
+  min-height: 40px;
+}
+
+[data-theme="dark"] .shadow-sm {
+  --tw-shadow-color: rgb(0 0 0 / 0.25);
+}

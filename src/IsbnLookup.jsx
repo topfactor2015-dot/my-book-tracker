@@ -96,46 +96,46 @@ export default function IsbnLookup({ book, books, onFound }) {
     ? `${book.title.trim()} ${book.author || ''} обложка` : '';
   const imageSearchUrl = imageQuery ? `https://www.google.com/search?${new URLSearchParams({ q: imageQuery, udm: '2', hl: 'ru' })}` : '';
   return (
-    <div className="bg-[#EFE7D8] border border-[#EADFCF] rounded-2xl p-3 sm:p-4 space-y-3">
+    <div className="bg-[var(--inset)] border border-[var(--border)] rounded-2xl p-3 sm:p-4 space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h3 className="text-sm font-bold text-[#564B41]">Добавить данные по ISBN</h3>
+        <h3 className="text-sm font-bold text-[var(--heading)]">Добавить данные по ISBN</h3>
         <button type="button" disabled={busy} onClick={() => {
           setScanning(value => !value);
           setMessage(scanning ? 'Сканирование остановлено.' : 'Наведите камеру на штрих-код. Держите книгу неподвижно при хорошем освещении.');
-        }} className={`${buttonStyle} bg-[#806047] text-white`}>
+        }} className={`${buttonStyle} bg-[var(--button)] text-white`}>
           {scanning ? 'Закрыть камеру' : 'Сканировать штрих-код'}
         </button>
       </div>
       {scanning && (
-        <div className="rounded-xl overflow-hidden bg-[#352B24]">
+        <div className="rounded-xl overflow-hidden bg-[var(--overlay)]">
           <video ref={videoRef} autoPlay muted playsInline aria-label="Камера для сканирования ISBN" className="w-full max-h-64 object-contain" />
         </div>
       )}
-      <label htmlFor="book-isbn" className="block text-xs text-[#564B41]">ISBN под штрих-кодом — можно ввести вручную</label>
+      <label htmlFor="book-isbn" className="block text-xs text-[var(--heading)]">ISBN под штрих-кодом — можно ввести вручную</label>
       <div className="flex flex-col sm:flex-row gap-2">
         <input id="book-isbn" type="text" autoCapitalize="characters" spellCheck={false} value={isbn} disabled={busy}
           placeholder="Например, 978-5-…" onChange={event => setIsbn(event.target.value)}
           onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); if (!busy) void search(isbn); } }}
-          className="min-w-0 flex-1 rounded-xl border-2 border-[#D5C6B4] bg-[#FCF9F2] p-2.5 text-sm text-[#4A4238] outline-none focus:border-[#A68970]" />
-        <button type="button" disabled={busy || !isbn.trim()} onClick={() => void search(isbn)} className={`${buttonStyle} bg-[#806047] text-white`}>
+          className="min-w-0 flex-1 rounded-xl border-2 border-[var(--border-input)] bg-[var(--paper)] p-2.5 text-sm text-[var(--ink)] outline-none focus:border-[var(--focus)]" />
+        <button type="button" disabled={busy || !isbn.trim()} onClick={() => void search(isbn)} className={`${buttonStyle} bg-[var(--button)] text-white`}>
           {busy ? 'Поиск…' : 'Найти книгу'}
         </button>
       </div>
-      <p role="status" aria-live="polite" className="text-xs leading-relaxed text-[#564B41]">
+      <p role="status" aria-live="polite" className="text-xs leading-relaxed text-[var(--heading)]">
         {message || 'Данные и обложка загружаются из Google Books и Open Library. Для поиска нужен интернет.'}
       </p>
-      <div className="border-t border-[#D5C6B4] pt-3 space-y-2">
+      <div className="border-t border-[var(--border-input)] pt-3 space-y-2">
         {imageSearchUrl ? (
           <a href={imageSearchUrl} target="_blank" rel="noopener noreferrer" onClick={() => {
             setScanning(false);
             if (validIsbn) onFoundRef.current({ isbn: validIsbn });
-          }} className="inline-flex items-center justify-center rounded-xl px-3 py-2.5 text-xs font-bold border border-[#D5C6B4] text-[#564B41] bg-[#FCF9F2] hover:bg-white">
+          }} className="inline-flex items-center justify-center rounded-xl px-3 py-2.5 text-xs font-bold border border-[var(--border-input)] text-[var(--heading)] bg-[var(--paper)] hover:bg-[var(--surface)]">
             {validIsbn ? 'Найти обложку в Google Картинках' : 'Найти обложку по названию'} ↗
           </a>
         ) : (
-          <button type="button" disabled className="rounded-xl px-3 py-2.5 text-xs font-bold border border-[#D5C6B4] text-[#564B41] bg-[#FCF9F2] opacity-50">Найти обложку в Google Картинках ↗</button>
+          <button type="button" disabled className="rounded-xl px-3 py-2.5 text-xs font-bold border border-[var(--border-input)] text-[var(--heading)] bg-[var(--paper)] opacity-50">Найти обложку в Google Картинках ↗</button>
         )}
-        <p className="text-xs leading-relaxed text-[#564B41]">
+        <p className="text-xs leading-relaxed text-[var(--heading)]">
           {imageSearchUrl ? 'Поиск откроется в новой вкладке. Выберите обложку и скопируйте адрес самого изображения, затем вернитесь и нажмите «По ссылке». Или сохраните картинку на телефон и выберите «С устройства».'
             : 'Для поиска обложки введите корректный ISBN. Можно также заполнить название книги и оставить ISBN пустым.'}
         </p>
