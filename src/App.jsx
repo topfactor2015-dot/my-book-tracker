@@ -5,6 +5,8 @@ import { downloadLibrary, libraryFilename, saveSnapshot, validateLibrary } from 
 import { pagesToLog, recordReadingProgress } from './readingProgress.js';
 import { Moon, Sun } from 'lucide-react';
 import './theme.css';
+import useLibraryStorage from './useLibraryStorage.js';
+import { prepareImage } from './imageUpload.js';
 
 const PlusIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
 const SearchIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
@@ -115,9 +117,6 @@ const getPluralDays = (n) => {
   return 'дней';
 };
 
-// Новые пользователи начинают с пустой библиотеки.
-const INITIAL_BOOKS = [];
-
 // Общие правила для поиска и сравнения авторов.
 const cleanText = (value) => String(value ?? '').normalize('NFC').trim().replace(/\s+/g, ' ');
 const normalizeSearchText = (value) => cleanText(value).toLocaleLowerCase('ru-RU').replace(/ё/g, 'е');
@@ -153,57 +152,28 @@ export default function App() {
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'shelf'
   const [statViewType, setStatViewType] = useState('months'); // 'months' | 'genres' | 'formats' | 'activity'
   
-  const [books, setBooks] = useState(() => {
-    try {
-      const savedBooks = localStorage.getItem('warm_readingTrackerBooks_v21');
-      if (savedBooks) return normalizeBookAuthors(JSON.parse(savedBooks));
-    } catch (e) { console.error(e); }
-    return normalizeBookAuthors(INITIAL_BOOKS);
-  });
-
-  const [manualStreakBonus, setManualStreakBonus] = useState(() => {
-    try {
-      return Number(localStorage.getItem('warm_readingTrackerStreakBonus_v21')) || 0;
-    } catch (e) { return 0; }
-  });
-
-  const [goals, setGoals] = useState(() => {
-    try {
-      const savedGoals = localStorage.getItem('warm_readingTrackerGoals_v21');
-      if (savedGoals) return JSON.parse(savedGoals);
-    } catch (e) { console.error(e); }
-    return { yearly: 0, monthly: 0 };
-  });
+  const { data: storedLibrary, update: updateLibrary, status: storageStatus, retry: retryStorage } = useLibraryStorage(normalizeBookAuthors);
+  const { books, goals, manualStreakBonus } = storedLibrary;
+  const setBooks = value => updateLibrary('books', value);
+  const setGoals = value => updateLibrary('goals', value);
+  const setManualStreakBonus = value => updateLibrary('manualStreakBonus', value);
 
   const snapshotData = useMemo(() => ({ books, goals, manualStreakBonus }), [books, goals, manualStreakBonus]);
   const libraryRef = useRef(snapshotData);
   libraryRef.current = snapshotData;
-  const snapshotError = useLibrarySnapshots(snapshotData);
+  const snapshotError = useLibrarySnapshots(snapshotData, storageStatus.ready);
   const [isSnapshotsOpen, setIsSnapshotsOpen] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('warm_readingTrackerBooks_v21', JSON.stringify(books));
-    } catch (e) { console.error(e); }
-  }, [books]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('warm_readingTrackerStreakBonus_v21', String(manualStreakBonus));
-    } catch (e) { console.error(e); }
-  }, [manualStreakBonus]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('warm_readingTrackerGoals_v21', JSON.stringify(goals));
-    } catch (e) { console.error(e); }
-  }, [goals]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
   const [sketchnoteModalUrl, setSketchnoteModalUrl] = useState(null);
   const [currentBook, setCurrentBook] = useState(null);
+  const [imageBusy, setImageBusy] = useState(false);
+  const [imageError, setImageError] = useState('');
+  const imageRequest = useRef(0);
+  const currentBookRef = useRef(currentBook);
+  currentBookRef.current = currentBook;
   const [customModal, setCustomModal] = useState(null); 
   
   const [filter, setFilter] = useState('all'); 
@@ -509,6 +479,9 @@ export default function App() {
   };
 
   const openNewBookModal = () => {
+    imageRequest.current++;
+    setImageBusy(false);
+    setImageError('');
     setCurrentBook({
       id: Date.now(),
       title: '', author: '', genre: 'Проза', seriesName: '', seriesIndex: '', seriesTotal: '',
@@ -520,9 +493,29 @@ export default function App() {
     setIsModalOpen(true);
   };
 
+  const handleImageUpload = async (event, field, kind) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    const bookId = currentBook.id;
+    const request = ++imageRequest.current;
+    setImageBusy(true);
+    setImageError('');
+    try {
+      const value = await prepareImage(file, kind);
+      if (request === imageRequest.current) {
+        setCurrentBook(prev => prev?.id === bookId ? { ...prev, [field]: value } : prev);
+      }
+    } catch (error) {
+      if (request === imageRequest.current && currentBookRef.current?.id === bookId) setImageError(error.message);
+    } finally {
+      if (request === imageRequest.current) setImageBusy(false);
+    }
+  };
+
   const handleSaveBook = (e) => {
     e.preventDefault();
-    if (!currentBook.title) return;
+    if (!currentBook.title || imageBusy) return;
     
     let updatedBook = { ...currentBook, author: canonicalAuthor(currentBook.author) };
     const todayStr = getMoscowDateString(0);
@@ -544,9 +537,9 @@ export default function App() {
     }
 
     if (existingBook) {
-      setBooks(books.map(b => b.id === updatedBook.id ? updatedBook : b));
+      setBooks(prev => prev.map(b => b.id === updatedBook.id ? updatedBook : b));
     } else {
-      setBooks([...books, updatedBook]);
+      setBooks(prev => [...prev, updatedBook]);
     }
     setIsModalOpen(false);
   };
@@ -718,6 +711,14 @@ export default function App() {
     return shelves;
   }, [filteredBooks]);
 
+  if (!storageStatus.ready) return (
+    <main className="min-h-screen bg-[var(--paper)] text-[var(--ink)] p-8 flex flex-col items-center justify-center gap-4">
+      <h1 className="text-2xl font-bold">LibriMori</h1>
+      <p role={storageStatus.error ? 'alert' : 'status'}>{storageStatus.error || 'Открываем сохранённую библиотеку…'}</p>
+      {storageStatus.error && <button onClick={() => window.location.reload()} className="rounded-xl bg-[var(--button)] text-white px-5 py-3">Попробовать снова</button>}
+    </main>
+  );
+
   return (
     <div className="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans pb-24 lg:pb-16 selection:bg-[var(--selection)]">
       
@@ -765,6 +766,16 @@ export default function App() {
       </div>
 
       <main className="pt-4 md:pt-8 max-w-6xl mx-auto px-4">
+        <div role="status" aria-live="polite" className="mb-3 text-xs text-[var(--secondary)]">
+          {storageStatus.saving ? 'Сохраняем изменения…' : storageStatus.error ? 'Есть несохранённые изменения' : 'Библиотека сохранена на этом устройстве'}
+        </div>
+        {storageStatus.error && <div role="alert" className="sticky top-16 z-40 mb-4 rounded-2xl border border-[var(--danger-ink)] bg-[var(--paper)] p-4 text-sm text-[var(--danger-ink)]">
+          <p>{storageStatus.error}</p>
+          <div className="mt-2 flex flex-wrap gap-4">
+            <button onClick={exportBackup} className="underline font-bold">Скачать бэкап изменений</button>
+            <button onClick={retryStorage} className="underline font-bold">Повторить сохранение</button>
+          </div>
+        </div>}
         {snapshotError && <div role="alert" className="mb-4 rounded-2xl border border-[var(--border-strong)] bg-[var(--paper)] p-3 text-sm text-[var(--danger-ink)]">{snapshotError} <button onClick={exportBackup} className="underline font-bold">Скачать бэкап</button></div>}
         
         {/* ================= DIARY TAB ================= */}
@@ -1914,14 +1925,7 @@ export default function App() {
                         });
                       }} className="bg-[var(--paper)] border border-[var(--border-input)] text-[var(--ink)] text-xs font-bold px-3 py-2 rounded-xl text-center w-full hover:bg-[var(--surface)] transition-colors">По ссылке</button>
                     </div>
-                  <input type="file" id="cover-upload" accept="image/*" className="hidden" onChange={(e) => {
-                    const file = e.target.files && e.target.files[0];
-                    if (file) { 
-                      const reader = new FileReader(); 
-                      reader.onloadend = () => setCurrentBook({ ...currentBook, coverUrl: reader.result }); 
-                      reader.readAsDataURL(file); 
-                    }
-                  }} />
+                  <input type="file" id="cover-upload" accept="image/*" disabled={imageBusy} className="hidden" onChange={event => void handleImageUpload(event, 'coverUrl', 'cover')} />
                 </div>
 
                 <div className="flex-1 space-y-3.5">
@@ -1980,14 +1984,7 @@ export default function App() {
                       <label htmlFor="sketchnote-upload" className="cursor-pointer bg-[var(--button)] hover:bg-[var(--button-hover)] text-white text-[11px] font-bold px-3 py-2 rounded-xl shrink-0 transition-colors shadow-sm">
                         Загрузить
                       </label>
-                      <input type="file" id="sketchnote-upload" accept="image/*" className="hidden" onChange={(e) => {
-                        const file = e.target.files && e.target.files[0];
-                        if (file) {
-                          const reader = new FileReader();
-                          reader.onloadend = () => setCurrentBook({ ...currentBook, sketchnoteUrl: reader.result });
-                          reader.readAsDataURL(file);
-                        }
-                      }} />
+                      <input type="file" id="sketchnote-upload" accept="image/*" disabled={imageBusy} className="hidden" onChange={event => void handleImageUpload(event, 'sketchnoteUrl', 'sketch')} />
                     </div>
                   </div>
 
@@ -2066,13 +2063,15 @@ export default function App() {
                 </div>
               </div>
 
+              {imageBusy && <p role="status" className="text-sm text-[var(--secondary)]">Подготавливаем изображение…</p>}
+              {imageError && <p role="alert" className="text-sm text-[var(--danger-ink)]">{imageError}</p>}
               <div className="pt-2 flex flex-col-reverse sm:flex-row justify-between items-center gap-3">
                 {currentBook.id.toString().length < 10 ? (
                   <button type="button" onClick={() => handleDeleteBook(currentBook.id)} className="w-full sm:w-auto flex items-center justify-center gap-2 text-[var(--danger-ink)] hover:bg-[var(--danger-hover)] px-4 py-2.5 rounded-2xl font-bold text-xs transition-colors">
                     <TrashIcon size={16}/> Удалить
                   </button>
                 ) : <div></div>}
-                <button type="submit" className="w-full sm:w-auto bg-[var(--button)] hover:bg-[var(--button-hover)] text-white px-7 py-3 rounded-2xl font-black text-sm transition-colors shadow-lg">
+                <button type="submit" disabled={imageBusy} className="w-full sm:w-auto bg-[var(--button)] hover:bg-[var(--button-hover)] text-white px-7 py-3 rounded-2xl font-black text-sm transition-colors shadow-lg disabled:opacity-50">
                   Сохранить
                 </button>
               </div>

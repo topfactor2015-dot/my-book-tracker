@@ -4,18 +4,20 @@ import { downloadLibrary, libraryFilename, listSnapshots, saveSnapshot } from '.
 const labels = { daily: 'Ежедневный снимок', import: 'Перед импортом', restore: 'Перед восстановлением' };
 const buttonClass = 'rounded-xl border border-[var(--border-strong)] bg-[var(--inset)] px-3 py-2 text-sm font-bold text-[var(--heading)] disabled:opacity-50';
 
-export function useLibrarySnapshots(data) {
+export function useLibrarySnapshots(data, enabled = true) {
   const latest = useRef(data);
   latest.current = data;
   const [error, setError] = useState('');
   useEffect(() => {
+    if (!enabled) return;
     let active = true;
     saveSnapshot(data).then(() => { if (active) setError(''); }).catch(() => {
       if (active) setError('Не удалось сохранить автоматический снимок. Скачайте JSON-бэкап.');
     });
     return () => { active = false; };
-  }, [data]);
+  }, [data, enabled]);
   useEffect(() => {
+    if (!enabled) return;
     const check = () => saveSnapshot(latest.current).then(() => setError('')).catch(() => {
       setError('Не удалось сохранить автоматический снимок. Скачайте JSON-бэкап.');
     });
@@ -23,7 +25,7 @@ export function useLibrarySnapshots(data) {
     const visible = () => { if (document.visibilityState === 'visible') check(); };
     document.addEventListener('visibilitychange', visible);
     return () => { clearInterval(timer); document.removeEventListener('visibilitychange', visible); };
-  }, []);
+  }, [enabled]);
   return error;
 }
 
@@ -43,7 +45,9 @@ export default function SnapshotPanel({ data, onRestore, onClose }) {
   useEffect(() => {
     let active = true;
     // Wait for a pending daily save before reading the list.
-    saveSnapshot(data).then(listSnapshots).then(items => { if (active) setRecords(items); })
+    saveSnapshot(data).catch(() => {
+      if (active) setError('Не удалось создать новый снимок. Ниже показаны доступные сохранённые копии.');
+    }).then(listSnapshots).then(items => { if (active) setRecords(items); })
       .catch(() => { if (active) setError('Не удалось открыть снимки. Проверьте, разрешено ли хранение данных в браузере.'); })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
