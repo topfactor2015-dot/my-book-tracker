@@ -1953,6 +1953,27 @@ export default function App() {
                     </div>
                   </div>
 
+                  <div className="space-y-1">
+                    <label htmlFor="book-tags" className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Теги</label>
+                    <input
+                      key={currentBook.id}
+                      id="book-tags"
+                      type="text"
+                      defaultValue={(currentBook.tags || []).join(', ')}
+                      onChange={(event) => {
+                        const tags = [...new Map(event.target.value.split(',')
+                          .map(cleanText)
+                          .filter(Boolean)
+                          .map(tag => [tag.toLocaleLowerCase('ru-RU'), tag])).values()];
+                        setCurrentBook(previous => ({ ...previous, tags }));
+                      }}
+                      placeholder="Например: любимое, перечитать, книжный клуб"
+                      aria-describedby="book-tags-hint"
+                      className="w-full border-2 border-[var(--border)] rounded-2xl p-3 font-bold text-xs sm:text-sm focus:border-[var(--focus)] outline-none bg-[var(--paper)] text-[var(--ink)]"
+                    />
+                    <p id="book-tags-hint" className="text-[10px] text-[var(--muted)]">Разделяйте теги запятыми.</p>
+                  </div>
+
                   <div className="bg-[var(--inset)] p-3 rounded-2xl border border-[var(--border)] space-y-2">
                     <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Книжная серия / Цикл</label>
                     <div className="flex gap-2">
