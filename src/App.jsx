@@ -7,6 +7,8 @@ import { Moon, Sun } from 'lucide-react';
 import './theme.css';
 import useLibraryStorage from './useLibraryStorage.js';
 import { prepareImage } from './imageUpload.js';
+import LiveLibTop from './LiveLibTop.jsx';
+import { createTopBook, findTopBook } from './liveLibTop.js';
 
 const PlusIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
 const SearchIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
@@ -148,7 +150,7 @@ export default function App() {
     }
   }, [theme]);
 
-  const [activeTab, setActiveTab] = useState('diary'); // 'diary' | 'library' | 'analytics' | 'roulette' | 'tournament'
+  const [activeTab, setActiveTab] = useState('diary'); // 'diary' | 'library' | 'analytics' | 'roulette' | 'tournament' | 'livelib'
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'shelf'
   const [statViewType, setStatViewType] = useState('months'); // 'months' | 'genres' | 'formats' | 'activity'
   
@@ -493,6 +495,14 @@ export default function App() {
     setIsModalOpen(true);
   };
 
+  const openTopBook = (entry, status = 'wishlist') => {
+    imageRequest.current++;
+    setImageBusy(false);
+    setImageError('');
+    setCurrentBook(findTopBook(entry, books) || createTopBook(entry, status));
+    setIsModalOpen(true);
+  };
+
   const handleImageUpload = async (event, field, kind) => {
     const file = event.target.files?.[0];
     event.target.value = '';
@@ -737,6 +747,7 @@ export default function App() {
               <button onClick={() => setActiveTab('analytics')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'analytics' ? 'bg-[var(--surface)] text-[var(--accent)] shadow-sm' : 'text-[var(--secondary)] hover:text-[var(--ink)]'}`}>Аналитика</button>
               <button onClick={() => setActiveTab('roulette')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'roulette' ? 'bg-[var(--surface)] text-[var(--accent)] shadow-sm' : 'text-[var(--secondary)] hover:text-[var(--ink)]'}`}>Рулетка</button>
               <button onClick={() => setActiveTab('tournament')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'tournament' ? 'bg-[var(--surface)] text-[var(--accent)] shadow-sm' : 'text-[var(--secondary)] hover:text-[var(--ink)]'}`}>Турнир</button>
+              <button onClick={() => setActiveTab('livelib')} className={`px-3 md:px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all ${activeTab === 'livelib' ? 'bg-[var(--surface)] text-[var(--accent)] shadow-sm' : 'text-[var(--secondary)] hover:text-[var(--ink)]'}`}>Топ-100</button>
             </div>
 
             <div className="flex items-center gap-1.5">
@@ -778,6 +789,8 @@ export default function App() {
         </div>}
         {snapshotError && <div role="alert" className="mb-4 rounded-2xl border border-[var(--border-strong)] bg-[var(--paper)] p-3 text-sm text-[var(--danger-ink)]">{snapshotError} <button onClick={exportBackup} className="underline font-bold">Скачать бэкап</button></div>}
         
+        {activeTab === 'livelib' && <LiveLibTop books={books} onOpenBook={openTopBook} />}
+
         {/* ================= DIARY TAB ================= */}
         {activeTab === 'diary' && (
           <div className="space-y-5 md:space-y-6">
@@ -1819,6 +1832,10 @@ export default function App() {
         <button onClick={() => setActiveTab('tournament')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'tournament' ? 'text-[var(--accent)]' : 'text-[var(--muted)]'}`}>
           <TrophyIcon size={18} />
           <span className="text-[9px] font-bold">Турнир</span>
+        </button>
+        <button onClick={() => setActiveTab('livelib')} className={`flex flex-col items-center gap-0.5 ${activeTab === 'livelib' ? 'text-[var(--accent)]' : 'text-[var(--muted)]'}`}>
+          <LayersIcon size={18} />
+          <span className="text-[9px] font-bold">Топ-100</span>
         </button>
       </div>
 
