@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import IsbnLookup from './IsbnLookup.jsx';
 import SnapshotPanel, { useLibrarySnapshots } from './SnapshotPanel.jsx';
 import { downloadLibrary, libraryFilename, saveSnapshot, validateLibrary } from './snapshots.js';
-import { pagesToLog, recordReadingProgress } from './readingProgress.js';
+import { pagesToLog, recordReadingProgress, getMonthlyReadingStats } from './readingProgress.js';
 import { Moon, Sun } from 'lucide-react';
 import './theme.css';
 import useLibraryStorage from './useLibraryStorage.js';
@@ -343,22 +343,7 @@ export default function App() {
 
   const todayMoscow = getMoscowDate();
 
-  const monthlyStats = useMemo(() => {
-    const stats = {};
-    readBooksList.forEach(b => {
-      if (b.dateFinished) {
-        const d = new Date(b.dateFinished);
-        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-        const label = d.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' });
-        if (!stats[key]) {
-          stats[key] = { key, label, books: [], pages: 0, sortKey: new Date(d.getFullYear(), d.getMonth(), 1).getTime() };
-        }
-        stats[key].books.push(b);
-        stats[key].pages += (b.totalPages || b.readPages || 0);
-      }
-    });
-    return Object.values(stats).sort((a, b) => b.sortKey - a.sortKey);
-  }, [readBooksList]);
+  const monthlyStats = useMemo(() => getMonthlyReadingStats(books), [books]);
 
   const genreStats = useMemo(() => {
     const stats = {};
@@ -1507,12 +1492,13 @@ export default function App() {
             {statViewType === 'months' && (
               <div className="bg-[var(--panel)] p-5 md:p-6 rounded-3xl border border-[var(--border)] shadow-sm space-y-4">
                 <div className="flex justify-between items-center">
-                  <h4 className="text-xs md:text-sm font-black text-[var(--accent)] uppercase tracking-wider">История прочитанного по месяцам</h4>
+                  <h4 className="text-xs md:text-sm font-black text-[var(--accent)] uppercase tracking-wider">История чтения по месяцам</h4>
                   <span className="text-[11px] font-bold text-[var(--muted)]">Нажмите на обложку для просмотра деталей</span>
                 </div>
 
+                <p className="text-xs text-[var(--secondary)]">Страницы учитываются по датам записей чтения, включая незаконченные книги. В количестве книг — только завершённые. Страницы завершённых книг без записей относятся к месяцу завершения.</p>
                 {monthlyStats.length === 0 ? (
-                  <p className="text-xs text-[var(--muted)] py-10 text-center">Вы пока не завершили ни одной книги с указанием даты.</p>
+                  <p className="text-xs text-[var(--muted)] py-10 text-center">Пока нет записей о прочитанных страницах или завершённых книг с датой.</p>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {monthlyStats.map(month => (
@@ -1525,7 +1511,7 @@ export default function App() {
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-2.5 overflow-y-auto max-h-48 pr-1">
-                          {month.books.map(b => (
+                          {month.activityBooks.map(b => (
                             <div 
                               key={b.id} 
                               title={`${b.title} — ${b.author}`} 

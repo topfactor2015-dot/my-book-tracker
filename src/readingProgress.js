@@ -1,3 +1,49 @@
+// Reading pages belong to the month of the diary entry, regardless of book status.
+// For older completed books, assign only progress missing from dated logs to completion.
+export function getMonthlyReadingStats(books) {
+  const stats = new Map();
+  const monthFor = value => {
+    const match = /^(\d{4})-(\d{2})-(\d{2})(?:$|T)/.exec(String(value ?? ''));
+    if (!match) return null;
+    const [, year, month, day] = match.map(Number);
+    if (year < 1000 || month < 1 || month > 12 || day < 1 || day > new Date(year, month, 0).getDate()) return null;
+    return `${match[1]}-${match[2]}`;
+  };
+  const pagesOf = value => Number.isFinite(Number(value)) ? Math.max(0, Number(value)) : 0;
+  const getMonth = key => {
+    if (!stats.has(key)) {
+      const [year, month] = key.split('-').map(Number);
+      const date = new Date(year, month - 1, 1);
+      stats.set(key, { key, label: date.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' }), books: [], activityBooks: [], pages: 0, sortKey: date.getTime() });
+    }
+    return stats.get(key);
+  };
+  const addPages = (key, book, pages) => {
+    const month = getMonth(key);
+    month.pages += pages;
+    if (!month.activityBooks.includes(book)) month.activityBooks.push(book);
+  };
+  books.forEach(book => {
+    let loggedPages = 0;
+    (Array.isArray(book.log) ? book.log : []).forEach(entry => {
+      const key = monthFor(entry?.date);
+      const pages = pagesOf(entry?.pages);
+      if (!key || !pages) return;
+      addPages(key, book, pages);
+      loggedPages += pages;
+    });
+    const finishedMonth = book.status === 'read' && monthFor(book.dateFinished);
+    if (finishedMonth) {
+      const month = getMonth(finishedMonth);
+      month.books.push(book);
+      if (!month.activityBooks.includes(book)) month.activityBooks.push(book);
+      const unloggedPages = Math.max(0, (pagesOf(book.totalPages) || pagesOf(book.readPages)) - loggedPages);
+      if (unloggedPages) addPages(finishedMonth, book, unloggedPages);
+    }
+  });
+  return [...stats.values()].sort((a, b) => b.sortKey - a.sortKey);
+}
+
 export function pagesToLog(book, input, mode = 'page') {
   const current = Number(book.readPages) || 0;
   const total = Number(book.totalPages) || 0;
