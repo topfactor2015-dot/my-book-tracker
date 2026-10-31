@@ -1511,7 +1511,7 @@ export default function App() {
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-2.5 overflow-y-auto max-h-48 pr-1">
-                          {month.activityBooks.map(b => (
+                          {month.books.map(b => (
                             <div 
                               key={b.id} 
                               title={`${b.title} — ${b.author}`} 
