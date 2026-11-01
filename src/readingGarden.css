@@ -1,0 +1,28 @@
+.reading-garden{border:1px solid var(--border-strong);border-radius:26px;background:var(--panel);overflow:hidden;color:var(--ink)}
+.garden-main{display:grid;grid-template-columns:minmax(210px,.85fr) minmax(0,1.3fr);align-items:center}
+.garden-picture{align-self:stretch;display:flex;flex-direction:column;justify-content:center;align-items:center;background:radial-gradient(ellipse at 50% 50%,var(--accent-soft),var(--inset));padding:18px 18px 12px}
+.garden-art{width:100%;max-width:320px;height:auto;display:block;overflow:visible}
+.garden-revision{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--secondary);font-weight:700;text-align:center}
+.garden-content{padding:24px 28px 24px 24px;min-width:0}
+.garden-eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;color:var(--accent);margin:0 0 7px}
+.garden-content h2{font-size:25px;line-height:1.2;color:var(--heading);font-weight:900;margin:0 0 8px;overflow-wrap:anywhere}
+.garden-description{font-size:13px;line-height:1.65;color:var(--secondary);margin:0 0 15px}
+.garden-stage{display:flex;justify-content:space-between;gap:12px;font-size:13px;font-weight:800;color:var(--accent);margin-bottom:9px}
+.garden-stage span{color:var(--muted);font-size:11px;white-space:nowrap}
+.garden-counters{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:11px;color:var(--secondary);margin-bottom:9px}.garden-counters strong{font-size:18px;color:var(--heading);font-variant-numeric:tabular-nums}
+.reading-garden progress{display:block;width:100%;height:7px;border:0;border-radius:9px;overflow:hidden;background:var(--border);accent-color:#889569}
+.reading-garden progress::-webkit-progress-bar{background:var(--border);border-radius:9px}.reading-garden progress::-webkit-progress-value{background:#889569;border-radius:9px;transition:width .5s}.reading-garden progress::-moz-progress-bar{background:#889569}
+.garden-next{font-size:11px;line-height:1.6;color:var(--secondary);margin:9px 0 12px}
+.garden-primary,.garden-secondary{border-radius:12px;padding:10px 14px;font-size:12px;font-weight:800;cursor:pointer;transition:background .2s}
+.garden-primary{background:var(--button);color:white;border:1px solid var(--button)}.garden-primary:hover{background:var(--button-hover)}
+.garden-secondary{border:1px solid var(--border-strong);background:var(--paper);color:var(--accent)}.garden-secondary:hover{background:var(--inset)}
+.garden-note{color:var(--secondary);font-size:11px;line-height:1.7;margin:12px 0 0}
+.garden-details{border-top:1px solid var(--border);padding:22px 24px;background:var(--paper)}
+.garden-name label{display:block;font-size:12px;font-weight:800;margin-bottom:8px}.garden-name>div{display:flex;gap:8px;flex-wrap:wrap}.garden-name input{background:var(--surface);color:var(--ink);border:1px solid var(--border-strong);padding:10px 12px;border-radius:12px;min-width:0;max-width:100%;font-size:13px;flex:1}
+.garden-chapters{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:10px}
+.garden-chapters li{padding:14px;border:1px dashed var(--border-strong);border-radius:16px;background:var(--panel)}.garden-chapters li.is-open{border-style:solid}
+.garden-chapter-top{display:flex;gap:10px;align-items:center}.garden-chapter-number{display:flex;align-items:center;justify-content:center;width:30px;height:30px;flex-shrink:0;background:var(--inset);border-radius:50%;color:var(--accent);font-size:12px;font-weight:800}.is-open .garden-chapter-number{background:var(--success-soft);color:var(--green-ink)}
+.garden-chapter-top h3{font-size:12px;font-weight:800;margin:0;color:var(--heading)}.garden-chapter-top p{font-size:10px;color:var(--secondary);margin:4px 0 0}.garden-chapter-state{font-size:10px;color:var(--secondary);margin-left:auto;white-space:nowrap}.garden-story{font-size:12px;line-height:1.85;color:var(--ink);margin:12px 0 0}
+.garden-growing{transform-origin:160px 180px;animation:garden-breathe 5s ease-in-out infinite}@keyframes garden-breathe{50%{transform:translateY(-3px)}}
+@media(max-width:600px){.garden-main{grid-template-columns:1fr}.garden-picture{padding:8px 14px 12px}.garden-art{max-width:220px;max-height:158px}.garden-content{padding:20px}.garden-content h2{font-size:23px}.garden-details{padding:18px}.garden-chapter-state{font-size:9px}.garden-primary{width:100%}}
+@media(prefers-reduced-motion:reduce){.garden-growing{animation:none}.reading-garden progress::-webkit-progress-value{transition:none}}

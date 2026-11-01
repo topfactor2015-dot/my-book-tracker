@@ -1,3 +1,4 @@
+import { validateGarden } from './readingGarden.js';
 const DB_NAME = 'librimori-snapshots-v1';
 const STORE = 'snapshots';
 let database;
@@ -13,6 +14,7 @@ export function validateLibrary(data) {
   if (data.manualStreakBonus != null && !Number.isFinite(data.manualStreakBonus)) {
     throw new Error('В файле некорректная серия чтения.');
   }
+  validateGarden(data.garden);
   return data;
 }
 
@@ -28,7 +30,7 @@ export function planSnapshot(records, data, kind = 'daily', now = new Date()) {
     if (records.some(item => item.kind === 'daily' && item.day === day)) return null;
     const previous = sorted[0];
     if (previous && JSON.stringify(previous.data) === JSON.stringify(data)) return null;
-    if (!previous && !data.books.length && !data.goals.yearly && !data.goals.monthly && !data.manualStreakBonus) return null;
+    if (!previous && !data.books.length && !data.goals.yearly && !data.goals.monthly && !data.manualStreakBonus && !data.garden) return null;
   }
   const createdAt = now.toISOString();
   const record = { id: `${kind}-${createdAt}-${Math.random().toString(36).slice(2)}`, kind, day, createdAt, data };

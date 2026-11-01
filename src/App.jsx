@@ -8,6 +8,8 @@ import './theme.css';
 import useLibraryStorage from './useLibraryStorage.js';
 import { prepareImage } from './imageUpload.js';
 import LiveLibTop from './LiveLibTop.jsx';
+import ReadingGarden from './ReadingGarden.jsx';
+import { plantGarden } from './readingGarden.js';
 import { createTopBook, findTopBook } from './liveLibTop.js';
 
 const PlusIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
@@ -155,12 +157,13 @@ export default function App() {
   const [statViewType, setStatViewType] = useState('months'); // 'months' | 'genres' | 'formats' | 'activity'
   
   const { data: storedLibrary, update: updateLibrary, status: storageStatus, retry: retryStorage } = useLibraryStorage(normalizeBookAuthors);
-  const { books, goals, manualStreakBonus } = storedLibrary;
+  const { books, goals, manualStreakBonus, garden = null } = storedLibrary;
   const setBooks = value => updateLibrary('books', value);
   const setGoals = value => updateLibrary('goals', value);
   const setManualStreakBonus = value => updateLibrary('manualStreakBonus', value);
+  const setGarden = value => updateLibrary('garden', value);
 
-  const snapshotData = useMemo(() => ({ books, goals, manualStreakBonus }), [books, goals, manualStreakBonus]);
+  const snapshotData = useMemo(() => ({ books, goals, manualStreakBonus, garden }), [books, goals, manualStreakBonus, garden]);
   const libraryRef = useRef(snapshotData);
   libraryRef.current = snapshotData;
   const snapshotError = useLibrarySnapshots(snapshotData, storageStatus.ready);
@@ -623,6 +626,7 @@ export default function App() {
     setBooks(normalizeBookAuthors(data.books));
     if (data.goals) setGoals(data.goals);
     if (data.manualStreakBonus != null) setManualStreakBonus(data.manualStreakBonus);
+    setGarden(data.garden ?? null);
   };
 
   const importBackup = async (e) => {
@@ -779,6 +783,7 @@ export default function App() {
         {/* ================= DIARY TAB ================= */}
         {activeTab === 'diary' && (
           <div className="space-y-5 md:space-y-6">
+            <ReadingGarden key={garden?.plantedAt || 'not-planted'} garden={garden} books={books} today={getMoscowDateString(0)} onPlant={() => setGarden(plantGarden(books, getMoscowDateString(0)))} onRename={name => setGarden(previous => previous ? { ...previous, name } : previous)} />
             
             {/* Reading Streak & Motivation Banner */}
             <div className="bg-[var(--panel)] border border-[var(--border)] p-4 md:p-5 rounded-3xl shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
