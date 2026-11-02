@@ -8,9 +8,13 @@ import './theme.css';
 import useLibraryStorage from './useLibraryStorage.js';
 import { prepareImage } from './imageUpload.js';
 import LiveLibTop from './LiveLibTop.jsx';
-import ReadingGarden from './ReadingGarden.jsx';
-import { plantGarden } from './readingGarden.js';
 import { createTopBook, findTopBook } from './liveLibTop.js';
+import ReadingGarden from './ReadingGarden.jsx';
+import MonthlyPlans from './MonthlyPlans.jsx';
+import StarRating from './StarRating.jsx';
+import DiaryBookCard from './DiaryBookCard.jsx';
+import { returnBookToWishlist } from './returnToWishlist.js';
+import { plantGarden } from './readingGarden.js';
 
 const PlusIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 20} height={props.size || 20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
 const SearchIcon = (props) => <svg xmlns="http://www.w3.org/2000/svg" width={props.size || 18} height={props.size || 18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
@@ -157,13 +161,14 @@ export default function App() {
   const [statViewType, setStatViewType] = useState('months'); // 'months' | 'genres' | 'formats' | 'activity'
   
   const { data: storedLibrary, update: updateLibrary, status: storageStatus, retry: retryStorage } = useLibraryStorage(normalizeBookAuthors);
-  const { books, goals, manualStreakBonus, garden = null } = storedLibrary;
+  const { books, goals, manualStreakBonus, garden = null, monthlyPlans = {} } = storedLibrary;
   const setBooks = value => updateLibrary('books', value);
+  const setMonthlyPlans = value => updateLibrary('monthlyPlans', previous => typeof value === 'function' ? value(previous || {}) : value);
   const setGoals = value => updateLibrary('goals', value);
   const setManualStreakBonus = value => updateLibrary('manualStreakBonus', value);
   const setGarden = value => updateLibrary('garden', value);
 
-  const snapshotData = useMemo(() => ({ books, goals, manualStreakBonus, garden }), [books, goals, manualStreakBonus, garden]);
+  const snapshotData = useMemo(() => ({ books, goals, manualStreakBonus, garden, monthlyPlans }), [books, goals, manualStreakBonus, garden, monthlyPlans]);
   const libraryRef = useRef(snapshotData);
   libraryRef.current = snapshotData;
   const snapshotError = useLibrarySnapshots(snapshotData, storageStatus.ready);
@@ -179,7 +184,8 @@ export default function App() {
   const imageRequest = useRef(0);
   const currentBookRef = useRef(currentBook);
   currentBookRef.current = currentBook;
-  const [customModal, setCustomModal] = useState(null); 
+  const [customModal, setCustomModal] = useState(null);
+  const [returnedBook, setReturnedBook] = useState(null); 
   
   const [filter, setFilter] = useState('all'); 
   const [genreFilter, setGenreFilter] = useState('all');
@@ -542,6 +548,25 @@ export default function App() {
     setIsModalOpen(false);
   };
 
+  const handleReturnToWishlist = (id) => {
+    const apply = () => {
+      const original = libraryRef.current.books.find(book => book.id === id);
+      if (!original || !['reading', 'rereading'].includes(original.status)) return;
+      setBooks(prev => prev.map(book => book.id === id ? returnBookToWishlist(book) : book));
+      setReturnedBook(original);
+      if (activeTimer?.bookId === id) setActiveTimer(null);
+      setLogPagesInput(prev => ({ ...prev, [id]: '' }));
+      setLogMinutesInput(prev => ({ ...prev, [id]: '' }));
+      setLogProgressErrors(prev => ({ ...prev, [id]: '' }));
+      setCustomModal(null);
+    };
+    const book = libraryRef.current.books.find(item => item.id === id);
+    if (!book) return;
+    if (book.log?.length || book.readPages > 0) {
+      setCustomModal({ title: 'Вернуть «' + book.title + '» в виш-лист? Страницы, минуты и записи чтения этой книги будут сброшены и исключены из статистики и роста сада.', type: 'confirm', onSubmit: apply });
+    } else apply();
+  };
+
   const handleDeleteBook = (id) => {
     setCustomModal({
       title: 'Удалить эту книгу из библиотеки?',
@@ -617,8 +642,12 @@ export default function App() {
     }, 110);
   };
 
-  const exportBackup = () => {
-    downloadLibrary(snapshotData, libraryFilename());
+  const exportBackup = async () => {
+    try {
+      await downloadLibrary(snapshotData, libraryFilename());
+    } catch {
+      setCustomModal({ title: 'Не удалось сохранить бэкап. Выберите другую папку и повторите попытку.', type: 'info', onSubmit: () => setCustomModal(null) });
+    }
   };
 
   const applyLibrary = (data) => {
@@ -627,6 +656,7 @@ export default function App() {
     if (data.goals) setGoals(data.goals);
     if (data.manualStreakBonus != null) setManualStreakBonus(data.manualStreakBonus);
     setGarden(data.garden ?? null);
+    setMonthlyPlans(data.monthlyPlans ?? {});
   };
 
   const importBackup = async (e) => {
@@ -710,6 +740,8 @@ export default function App() {
     return shelves;
   }, [filteredBooks]);
 
+
+
   if (!storageStatus.ready) return (
     <main className="min-h-screen bg-[var(--paper)] text-[var(--ink)] p-8 flex flex-col items-center justify-center gap-4">
       <h1 className="text-2xl font-bold">LibriMori</h1>
@@ -776,6 +808,14 @@ export default function App() {
             <button onClick={retryStorage} className="underline font-bold">Повторить сохранение</button>
           </div>
         </div>}
+        {returnedBook && <div role="status" className="mb-4 rounded-2xl border border-[var(--border-strong)] bg-[var(--paper)] p-3 text-sm text-[var(--heading)]">
+          «{returnedBook.title}» возвращена в виш-лист.
+          <button type="button" onClick={() => {
+            setBooks(prev => prev.map(book => book.id === returnedBook.id && JSON.stringify(book) === JSON.stringify(returnBookToWishlist(returnedBook)) ? returnedBook : book));
+            setReturnedBook(null);
+          }} className="ml-3 underline font-bold">Отменить возврат</button>
+          <button type="button" aria-label="Закрыть уведомление о возврате" onClick={() => setReturnedBook(null)} className="ml-3 underline">Закрыть</button>
+        </div>}
         {snapshotError && <div role="alert" className="mb-4 rounded-2xl border border-[var(--border-strong)] bg-[var(--paper)] p-3 text-sm text-[var(--danger-ink)]">{snapshotError} <button onClick={exportBackup} className="underline font-bold">Скачать бэкап</button></div>}
         
         {activeTab === 'livelib' && <LiveLibTop books={books} onOpenBook={openTopBook} />}
@@ -783,6 +823,7 @@ export default function App() {
         {/* ================= DIARY TAB ================= */}
         {activeTab === 'diary' && (
           <div className="space-y-5 md:space-y-6">
+            <MonthlyPlans books={books} plans={monthlyPlans} onChange={setMonthlyPlans} onOpenBook={book => { setCurrentBook(book); setIsModalOpen(true); }} />
             <ReadingGarden key={garden?.plantedAt || 'not-planted'} garden={garden} books={books} today={getMoscowDateString(0)} onPlant={() => setGarden(plantGarden(books, getMoscowDateString(0)))} onRename={name => setGarden(previous => previous ? { ...previous, name } : previous)} />
             
             {/* Reading Streak & Motivation Banner */}
@@ -954,7 +995,7 @@ export default function App() {
                       catch (error) { pageInputError = error.message; }
 
                       return (
-                        <div key={book.id} className="bg-[var(--panel)] rounded-3xl p-4 md:p-5 shadow-sm border border-[var(--border)]">
+                        <DiaryBookCard key={book.id} book={book} onReturn={() => handleReturnToWishlist(book.id)}>
                           <div className="flex gap-3.5 md:gap-4 items-start">
                             
                             {/* Unstretched Cover */}
@@ -1095,7 +1136,7 @@ export default function App() {
                               </button>
                             )}
                           </div>
-                        </div>
+                        </DiaryBookCard>
                       );
                     })}
                   </div>
@@ -1356,7 +1397,7 @@ export default function App() {
                         
                         <div className="mt-0.5 flex justify-between items-start gap-1 text-[9px] leading-tight font-bold text-[var(--accent)]">
                           <span className="min-w-0 flex-1 break-words">{book.genre}</span>
-                          {book.status === 'read' && book.rating > 0 && <span className="shrink-0 whitespace-nowrap">★ {book.rating}</span>}
+                          {book.status === 'read' && book.rating > 0 && <StarRating value={book.rating} />}
                         </div>
                       </div>
                     </div>
@@ -1414,7 +1455,7 @@ export default function App() {
                               </div>
 
                               <div className="flex justify-center items-center gap-1 text-[9px] font-bold opacity-80">
-                                {book.status === 'read' ? '★ ' + (book.rating || '✓') : book.status === 'reading' ? '📖' : '📌'}
+                                {book.status === 'read' ? (book.rating > 0 ? <StarRating value={book.rating} compact /> : '✓') : book.status === 'reading' ? '📖' : '📌'}
                               </div>
                             </div>
                           </div>
@@ -2055,12 +2096,7 @@ export default function App() {
                     </div>
                   )}
 
-                  {currentBook.status === 'read' && (
-                    <div className="space-y-1">
-                      <label className="text-[10px] font-black text-[var(--muted)] uppercase tracking-wider">Оценка (1-5)</label>
-                      <input type="number" min="1" max="5" value={currentBook.rating || ''} onChange={(e) => setCurrentBook({...currentBook, rating: Number(e.target.value)})} className="w-full border-2 border-[var(--border)] rounded-2xl p-2.5 font-bold text-xs sm:text-sm bg-[var(--surface)] outline-none text-[var(--ink)]" />
-                    </div>
-                  )}
+                  <div className="col-span-2 sm:col-span-3"><StarRating value={currentBook.rating} onChange={rating => setCurrentBook({ ...currentBook, rating })} /></div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

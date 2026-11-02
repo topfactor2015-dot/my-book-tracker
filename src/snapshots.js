@@ -1,4 +1,6 @@
+import { validateMonthlyPlans } from './monthlyPlans.js';
 import { validateGarden } from './readingGarden.js';
+
 const DB_NAME = 'librimori-snapshots-v1';
 const STORE = 'snapshots';
 let database;
@@ -15,6 +17,7 @@ export function validateLibrary(data) {
     throw new Error('В файле некорректная серия чтения.');
   }
   validateGarden(data.garden);
+  validateMonthlyPlans(data.monthlyPlans);
   return data;
 }
 
@@ -30,7 +33,7 @@ export function planSnapshot(records, data, kind = 'daily', now = new Date()) {
     if (records.some(item => item.kind === 'daily' && item.day === day)) return null;
     const previous = sorted[0];
     if (previous && JSON.stringify(previous.data) === JSON.stringify(data)) return null;
-    if (!previous && !data.books.length && !data.goals.yearly && !data.goals.monthly && !data.manualStreakBonus && !data.garden) return null;
+    if (!previous && !data.books.length && !data.goals.yearly && !data.goals.monthly && !data.manualStreakBonus && !data.garden && !Object.keys(data.monthlyPlans || {}).length) return null;
   }
   const createdAt = now.toISOString();
   const record = { id: `${kind}-${createdAt}-${Math.random().toString(36).slice(2)}`, kind, day, createdAt, data };
@@ -98,7 +101,8 @@ export function libraryFilename(kind = 'бэкап', date = new Date()) {
 }
 
 export function downloadLibrary(data, filename) {
-  const blob = new Blob([JSON.stringify({ ...data, exportDate: new Date().toISOString() }, null, 2)], { type: 'application/json' });
+  const json = JSON.stringify({ ...data, exportDate: new Date().toISOString() }, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement('a');
   anchor.href = url;

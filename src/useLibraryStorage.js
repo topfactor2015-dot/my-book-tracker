@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createLibraryStorage } from './libraryStorage.js';
 
-const initial = { books: [], goals: { yearly: 0, monthly: 0 }, manualStreakBonus: 0, garden: null };
+const initial = { books: [], goals: { yearly: 0, monthly: 0 }, manualStreakBonus: 0, garden: null, monthlyPlans: {} };
 export default function useLibraryStorage(normalizeBooks) {
   const [repository] = useState(() => createLibraryStorage());
   const [data, setData] = useState(initial);
