@@ -1,7 +1,15 @@
 import { useState } from 'react';
+import { BookOpen } from 'lucide-react';
 import { addPlannedBook, planEntryDone } from './monthlyPlans.js';
 
 const monthKey = date => date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0');
+
+function PlanCover({ url }) {
+  const [failed, setFailed] = useState(false);
+  return <span aria-hidden="true" className="relative flex aspect-[2/3] w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[var(--border-strong)] bg-[var(--cover)] text-[var(--accent)] shadow-sm sm:w-16">
+    {url && !failed ? <img src={url} alt="" loading="lazy" decoding="async" onError={() => setFailed(true)} className="absolute inset-0 h-full w-full object-contain" /> : <BookOpen size={23} />}
+  </span>;
+}
 export default function MonthlyPlans({ books, plans, onChange, onOpenBook }) {
   const [month, setMonth] = useState(() => monthKey(new Date()));
   const [query, setQuery] = useState('');
@@ -31,17 +39,24 @@ export default function MonthlyPlans({ books, plans, onChange, onOpenBook }) {
       <progress aria-label="Выполнение плана месяца" className="w-full" max={Math.max(1, plan.entries.length)} value={done} />
       <p className="text-xs text-[var(--muted)]">Книги, завершённые в этом месяце, отмечаются автоматически. Можно отметить выполнение вручную — например, если планируешь прочитать только часть книги.</p>
       {!plan.entries.length && <p className="text-sm text-[var(--muted)]">Что хочется прочитать в этом месяце? Добавь книги из библиотеки.</p>}
-      <ul className="space-y-2">{plan.entries.map(entry => {
+      <ul className="grid gap-2.5 lg:grid-cols-2">{plan.entries.map(entry => {
         const book = bookFor(entry);
         const complete = planEntryDone(entry, book, month);
-        return <li key={entry.bookId} className="flex items-start gap-3 rounded-2xl border border-[var(--border)] p-3">
-          <input type="checkbox" aria-label={'Выполнено — ' + entry.title} checked={Boolean(complete)} onChange={event => { const checked = event.target.checked; update(current => ({ ...current, entries: current.entries.map(item => String(item.bookId) === String(entry.bookId) ? { ...item, done: checked } : item) })); }} className="mt-2 h-5 w-5 shrink-0" />
+        return <li key={entry.bookId} className="flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--paper)] p-3">
+          {book ? <button type="button" aria-label={'Открыть книгу — ' + book.title} onClick={() => onOpenBook(book)} className="shrink-0 rounded-lg focus-visible:outline-2 focus-visible:outline-[var(--focus)]">
+            <PlanCover key={book.coverUrl} url={book.coverUrl} />
+          </button> : <PlanCover />}
           <div className="min-w-0 flex-1 text-sm text-[var(--heading)]">
-            <button type="button" disabled={!book} onClick={() => book && onOpenBook(book)} className={'text-left font-bold break-words ' + (complete ? 'line-through opacity-60' : '')}>{book?.title || entry.title}</button>
+            <button type="button" disabled={!book} onClick={() => book && onOpenBook(book)} className={'text-left font-bold break-words enabled:hover:underline ' + (complete ? 'line-through opacity-60' : '')}>{book?.title || entry.title}</button>
             <p className="text-xs text-[var(--muted)]">{book?.author || entry.author}{!book ? ' · Книга удалена из библиотеки' : ''}</p>
             {entry.done !== undefined && <button type="button" className="text-xs underline py-2" onClick={() => update(current => ({ ...current, entries: current.entries.map(item => { if (String(item.bookId) !== String(entry.bookId)) return item; const { done: ignored, ...rest } = item; return rest; }) }))}>Отмечать автоматически</button>}
           </div>
-          <button type="button" aria-label={'Убрать из плана — ' + entry.title} className={button} onClick={() => update(current => ({ ...current, entries: current.entries.filter(item => String(item.bookId) !== String(entry.bookId)) }))}>×</button>
+          <div className="flex shrink-0 flex-col items-center">
+            <label className="grid h-10 w-10 cursor-pointer place-items-center rounded-lg hover:bg-[var(--inset)]">
+              <input type="checkbox" aria-label={'Выполнено — ' + entry.title} checked={Boolean(complete)} onChange={event => { const checked = event.target.checked; update(current => ({ ...current, entries: current.entries.map(item => String(item.bookId) === String(entry.bookId) ? { ...item, done: checked } : item) })); }} className="h-5 w-5 accent-[var(--button)]" />
+            </label>
+            <button type="button" aria-label={'Убрать из плана — ' + entry.title} className="h-10 w-10 rounded-lg text-lg text-[var(--muted)] hover:bg-[var(--inset)]" onClick={() => update(current => ({ ...current, entries: current.entries.filter(item => String(item.bookId) !== String(entry.bookId)) }))}>×</button>
+          </div>
         </li>;
       })}</ul>
       <button type="button" className={button} aria-expanded={picking} onClick={() => setPicking(!picking)}>{picking ? 'Закрыть выбор книг' : '+ Добавить книги в план'}</button>
