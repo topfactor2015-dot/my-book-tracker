@@ -11,6 +11,7 @@ import LiveLibTop from './LiveLibTop.jsx';
 import { createTopBook, findTopBook } from './liveLibTop.js';
 import ReadingGarden from './ReadingGarden.jsx';
 import MonthlyPlans from './MonthlyPlans.jsx';
+import BookCalendar from './BookCalendar.jsx';
 import StarRating from './StarRating.jsx';
 import DiaryBookCard from './DiaryBookCard.jsx';
 import { returnBookToWishlist } from './returnToWishlist.js';
@@ -534,10 +535,10 @@ export default function App() {
       if (!wasActive && isNowActive && !updatedBook.dateStarted) {
         updatedBook.dateStarted = todayStr;
       }
-      if (existingBook.status !== 'read' && updatedBook.status === 'read' && !updatedBook.dateFinished) {
-        updatedBook.dateFinished = todayStr;
-        if (updatedBook.totalPages) updatedBook.readPages = updatedBook.totalPages; 
-      }
+    }
+    if (existingBook?.status !== 'read' && updatedBook.status === 'read' && !updatedBook.dateFinished) {
+      updatedBook.dateFinished = todayStr;
+      if (updatedBook.totalPages) updatedBook.readPages = updatedBook.totalPages;
     }
 
     if (existingBook) {
@@ -644,9 +645,10 @@ export default function App() {
 
   const exportBackup = async () => {
     try {
-      await downloadLibrary(snapshotData, libraryFilename());
-    } catch {
-      setCustomModal({ title: 'Не удалось сохранить бэкап. Выберите другую папку и повторите попытку.', type: 'info', onSubmit: () => setCustomModal(null) });
+      const result = await downloadLibrary(snapshotData, libraryFilename());
+      if (result?.verified) setCustomModal({ title: 'Бэкап сохранён и проверен: ' + result.bytes.toLocaleString('ru-RU') + ' байт. Этот JSON можно загрузить на сайте.', type: 'info', onSubmit: () => setCustomModal(null) });
+    } catch (error) {
+      setCustomModal({ title: error.message || 'Не удалось сохранить бэкап. Выберите другую папку и повторите попытку.', type: 'info', onSubmit: () => setCustomModal(null) });
     }
   };
 
@@ -820,9 +822,15 @@ export default function App() {
         
         {activeTab === 'livelib' && <LiveLibTop books={books} onOpenBook={openTopBook} />}
 
+        {activeTab === 'book-calendar' && <BookCalendar books={books} today={getMoscowDateString(0)} dateKey={formatDateKey} onBack={() => setActiveTab('diary')} onOpenBook={book => { setCurrentBook(book); setIsModalOpen(true); }} />}
+
         {/* ================= DIARY TAB ================= */}
         {activeTab === 'diary' && (
           <div className="space-y-5 md:space-y-6">
+            <button type="button" onClick={() => setActiveTab('book-calendar')} className="flex w-full items-center justify-between gap-3 rounded-3xl border border-[var(--border)] bg-[var(--panel)] p-4 text-left hover:bg-[var(--inset)] md:p-5">
+              <span><span className="block font-bold text-[var(--heading)]">Книжный календарь</span><span className="mt-1 block text-sm text-[var(--secondary)]">Обложки прочитанных книг по дням</span></span>
+              <ChevronRightIcon className="shrink-0 text-[var(--accent)]" />
+            </button>
             <MonthlyPlans books={books} plans={monthlyPlans} onChange={setMonthlyPlans} onOpenBook={book => { setCurrentBook(book); setIsModalOpen(true); }} />
             <ReadingGarden key={garden?.plantedAt || 'not-planted'} garden={garden} books={books} today={getMoscowDateString(0)} onPlant={() => setGarden(plantGarden(books, getMoscowDateString(0)))} onRename={name => setGarden(previous => previous ? { ...previous, name } : previous)} />
             
