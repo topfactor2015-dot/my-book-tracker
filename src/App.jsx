@@ -12,6 +12,7 @@ import { createTopBook, findTopBook } from './liveLibTop.js';
 import ReadingGarden from './ReadingGarden.jsx';
 import MonthlyPlans from './MonthlyPlans.jsx';
 import BookCalendar from './BookCalendar.jsx';
+import { PageWheel, ReadingCelebration } from './ReadingDialogs.jsx';
 import StarRating from './StarRating.jsx';
 import DiaryBookCard from './DiaryBookCard.jsx';
 import { returnBookToWishlist } from './returnToWishlist.js';
@@ -195,6 +196,9 @@ export default function App() {
   const [tagFilter, setTagFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
+  const [pageWheelBookId, setPageWheelBookId] = useState(null);
+  const [celebratedBook, setCelebratedBook] = useState(null);
+  const pageWheelBook = books.find(book => book.id === pageWheelBookId);
   const [logPagesInput, setLogPagesInput] = useState({});
   const [logPageMode, setLogPageMode] = useState({});
   const [logProgressErrors, setLogProgressErrors] = useState({});
@@ -547,6 +551,7 @@ export default function App() {
       setBooks(prev => [...prev, updatedBook]);
     }
     setIsModalOpen(false);
+    if (existingBook && existingBook.status !== 'read' && updatedBook.status === 'read') setCelebratedBook(updatedBook);
   };
 
   const handleReturnToWishlist = (id) => {
@@ -588,7 +593,9 @@ export default function App() {
     const current = libraryRef.current.books.find(book => book.id === bookId);
     if (!current) return;
     try {
-      if (recordReadingProgress(current, input, mode, minutes, logDateKey) === current) return;
+      const next = recordReadingProgress(current, input, mode, minutes, logDateKey);
+      if (next === current) return;
+      if (current.status !== 'read' && next.status === 'read') setCelebratedBook(next);
     } catch (error) {
       setLogProgressErrors(prev => ({ ...prev, [bookId]: error.message }));
       return;
@@ -606,8 +613,11 @@ export default function App() {
 
   const handleQuickFinish = (bookId) => {
     const logDateKey = formatDateKey(selectedDate);
-    setBooks(books.map(b => {
-      if (b.id === bookId) {
+    const current = libraryRef.current.books.find(book => book.id === bookId);
+    if (!current || current.status === 'read') return;
+    setCelebratedBook(current);
+    setBooks(previous => previous.map(b => {
+      if (b.id === bookId && b.status !== 'read') {
         const remaining = (b.totalPages || 0) - (b.readPages || 0);
         const newLog = [...(b.log || [])];
         if (remaining > 0) {
@@ -615,7 +625,7 @@ export default function App() {
         }
         return { 
           ...b, readPages: b.totalPages, status: 'read', 
-          log: newLog, dateFinished: b.dateFinished || getMoscowDateString(0) 
+          log: newLog, dateFinished: b.dateFinished || logDateKey 
         };
       }
       return b;
@@ -1048,7 +1058,7 @@ export default function App() {
                                 
                                 <div className="flex justify-between text-[10px] font-bold text-[var(--secondary)] mb-1">
                                   <span>Прогресс</span>
-                                  <span>{book.readPages || 0} / {book.totalPages || '?'} стр.</span>
+                                  <span>{book.readPages || 0} / {book.totalPages || '?'} стр.{Number(book.totalPages) > 0 && ' · ' + Math.min(100, Math.round((Number(book.readPages) || 0) / Number(book.totalPages) * 100)) + '%'}</span>
                                 </div>
                                 <div className="w-full bg-[var(--border)] rounded-full h-2 shadow-inner overflow-hidden">
                                   <div className="bg-[var(--progress-green)] h-2 rounded-full transition-all duration-500" style={{ width: `${book.totalPages ? Math.min(100, Math.round(((book.readPages || 0) / book.totalPages) * 100)) : 0}%` }}></div>
@@ -1097,21 +1107,10 @@ export default function App() {
                                   {activeTimer?.bookId === book.id ? <SquareIcon size={14} /> : <PlayIcon size={14} />}
                                   {activeTimer?.bookId === book.id ? formatTimer(timerDisplay) : 'Таймер'}
                                 </button>
-                                <input 
-                                  type="number" min="0" step="1" max={pageMode === 'page' && Number(book.totalPages) > 0 ? book.totalPages : undefined} placeholder={pageMode === 'page' ? 'Страница' : '+ стр'}
-                                  aria-label={`${pageMode === 'page' ? 'Дочитал до страницы' : 'Добавить страниц'} — ${book.title}`}
-                                  value={logPagesInput[book.id] || ''} 
-                                  onKeyDown={(event) => { if (event.key === 'Enter') handleLogProgress(book.id); }}
-                                  onChange={(e) => {
-                                    const val = e.target.value;
-                                    setLogPagesInput({ ...logPagesInput, [book.id]: val });
-                                    setLogProgressErrors(prev => ({ ...prev, [book.id]: '' }));
-                                    if (pageMode === 'delta') {
-                                      setLogMinutesInput(prev => ({ ...prev, [book.id]: val && Number.isFinite(Number(val)) && Number(val) >= 0 ? Math.round(Number(val) * 1.5) : '' }));
-                                    }
-                                  }}
-                                  className="w-24 bg-[var(--paper)] border border-[var(--border)] rounded-xl px-2 py-2 text-xs font-bold outline-none focus:border-[var(--focus)] text-center"
-                                />
+                                <button type="button" onClick={() => setPageWheelBookId(book.id)}
+                                  aria-label={'Выбрать страницы — ' + book.title} className="min-h-10 rounded-xl border border-[var(--border)] bg-[var(--paper)] px-3 py-2 text-xs font-bold text-[var(--heading)] hover:bg-[var(--inset)]">
+                                  {logPagesInput[book.id] ? (pageMode === 'page' ? 'с. ' : '+') + logPagesInput[book.id] : 'Выбрать страницы'}
+                                </button>
                                 <input 
                                   type="number" min="0" step="1" placeholder="+ мин" aria-label={`Минуты чтения — ${book.title}`} value={logMinutesInput[book.id] ?? ''} onChange={(e) => setLogMinutesInput({ ...logMinutesInput, [book.id]: e.target.value })}
                                   onKeyDown={(event) => { if (event.key === 'Enter') handleLogProgress(book.id); }}
@@ -2154,6 +2153,16 @@ export default function App() {
       )}
 
       {isSnapshotsOpen && <SnapshotPanel data={snapshotData} onRestore={applyLibrary} onClose={() => setIsSnapshotsOpen(false)} />}
+
+      {pageWheelBook && <PageWheel key={pageWheelBook.id} book={pageWheelBook} mode={logPageMode[pageWheelBook.id] || 'page'} initial={logPagesInput[pageWheelBook.id] ?? ''}
+        onClose={() => setPageWheelBookId(null)} onSelect={value => {
+          const id = pageWheelBook.id;
+          setLogPagesInput(prev => ({ ...prev, [id]: value }));
+          setLogProgressErrors(prev => ({ ...prev, [id]: '' }));
+          if (logPageMode[id] === 'delta') setLogMinutesInput(prev => ({ ...prev, [id]: Math.round(value * 1.5) }));
+          setPageWheelBookId(null);
+        }} />}
+      {celebratedBook && <ReadingCelebration book={celebratedBook} onClose={() => setCelebratedBook(null)} />}
 
       {/* Custom Modal Dialog */}
       {customModal && (
