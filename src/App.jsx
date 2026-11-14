@@ -5,6 +5,7 @@ import { downloadLibrary, libraryFilename, saveSnapshot, validateLibrary } from 
 import { pagesToLog, recordReadingProgress, getMonthlyReadingStats } from './readingProgress.js';
 import { Moon, Sun } from 'lucide-react';
 import './theme.css';
+import AppearancePicker from './AppearancePicker.jsx';
 import useLibraryStorage from './useLibraryStorage.js';
 import { prepareImage } from './imageUpload.js';
 import LiveLibTop from './LiveLibTop.jsx';
@@ -784,6 +785,7 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-1.5">
+              <AppearancePicker />
               <button
                 type="button"
                 onClick={() => setTheme(current => current === 'dark' ? 'light' : 'dark')}
