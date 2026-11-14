@@ -16,6 +16,7 @@
       // Apply the saved palette before rendering to avoid a light flash.
       try {
         document.documentElement.dataset.theme = localStorage.getItem('librimori_theme') === 'dark' ? 'dark' : 'light';
+        document.documentElement.dataset.motion = localStorage.getItem('librimori_motion') === 'off' ? 'off' : 'on';
         const palette = localStorage.getItem('librimori_palette');
         document.documentElement.dataset.palette = ['beige', 'lilac', 'burgundy'].includes(palette) ? palette : 'beige';
       } catch {

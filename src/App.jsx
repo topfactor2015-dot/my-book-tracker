@@ -6,6 +6,8 @@ import { pagesToLog, recordReadingProgress, getMonthlyReadingStats } from './rea
 import { Moon, Sun } from 'lucide-react';
 import './theme.css';
 import AppearancePicker from './AppearancePicker.jsx';
+import { useInteractionFeedback } from './InteractionFeedback.jsx';
+import { playFeedback } from './feedback.js';
 import useLibraryStorage from './useLibraryStorage.js';
 import { prepareImage } from './imageUpload.js';
 import LiveLibTop from './LiveLibTop.jsx';
@@ -148,6 +150,7 @@ const getUniqueAuthors = (items) => {
 };
 
 export default function App() {
+  useInteractionFeedback();
   const [theme, setTheme] = useState(() => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
 
   useEffect(() => {
@@ -647,6 +650,7 @@ export default function App() {
       const randomIndex = Math.floor(Math.random() * roulettePool.length);
       setRouletteBook(roulettePool[randomIndex]);
       counter++;
+      playFeedback('tick');
       if (counter > 14) {
         clearInterval(interval);
         setIsSpinning(false);
@@ -811,7 +815,7 @@ export default function App() {
         </div>
       </div>
 
-      <main className="pt-4 md:pt-8 max-w-6xl mx-auto px-4">
+      <main key={activeTab} className="pt-4 md:pt-8 max-w-6xl mx-auto px-4">
         <div role="status" aria-live="polite" className="mb-3 text-xs text-[var(--secondary)]">
           {storageStatus.saving ? 'Сохраняем изменения…' : storageStatus.error ? 'Есть несохранённые изменения' : 'Библиотека сохранена на этом устройстве'}
         </div>

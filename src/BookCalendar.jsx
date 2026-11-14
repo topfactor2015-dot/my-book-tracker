@@ -59,7 +59,7 @@ export default function BookCalendar({ books, today, dateKey, onBack, onOpenBook
       <div className="grid grid-cols-7 bg-[var(--inset)] text-center text-xs font-bold text-[var(--secondary)]">
         {weekdays.map((day, i) => <span key={day} className={'py-2 ' + (i === 6 ? 'text-[var(--danger-ink)]' : '')}>{day}</span>)}
       </div>
-      <div className="grid grid-cols-7">
+      <div key={prefix} className="calendar-month-enter grid grid-cols-7">
         {Array.from({ length: cellCount }, (_, i) => {
           const day = i - offset + 1;
           const valid = day > 0 && day <= length;

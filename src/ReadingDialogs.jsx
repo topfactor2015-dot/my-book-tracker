@@ -1,6 +1,7 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { BookOpen, Check, Keyboard, X } from 'lucide-react';
 import './readingDialogs.css';
+import { playFeedback } from './feedback.js';
 
 function ReadingDialog({ label, onClose, className, children }) {
   const dialog = useRef(null);
@@ -36,6 +37,11 @@ export function PageWheel({ book, mode, initial, onSelect, onClose }) {
     wheel.current.scrollTop = (next - min) * rowHeight;
     setValue(next);
   };
+  const previousSelection = useRef(selected);
+  useEffect(() => {
+    if (previousSelection.current !== selected && !keyboard) playFeedback('tick');
+    previousSelection.current = selected;
+  }, [selected, keyboard]);
   const first = Math.max(min, selected - 8);
   const last = Math.min(max ?? selected, selected + 8);
   return <ReadingDialog label="Сколько прочитано?" onClose={onClose} className="page-dialog">
@@ -67,6 +73,7 @@ export function PageWheel({ book, mode, initial, onSelect, onClose }) {
 
 const confettiColors = ['#efbd47', '#fff4dd', '#8dc6df', '#d2856a'];
 export function ReadingCelebration({ book, onClose }) {
+  useEffect(() => { playFeedback('complete'); }, []);
   const [coverFailed, setCoverFailed] = useState(false);
   return <ReadingDialog label="Книга прочитана" onClose={onClose} className="reading-celebration">
     <div className="confetti" aria-hidden="true">{Array.from({ length: 70 }, (_, i) => <span key={i} style={{ left: `${i * 37 % 100}%`, background: confettiColors[i % confettiColors.length], '--fall-delay': `${(i % 19) * 0.055}s`, '--fall-time': `${1.65 + (i % 7) * 0.19}s`, '--drift': `${i * 19 % 160 - 80}px` }} />)}</div>

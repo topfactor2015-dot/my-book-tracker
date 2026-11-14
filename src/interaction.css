@@ -1,0 +1,23 @@
+.feedback-settings{border:0;margin:16px 0 0;padding:12px 0 0;border-top:1px solid var(--border)}.feedback-settings label{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;font-size:.85rem}.feedback-settings input{accent-color:var(--button)}.feedback-settings input[type=checkbox]{width:19px;height:19px;flex-shrink:0}.feedback-settings input[type=range]{width:115px}.feedback-settings p{line-height:1.5;margin-top:8px}
+@media(prefers-reduced-motion:no-preference){
+:root:not([data-motion="off"]) button,:root:not([data-motion="off"]) summary{transition:transform .14s ease,background-color .18s ease,box-shadow .18s ease}
+:root:not([data-motion="off"]) button:active:not(:disabled){transform:scale(.96)}
+:root:not([data-motion="off"]) .calendar-month-enter{animation:interface-enter .23s ease-out both}
+:root:not([data-motion="off"]) main{animation:interface-enter .23s ease-out both}
+:root:not([data-motion="off"]) dialog[open]{animation:dialog-enter .22s ease-out both}
+:root:not([data-motion="off"]) details[open]>div{animation:interface-enter .22s ease-out both}
+:root:not([data-motion="off"]) .page-wheel-row{transition:font-size .1s ease,color .1s ease,opacity .1s ease}
+:root:not([data-motion="off"]) .page-wheel-highlight{transition:background-color .2s ease}
+:root:not([data-motion="off"]) .celebration-cover{animation:cover-arrive .5s cubic-bezier(.2,.8,.2,1) both}
+@media(hover:hover) and (pointer:fine){
+:root:not([data-motion="off"]) button:hover:not(:disabled){transform:translateY(-1px)}
+:root:not([data-motion="off"]) main img{transition:transform .25s ease,filter .25s ease}
+:root:not([data-motion="off"]) main img:hover{transform:translateY(-2px) scale(1.035);filter:brightness(1.035)}
+}
+}
+@keyframes interface-enter{from{opacity:.4;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes dialog-enter{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes cover-arrive{from{opacity:0;transform:translateY(15px) rotate(-5deg) scale(.92)}to{opacity:1;transform:none}}
+:root[data-motion="off"] *, :root[data-motion="off"] *::before,:root[data-motion="off"] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+:root[data-motion="off"] .confetti{display:none}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.confetti{display:none}}

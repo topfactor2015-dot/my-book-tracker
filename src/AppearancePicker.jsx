@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Palette, X } from 'lucide-react';
 import './appearance.css';
+import { FeedbackSettings } from './InteractionFeedback.jsx';
 
 const palettes = [
   { id: 'beige', name: 'Тёплый беж', colors: ['#806047', '#c7b299', '#fcf9f2'] },
@@ -26,6 +27,7 @@ export default function AppearancePicker() {
         <span className="appearance-swatches" aria-hidden="true">{item.colors.map(color => <span key={color} style={{ background: color }} />)}</span>
         <span>{item.name}</span><input type="radio" name="appearance-palette" value={item.id} checked={palette === item.id} onChange={() => setPalette(item.id)} />
       </label>)}</fieldset>
+      <FeedbackSettings />
       <p className="appearance-note">Светлый и тёмный режим переключаются кнопкой солнца или луны. Выбор оформления сохраняется на этом устройстве.</p>
       <button type="button" className="appearance-done" onClick={() => dialog.current.close()}>Готово</button>
     </dialog>
